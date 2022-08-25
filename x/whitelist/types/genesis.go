@@ -14,8 +14,10 @@ func DefaultGenesis() *GenesisState {
 		BuyerList:  []Buyer{},
 		SellerList: []Seller{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params:      DefaultParams(),
-		NextBuyerId: 1,
+		Params:       DefaultParams(),
+		NextBuyerId:  1,
+		NextSellerId: 1,
+		NextVoterId:  1,
 	}
 }
 

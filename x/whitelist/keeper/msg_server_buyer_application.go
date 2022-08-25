@@ -13,7 +13,7 @@ func (k msgServer) BuyerApplication(goCtx context.Context, msg *types.MsgBuyerAp
 
 	buyerId, err := k.CreateBuyer(ctx, *msg)
 	if err != nil {
-		return &types.MsgBuyerApplicationResponse{BuyerId: buyerId}, err
+		return &types.MsgBuyerApplicationResponse{BuyerId: 0}, err
 	}
 
 	return &types.MsgBuyerApplicationResponse{BuyerId: buyerId}, nil

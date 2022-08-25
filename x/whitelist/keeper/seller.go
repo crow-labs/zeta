@@ -1,9 +1,14 @@
 package keeper
 
 import (
+	"fmt"
+
+	gogotypes "github.com/gogo/protobuf/types"
+
+	"zeta/x/whitelist/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"zeta/x/whitelist/types"
 )
 
 // SetSeller set a specific seller in the store from its index
@@ -60,4 +65,37 @@ func (k Keeper) GetAllSeller(ctx sdk.Context) (list []types.Seller) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextSellerId(ctx sdk.Context, sellerId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: sellerId})
+	store.Set(types.KeyNextGlobalSellerId, bz)
+}
+
+func (k Keeper) GetNextSellerId(ctx sdk.Context) uint64 {
+	var nextSellerId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalSellerId)
+	if bz == nil {
+		panic(fmt.Errorf("seller has not been initialized -- should have be done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		nextSellerId = val.GetValue()
+	}
+
+	return nextSellerId
+}
+
+func (k Keeper) getNextSellerIdAndIncrement(ctx sdk.Context) uint64 {
+	nextSellerId := k.GetNextSellerId(ctx)
+	k.SetNextSellerId(ctx, nextSellerId+1)
+	return nextSellerId
 }
