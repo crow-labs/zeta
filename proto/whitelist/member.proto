@@ -1,0 +1,14 @@
+syntax = "proto3";
+package zeta.whitelist;
+
+option go_package = "zeta/x/whitelist/types";
+
+message Member {
+  string baseAddr = 1; 
+  string name = 2; 
+  uint64 buyerId = 3; 
+  uint64 sellerId = 4; 
+  uint64 voterId = 5; 
+  
+}
+

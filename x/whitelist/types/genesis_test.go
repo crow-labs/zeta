@@ -19,12 +19,34 @@ func TestGenesisState_Validate(t *testing.T) {
 			valid:    true,
 		},
 		{
-			desc:     "valid genesis state",
+			desc: "valid genesis state",
 			genState: &types.GenesisState{
 
+				MemberList: []types.Member{
+					{
+						BaseAddr: "0",
+					},
+					{
+						BaseAddr: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
+		},
+		{
+			desc: "duplicated member",
+			genState: &types.GenesisState{
+				MemberList: []types.Member{
+					{
+						BaseAddr: "0",
+					},
+					{
+						BaseAddr: "0",
+					},
+				},
+			},
+			valid: false,
 		},
 		// this line is used by starport scaffolding # types/genesis/testcase
 	} {

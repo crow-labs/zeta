@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "whitelist/params.proto";
+import "whitelist/member.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "zeta/x/whitelist/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/zeta/whitelist/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Member by index.
+	rpc Member(QueryGetMemberRequest) returns (QueryGetMemberResponse) {
+		option (google.api.http).get = "/zeta/whitelist/member/{baseAddr}";
+	}
+
+	// Queries a list of Member items.
+	rpc MemberAll(QueryAllMemberRequest) returns (QueryAllMemberResponse) {
+		option (google.api.http).get = "/zeta/whitelist/member";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetMemberRequest {
+	  string baseAddr = 1;
+
+}
+
+message QueryGetMemberResponse {
+	Member member = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMemberRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMemberResponse {
+	repeated Member member = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
