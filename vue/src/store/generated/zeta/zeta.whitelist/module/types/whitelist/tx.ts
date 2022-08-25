@@ -22,6 +22,25 @@ export interface MsgBuyerApplicationResponse {
   buyerId: number;
 }
 
+export interface MsgSellerApplication {
+  creator: string;
+  contactInfo: string;
+  name: string;
+}
+
+export interface MsgSellerApplicationResponse {
+  sellerId: number;
+}
+
+export interface MsgVoterApplication {
+  creator: string;
+  alias: string;
+}
+
+export interface MsgVoterApplicationResponse {
+  voterId: number;
+}
+
 const baseMsgMembershipApplication: object = { creator: "", name: "" };
 
 export const MsgMembershipApplication = {
@@ -322,15 +341,331 @@ export const MsgBuyerApplicationResponse = {
   },
 };
 
+const baseMsgSellerApplication: object = {
+  creator: "",
+  contactInfo: "",
+  name: "",
+};
+
+export const MsgSellerApplication = {
+  encode(
+    message: MsgSellerApplication,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.contactInfo !== "") {
+      writer.uint32(18).string(message.contactInfo);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSellerApplication {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSellerApplication } as MsgSellerApplication;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.contactInfo = reader.string();
+          break;
+        case 3:
+          message.name = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSellerApplication {
+    const message = { ...baseMsgSellerApplication } as MsgSellerApplication;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.contactInfo !== undefined && object.contactInfo !== null) {
+      message.contactInfo = String(object.contactInfo);
+    } else {
+      message.contactInfo = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSellerApplication): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.contactInfo !== undefined &&
+      (obj.contactInfo = message.contactInfo);
+    message.name !== undefined && (obj.name = message.name);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSellerApplication>): MsgSellerApplication {
+    const message = { ...baseMsgSellerApplication } as MsgSellerApplication;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.contactInfo !== undefined && object.contactInfo !== null) {
+      message.contactInfo = object.contactInfo;
+    } else {
+      message.contactInfo = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgSellerApplicationResponse: object = { sellerId: 0 };
+
+export const MsgSellerApplicationResponse = {
+  encode(
+    message: MsgSellerApplicationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sellerId !== 0) {
+      writer.uint32(8).uint64(message.sellerId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgSellerApplicationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgSellerApplicationResponse,
+    } as MsgSellerApplicationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSellerApplicationResponse {
+    const message = {
+      ...baseMsgSellerApplicationResponse,
+    } as MsgSellerApplicationResponse;
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSellerApplicationResponse): unknown {
+    const obj: any = {};
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgSellerApplicationResponse>
+  ): MsgSellerApplicationResponse {
+    const message = {
+      ...baseMsgSellerApplicationResponse,
+    } as MsgSellerApplicationResponse;
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgVoterApplication: object = { creator: "", alias: "" };
+
+export const MsgVoterApplication = {
+  encode(
+    message: MsgVoterApplication,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.alias !== "") {
+      writer.uint32(18).string(message.alias);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgVoterApplication {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgVoterApplication } as MsgVoterApplication;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.alias = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgVoterApplication {
+    const message = { ...baseMsgVoterApplication } as MsgVoterApplication;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.alias !== undefined && object.alias !== null) {
+      message.alias = String(object.alias);
+    } else {
+      message.alias = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgVoterApplication): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.alias !== undefined && (obj.alias = message.alias);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgVoterApplication>): MsgVoterApplication {
+    const message = { ...baseMsgVoterApplication } as MsgVoterApplication;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.alias !== undefined && object.alias !== null) {
+      message.alias = object.alias;
+    } else {
+      message.alias = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgVoterApplicationResponse: object = { voterId: 0 };
+
+export const MsgVoterApplicationResponse = {
+  encode(
+    message: MsgVoterApplicationResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.voterId !== 0) {
+      writer.uint32(8).uint64(message.voterId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgVoterApplicationResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgVoterApplicationResponse,
+    } as MsgVoterApplicationResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.voterId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgVoterApplicationResponse {
+    const message = {
+      ...baseMsgVoterApplicationResponse,
+    } as MsgVoterApplicationResponse;
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = Number(object.voterId);
+    } else {
+      message.voterId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgVoterApplicationResponse): unknown {
+    const obj: any = {};
+    message.voterId !== undefined && (obj.voterId = message.voterId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgVoterApplicationResponse>
+  ): MsgVoterApplicationResponse {
+    const message = {
+      ...baseMsgVoterApplicationResponse,
+    } as MsgVoterApplicationResponse;
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = object.voterId;
+    } else {
+      message.voterId = 0;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   MembershipApplication(
     request: MsgMembershipApplication
   ): Promise<MsgMembershipApplicationResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   BuyerApplication(
     request: MsgBuyerApplication
   ): Promise<MsgBuyerApplicationResponse>;
+  SellerApplication(
+    request: MsgSellerApplication
+  ): Promise<MsgSellerApplicationResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  VoterApplication(
+    request: MsgVoterApplication
+  ): Promise<MsgVoterApplicationResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -363,6 +698,34 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgBuyerApplicationResponse.decode(new Reader(data))
+    );
+  }
+
+  SellerApplication(
+    request: MsgSellerApplication
+  ): Promise<MsgSellerApplicationResponse> {
+    const data = MsgSellerApplication.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.whitelist.Msg",
+      "SellerApplication",
+      data
+    );
+    return promise.then((data) =>
+      MsgSellerApplicationResponse.decode(new Reader(data))
+    );
+  }
+
+  VoterApplication(
+    request: MsgVoterApplication
+  ): Promise<MsgVoterApplicationResponse> {
+    const data = MsgVoterApplication.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.whitelist.Msg",
+      "VoterApplication",
+      data
+    );
+    return promise.then((data) =>
+      MsgVoterApplicationResponse.decode(new Reader(data))
     );
   }
 }

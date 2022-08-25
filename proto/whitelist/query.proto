@@ -7,6 +7,8 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "whitelist/params.proto";
 import "whitelist/member.proto";
 import "whitelist/buyer.proto";
+import "whitelist/seller.proto";
+import "whitelist/voter.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "zeta/x/whitelist/types";
@@ -35,6 +37,26 @@ service Query {
 	// Queries a list of Buyer items.
 	rpc BuyerAll(QueryAllBuyerRequest) returns (QueryAllBuyerResponse) {
 		option (google.api.http).get = "/zeta/whitelist/buyer";
+	}
+
+// Queries a Seller by index.
+	rpc Seller(QueryGetSellerRequest) returns (QueryGetSellerResponse) {
+		option (google.api.http).get = "/zeta/whitelist/seller/{sellerId}";
+	}
+
+	// Queries a list of Seller items.
+	rpc SellerAll(QueryAllSellerRequest) returns (QueryAllSellerResponse) {
+		option (google.api.http).get = "/zeta/whitelist/seller";
+	}
+
+// Queries a Voter by index.
+	rpc Voter(QueryGetVoterRequest) returns (QueryGetVoterResponse) {
+		option (google.api.http).get = "/zeta/whitelist/voter/{voterId}";
+	}
+
+	// Queries a list of Voter items.
+	rpc VoterAll(QueryAllVoterRequest) returns (QueryAllVoterResponse) {
+		option (google.api.http).get = "/zeta/whitelist/voter";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -82,6 +104,42 @@ message QueryAllBuyerRequest {
 
 message QueryAllBuyerResponse {
 	repeated Buyer buyer = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSellerRequest {
+	  uint64 sellerId = 1;
+
+}
+
+message QueryGetSellerResponse {
+	Seller seller = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllSellerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllSellerResponse {
+	repeated Seller seller = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetVoterRequest {
+	  uint64 voterId = 1;
+
+}
+
+message QueryGetVoterResponse {
+	Voter voter = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllVoterRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllVoterResponse {
+	repeated Voter voter = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

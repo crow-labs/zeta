@@ -1,0 +1,14 @@
+syntax = "proto3";
+package zeta.whitelist;
+
+option go_package = "zeta/x/whitelist/types";
+
+message Voter {
+  uint64 voterId = 1; 
+  string alias = 2; 
+  string address = 3; 
+  repeated uint64 activeVote = 4; 
+  repeated uint64 completedVote = 5; 
+  
+}
+

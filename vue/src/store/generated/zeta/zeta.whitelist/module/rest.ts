@@ -110,6 +110,16 @@ export interface WhitelistMsgMembershipApplicationResponse {
   joined?: boolean;
 }
 
+export interface WhitelistMsgSellerApplicationResponse {
+  /** @format uint64 */
+  sellerId?: string;
+}
+
+export interface WhitelistMsgVoterApplicationResponse {
+  /** @format uint64 */
+  voterId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
@@ -145,6 +155,36 @@ export interface WhitelistQueryAllMemberResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface WhitelistQueryAllSellerResponse {
+  seller?: WhitelistSeller[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface WhitelistQueryAllVoterResponse {
+  voter?: WhitelistVoter[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface WhitelistQueryGetBuyerResponse {
   buyer?: WhitelistBuyer;
 }
@@ -153,12 +193,41 @@ export interface WhitelistQueryGetMemberResponse {
   member?: WhitelistMember;
 }
 
+export interface WhitelistQueryGetSellerResponse {
+  seller?: WhitelistSeller;
+}
+
+export interface WhitelistQueryGetVoterResponse {
+  voter?: WhitelistVoter;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface WhitelistQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: WhitelistParams;
+}
+
+export interface WhitelistSeller {
+  /** @format uint64 */
+  sellerId?: string;
+  name?: string;
+  contactInfo?: string;
+  address?: string;
+  status?: string;
+  activeItem?: string[];
+  activeOrder?: string[];
+  completedOrder?: string[];
+}
+
+export interface WhitelistVoter {
+  /** @format uint64 */
+  voterId?: string;
+  alias?: string;
+  address?: string;
+  activeVote?: string[];
+  completedVote?: string[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -450,6 +519,88 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<WhitelistQueryParamsResponse, RpcStatus>({
       path: `/zeta/whitelist/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySellerAll
+   * @summary Queries a list of Seller items.
+   * @request GET:/zeta/whitelist/seller
+   */
+  querySellerAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<WhitelistQueryAllSellerResponse, RpcStatus>({
+      path: `/zeta/whitelist/seller`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySeller
+   * @summary Queries a Seller by index.
+   * @request GET:/zeta/whitelist/seller/{sellerId}
+   */
+  querySeller = (sellerId: string, params: RequestParams = {}) =>
+    this.request<WhitelistQueryGetSellerResponse, RpcStatus>({
+      path: `/zeta/whitelist/seller/${sellerId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVoterAll
+   * @summary Queries a list of Voter items.
+   * @request GET:/zeta/whitelist/voter
+   */
+  queryVoterAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<WhitelistQueryAllVoterResponse, RpcStatus>({
+      path: `/zeta/whitelist/voter`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryVoter
+   * @summary Queries a Voter by index.
+   * @request GET:/zeta/whitelist/voter/{voterId}
+   */
+  queryVoter = (voterId: string, params: RequestParams = {}) =>
+    this.request<WhitelistQueryGetVoterResponse, RpcStatus>({
+      path: `/zeta/whitelist/voter/${voterId}`,
       method: "GET",
       format: "json",
       ...params,

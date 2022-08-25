@@ -4,6 +4,8 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../whitelist/params";
 import { Member } from "../whitelist/member";
 import { Buyer } from "../whitelist/buyer";
+import { Seller } from "../whitelist/seller";
+import { Voter } from "../whitelist/voter";
 
 export const protobufPackage = "zeta.whitelist";
 
@@ -12,11 +14,19 @@ export interface GenesisState {
   params: Params | undefined;
   memberList: Member[];
   buyerList: Buyer[];
+  sellerList: Seller[];
+  voterList: Voter[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextBuyerId: number;
+  nextSellerId: number;
+  nextVoterId: number;
 }
 
-const baseGenesisState: object = { nextBuyerId: 0 };
+const baseGenesisState: object = {
+  nextBuyerId: 0,
+  nextSellerId: 0,
+  nextVoterId: 0,
+};
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -29,8 +39,20 @@ export const GenesisState = {
     for (const v of message.buyerList) {
       Buyer.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.sellerList) {
+      Seller.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
+    for (const v of message.voterList) {
+      Voter.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     if (message.nextBuyerId !== 0) {
       writer.uint32(32).uint64(message.nextBuyerId);
+    }
+    if (message.nextSellerId !== 0) {
+      writer.uint32(40).uint64(message.nextSellerId);
+    }
+    if (message.nextVoterId !== 0) {
+      writer.uint32(48).uint64(message.nextVoterId);
     }
     return writer;
   },
@@ -41,6 +63,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.memberList = [];
     message.buyerList = [];
+    message.sellerList = [];
+    message.voterList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -53,8 +77,20 @@ export const GenesisState = {
         case 3:
           message.buyerList.push(Buyer.decode(reader, reader.uint32()));
           break;
+        case 7:
+          message.sellerList.push(Seller.decode(reader, reader.uint32()));
+          break;
+        case 8:
+          message.voterList.push(Voter.decode(reader, reader.uint32()));
+          break;
         case 4:
           message.nextBuyerId = longToNumber(reader.uint64() as Long);
+          break;
+        case 5:
+          message.nextSellerId = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nextVoterId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -68,6 +104,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.memberList = [];
     message.buyerList = [];
+    message.sellerList = [];
+    message.voterList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -83,10 +121,30 @@ export const GenesisState = {
         message.buyerList.push(Buyer.fromJSON(e));
       }
     }
+    if (object.sellerList !== undefined && object.sellerList !== null) {
+      for (const e of object.sellerList) {
+        message.sellerList.push(Seller.fromJSON(e));
+      }
+    }
+    if (object.voterList !== undefined && object.voterList !== null) {
+      for (const e of object.voterList) {
+        message.voterList.push(Voter.fromJSON(e));
+      }
+    }
     if (object.nextBuyerId !== undefined && object.nextBuyerId !== null) {
       message.nextBuyerId = Number(object.nextBuyerId);
     } else {
       message.nextBuyerId = 0;
+    }
+    if (object.nextSellerId !== undefined && object.nextSellerId !== null) {
+      message.nextSellerId = Number(object.nextSellerId);
+    } else {
+      message.nextSellerId = 0;
+    }
+    if (object.nextVoterId !== undefined && object.nextVoterId !== null) {
+      message.nextVoterId = Number(object.nextVoterId);
+    } else {
+      message.nextVoterId = 0;
     }
     return message;
   },
@@ -109,8 +167,26 @@ export const GenesisState = {
     } else {
       obj.buyerList = [];
     }
+    if (message.sellerList) {
+      obj.sellerList = message.sellerList.map((e) =>
+        e ? Seller.toJSON(e) : undefined
+      );
+    } else {
+      obj.sellerList = [];
+    }
+    if (message.voterList) {
+      obj.voterList = message.voterList.map((e) =>
+        e ? Voter.toJSON(e) : undefined
+      );
+    } else {
+      obj.voterList = [];
+    }
     message.nextBuyerId !== undefined &&
       (obj.nextBuyerId = message.nextBuyerId);
+    message.nextSellerId !== undefined &&
+      (obj.nextSellerId = message.nextSellerId);
+    message.nextVoterId !== undefined &&
+      (obj.nextVoterId = message.nextVoterId);
     return obj;
   },
 
@@ -118,6 +194,8 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.memberList = [];
     message.buyerList = [];
+    message.sellerList = [];
+    message.voterList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -133,10 +211,30 @@ export const GenesisState = {
         message.buyerList.push(Buyer.fromPartial(e));
       }
     }
+    if (object.sellerList !== undefined && object.sellerList !== null) {
+      for (const e of object.sellerList) {
+        message.sellerList.push(Seller.fromPartial(e));
+      }
+    }
+    if (object.voterList !== undefined && object.voterList !== null) {
+      for (const e of object.voterList) {
+        message.voterList.push(Voter.fromPartial(e));
+      }
+    }
     if (object.nextBuyerId !== undefined && object.nextBuyerId !== null) {
       message.nextBuyerId = object.nextBuyerId;
     } else {
       message.nextBuyerId = 0;
+    }
+    if (object.nextSellerId !== undefined && object.nextSellerId !== null) {
+      message.nextSellerId = object.nextSellerId;
+    } else {
+      message.nextSellerId = 0;
+    }
+    if (object.nextVoterId !== undefined && object.nextVoterId !== null) {
+      message.nextVoterId = object.nextVoterId;
+    } else {
+      message.nextVoterId = 0;
     }
     return message;
   },
