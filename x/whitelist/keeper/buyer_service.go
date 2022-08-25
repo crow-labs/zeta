@@ -48,7 +48,10 @@ func (k Keeper) CreateBuyer(ctx sdk.Context, msg types.MsgBuyerApplication) (uin
 	buyer := NewBuyer(buyerId, name, msg.ContactInfo, msg.Creator)
 
 	member, _ := k.GetMember(ctx, msg.Creator)
-	member.AddBuyer(buyerId)
+	err = member.AddBuyer(buyerId)
+	if err != nil {
+		return 0, err
+	}
 
 	k.SetMember(ctx, member)
 	k.SetBuyer(ctx, buyer)

@@ -57,6 +57,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -145,6 +152,21 @@ export interface WhitelistQueryAllMemberResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface WhitelistQueryAllSellerResponse {
+  seller?: WhitelistSeller[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface WhitelistQueryGetBuyerResponse {
   buyer?: WhitelistBuyer;
 }
@@ -153,12 +175,28 @@ export interface WhitelistQueryGetMemberResponse {
   member?: WhitelistMember;
 }
 
+export interface WhitelistQueryGetSellerResponse {
+  seller?: WhitelistSeller;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface WhitelistQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: WhitelistParams;
+}
+
+export interface WhitelistSeller {
+  /** @format uint64 */
+  sellerId?: string;
+  name?: string;
+  contactInfo?: string;
+  address?: string;
+  status?: string;
+  activeItem?: string[];
+  activeOrder?: string[];
+  completedOrder?: string[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -371,6 +409,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -412,6 +451,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -450,6 +490,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<WhitelistQueryParamsResponse, RpcStatus>({
       path: `/zeta/whitelist/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySellerAll
+   * @summary Queries a list of Seller items.
+   * @request GET:/zeta/whitelist/seller
+   */
+  querySellerAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<WhitelistQueryAllSellerResponse, RpcStatus>({
+      path: `/zeta/whitelist/seller`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySeller
+   * @summary Queries a Seller by index.
+   * @request GET:/zeta/whitelist/seller/{sellerId}
+   */
+  querySeller = (sellerId: string, params: RequestParams = {}) =>
+    this.request<WhitelistQueryGetSellerResponse, RpcStatus>({
+      path: `/zeta/whitelist/seller/${sellerId}`,
       method: "GET",
       format: "json",
       ...params,

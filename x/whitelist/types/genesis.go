@@ -12,6 +12,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		MemberList: []Member{},
 		BuyerList:  []Buyer{},
+		SellerList: []Seller{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params:      DefaultParams(),
 		NextBuyerId: 1,
@@ -40,6 +41,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for buyer")
 		}
 		buyerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in seller
+	sellerIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.SellerList {
+		index := string(SellerKey(elem.SellerId))
+		if _, ok := sellerIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for seller")
+		}
+		sellerIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

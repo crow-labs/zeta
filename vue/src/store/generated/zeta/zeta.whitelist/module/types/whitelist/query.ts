@@ -8,6 +8,7 @@ import {
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Buyer } from "../whitelist/buyer";
+import { Seller } from "../whitelist/seller";
 
 export const protobufPackage = "zeta.whitelist";
 
@@ -51,6 +52,23 @@ export interface QueryAllBuyerRequest {
 
 export interface QueryAllBuyerResponse {
   buyer: Buyer[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetSellerRequest {
+  sellerId: number;
+}
+
+export interface QueryGetSellerResponse {
+  seller: Seller | undefined;
+}
+
+export interface QueryAllSellerRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllSellerResponse {
+  seller: Seller[];
   pagination: PageResponse | undefined;
 }
 
@@ -697,6 +715,282 @@ export const QueryAllBuyerResponse = {
   },
 };
 
+const baseQueryGetSellerRequest: object = { sellerId: 0 };
+
+export const QueryGetSellerRequest = {
+  encode(
+    message: QueryGetSellerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sellerId !== 0) {
+      writer.uint32(8).uint64(message.sellerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetSellerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetSellerRequest } as QueryGetSellerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSellerRequest {
+    const message = { ...baseQueryGetSellerRequest } as QueryGetSellerRequest;
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSellerRequest): unknown {
+    const obj: any = {};
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSellerRequest>
+  ): QueryGetSellerRequest {
+    const message = { ...baseQueryGetSellerRequest } as QueryGetSellerRequest;
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetSellerResponse: object = {};
+
+export const QueryGetSellerResponse = {
+  encode(
+    message: QueryGetSellerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.seller !== undefined) {
+      Seller.encode(message.seller, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetSellerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetSellerResponse } as QueryGetSellerResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.seller = Seller.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetSellerResponse {
+    const message = { ...baseQueryGetSellerResponse } as QueryGetSellerResponse;
+    if (object.seller !== undefined && object.seller !== null) {
+      message.seller = Seller.fromJSON(object.seller);
+    } else {
+      message.seller = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetSellerResponse): unknown {
+    const obj: any = {};
+    message.seller !== undefined &&
+      (obj.seller = message.seller ? Seller.toJSON(message.seller) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetSellerResponse>
+  ): QueryGetSellerResponse {
+    const message = { ...baseQueryGetSellerResponse } as QueryGetSellerResponse;
+    if (object.seller !== undefined && object.seller !== null) {
+      message.seller = Seller.fromPartial(object.seller);
+    } else {
+      message.seller = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSellerRequest: object = {};
+
+export const QueryAllSellerRequest = {
+  encode(
+    message: QueryAllSellerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllSellerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllSellerRequest } as QueryAllSellerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSellerRequest {
+    const message = { ...baseQueryAllSellerRequest } as QueryAllSellerRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSellerRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSellerRequest>
+  ): QueryAllSellerRequest {
+    const message = { ...baseQueryAllSellerRequest } as QueryAllSellerRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllSellerResponse: object = {};
+
+export const QueryAllSellerResponse = {
+  encode(
+    message: QueryAllSellerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.seller) {
+      Seller.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllSellerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllSellerResponse } as QueryAllSellerResponse;
+    message.seller = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.seller.push(Seller.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllSellerResponse {
+    const message = { ...baseQueryAllSellerResponse } as QueryAllSellerResponse;
+    message.seller = [];
+    if (object.seller !== undefined && object.seller !== null) {
+      for (const e of object.seller) {
+        message.seller.push(Seller.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllSellerResponse): unknown {
+    const obj: any = {};
+    if (message.seller) {
+      obj.seller = message.seller.map((e) =>
+        e ? Seller.toJSON(e) : undefined
+      );
+    } else {
+      obj.seller = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllSellerResponse>
+  ): QueryAllSellerResponse {
+    const message = { ...baseQueryAllSellerResponse } as QueryAllSellerResponse;
+    message.seller = [];
+    if (object.seller !== undefined && object.seller !== null) {
+      for (const e of object.seller) {
+        message.seller.push(Seller.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -709,6 +1003,10 @@ export interface Query {
   Buyer(request: QueryGetBuyerRequest): Promise<QueryGetBuyerResponse>;
   /** Queries a list of Buyer items. */
   BuyerAll(request: QueryAllBuyerRequest): Promise<QueryAllBuyerResponse>;
+  /** Queries a Seller by index. */
+  Seller(request: QueryGetSellerRequest): Promise<QueryGetSellerResponse>;
+  /** Queries a list of Seller items. */
+  SellerAll(request: QueryAllSellerRequest): Promise<QueryAllSellerResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -751,6 +1049,22 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("zeta.whitelist.Query", "BuyerAll", data);
     return promise.then((data) =>
       QueryAllBuyerResponse.decode(new Reader(data))
+    );
+  }
+
+  Seller(request: QueryGetSellerRequest): Promise<QueryGetSellerResponse> {
+    const data = QueryGetSellerRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "Seller", data);
+    return promise.then((data) =>
+      QueryGetSellerResponse.decode(new Reader(data))
+    );
+  }
+
+  SellerAll(request: QueryAllSellerRequest): Promise<QueryAllSellerResponse> {
+    const data = QueryAllSellerRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "SellerAll", data);
+    return promise.then((data) =>
+      QueryAllSellerResponse.decode(new Reader(data))
     );
   }
 }

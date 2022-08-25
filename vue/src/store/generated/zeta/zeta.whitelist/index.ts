@@ -3,9 +3,10 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 import { Buyer } from "./module/types/whitelist/buyer"
 import { Member } from "./module/types/whitelist/member"
 import { Params } from "./module/types/whitelist/params"
+import { Seller } from "./module/types/whitelist/seller"
 
 
-export { Buyer, Member, Params };
+export { Buyer, Member, Params, Seller };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -48,11 +49,14 @@ const getDefaultState = () => {
 				MemberAll: {},
 				Buyer: {},
 				BuyerAll: {},
+				Seller: {},
+				SellerAll: {},
 				
 				_Structure: {
 						Buyer: getStructure(Buyer.fromPartial({})),
 						Member: getStructure(Member.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
+						Seller: getStructure(Seller.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -110,6 +114,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.BuyerAll[JSON.stringify(params)] ?? {}
+		},
+				getSeller: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Seller[JSON.stringify(params)] ?? {}
+		},
+				getSellerAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.SellerAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -258,6 +274,54 @@ export default {
 				return getters['getBuyerAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryBuyerAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySeller({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.querySeller( key.sellerId)).data
+				
+					
+				commit('QUERY', { query: 'Seller', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySeller', payload: { options: { all }, params: {...key},query }})
+				return getters['getSeller']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySeller API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QuerySellerAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.querySellerAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.querySellerAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'SellerAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QuerySellerAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getSellerAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QuerySellerAll API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},

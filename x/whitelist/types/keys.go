@@ -18,7 +18,9 @@ const (
 )
 
 var (
-	KeyNextGlobalBuyerId = []byte{0x01}
+	KeyNextGlobalBuyerId  = []byte{0x01}
+	KeyNextGlobalSellerId = []byte{0x02}
+	KeyNextGlobalVoterId  = []byte{0x03}
 )
 
 func KeyPrefix(p string) []byte {
