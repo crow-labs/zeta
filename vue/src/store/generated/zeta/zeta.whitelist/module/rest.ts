@@ -101,6 +101,11 @@ export interface WhitelistMember {
   voterId?: string;
 }
 
+export interface WhitelistMsgBuyerApplicationResponse {
+  /** @format uint64 */
+  buyerId?: string;
+}
+
 export interface WhitelistMsgMembershipApplicationResponse {
   joined?: boolean;
 }

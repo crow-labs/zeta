@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgMembershipApplication int = 100
 
+	opWeightMsgBuyerApplication = "op_weight_msg_buyer_application"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgBuyerApplication int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgMembershipApplication,
 		whitelistsimulation.SimulateMsgMembershipApplication(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgBuyerApplication int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgBuyerApplication, &weightMsgBuyerApplication, nil,
+		func(_ *rand.Rand) {
+			weightMsgBuyerApplication = defaultWeightMsgBuyerApplication
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgBuyerApplication,
+		whitelistsimulation.SimulateMsgBuyerApplication(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
