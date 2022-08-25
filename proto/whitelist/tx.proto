@@ -7,7 +7,17 @@ option go_package = "zeta/x/whitelist/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc MembershipApplication(MsgMembershipApplication) returns (MsgMembershipApplicationResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgMembershipApplication {
+  string creator = 1;
+  string name = 2;
+}
+
+message MsgMembershipApplicationResponse {
+  bool joined = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

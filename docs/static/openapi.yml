@@ -52235,6 +52235,11 @@ definitions:
       voterId:
         type: string
         format: uint64
+  zeta.whitelist.MsgMembershipApplicationResponse:
+    type: object
+    properties:
+      joined:
+        type: boolean
   zeta.whitelist.Params:
     type: object
     description: Params defines the parameters for the module.
