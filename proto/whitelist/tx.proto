@@ -10,6 +10,7 @@ service Msg {
       rpc MembershipApplication(MsgMembershipApplication) returns (MsgMembershipApplicationResponse);
   rpc BuyerApplication(MsgBuyerApplication) returns (MsgBuyerApplicationResponse);
   rpc SellerApplication(MsgSellerApplication) returns (MsgSellerApplicationResponse);
+  rpc VoterApplication(MsgVoterApplication) returns (MsgVoterApplicationResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -39,6 +40,15 @@ message MsgSellerApplication {
 
 message MsgSellerApplicationResponse {
   uint64 sellerId = 1;
+}
+
+message MsgVoterApplication {
+  string creator = 1;
+  string alias = 2;
+}
+
+message MsgVoterApplicationResponse {
+  uint64 voterId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

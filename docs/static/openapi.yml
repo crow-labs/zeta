@@ -52654,6 +52654,12 @@ definitions:
       sellerId:
         type: string
         format: uint64
+  zeta.whitelist.MsgVoterApplicationResponse:
+    type: object
+    properties:
+      voterId:
+        type: string
+        format: uint64
   zeta.whitelist.Params:
     type: object
     description: Params defines the parameters for the module.
