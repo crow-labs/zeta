@@ -130,6 +130,17 @@ func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error 
 	return nil
 }
 
+func (k Keeper) GetOrdersWithItemId(ctx sdk.Context, seller types.Seller, itemId uint64) ([]uint64, error) {
+	if len(seller.ActiveOrder) == 0 {
+		return nil, nil
+	}
+
+	// TODO: for each active order for the seller, check if the item id matches the given itemId
+	// and add it to the list of order Id's to be returned
+
+	return nil, nil
+}
+
 func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) error {
 	seller, found := k.GetSeller(ctx, sellerId)
 	if !found {
@@ -138,6 +149,12 @@ func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) e
 
 	if len(seller.ActiveItem) == 0 {
 		return types.ErrItemNotFound
+	}
+
+	// TODO: change to orders, err := ... once orders have been added
+	_, err := k.GetOrdersWithItemId(ctx, seller, itemId)
+	if err != nil {
+		return err
 	}
 
 	items := make([]uint64, 0, len(seller.ActiveItem)-1)
