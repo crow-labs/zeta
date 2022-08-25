@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "whitelist/params.proto";
 import "whitelist/member.proto";
+import "whitelist/buyer.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "zeta/x/whitelist/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of Member items.
 	rpc MemberAll(QueryAllMemberRequest) returns (QueryAllMemberResponse) {
 		option (google.api.http).get = "/zeta/whitelist/member";
+	}
+
+// Queries a Buyer by index.
+	rpc Buyer(QueryGetBuyerRequest) returns (QueryGetBuyerResponse) {
+		option (google.api.http).get = "/zeta/whitelist/buyer/{buyerId}";
+	}
+
+	// Queries a list of Buyer items.
+	rpc BuyerAll(QueryAllBuyerRequest) returns (QueryAllBuyerResponse) {
+		option (google.api.http).get = "/zeta/whitelist/buyer";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,24 @@ message QueryAllMemberRequest {
 
 message QueryAllMemberResponse {
 	repeated Member member = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetBuyerRequest {
+	  uint64 buyerId = 1;
+
+}
+
+message QueryGetBuyerResponse {
+	Buyer buyer = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBuyerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBuyerResponse {
+	repeated Buyer buyer = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

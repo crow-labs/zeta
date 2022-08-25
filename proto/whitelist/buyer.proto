@@ -1,0 +1,16 @@
+syntax = "proto3";
+package zeta.whitelist;
+
+option go_package = "zeta/x/whitelist/types";
+
+message Buyer {
+  uint64 buyerId = 1; 
+  string name = 2; 
+  string contactInfo = 3; 
+  string address = 4; 
+  string status = 5; 
+  repeated uint64 activeOrder = 6; 
+  repeated uint64 completedOrder = 7; 
+  
+}
+

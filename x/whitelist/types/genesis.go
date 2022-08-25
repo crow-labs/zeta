@@ -11,6 +11,7 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		MemberList: []Member{},
+		BuyerList:  []Buyer{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +29,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for member")
 		}
 		memberIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in buyer
+	buyerIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.BuyerList {
+		index := string(BuyerKey(elem.BuyerId))
+		if _, ok := buyerIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for buyer")
+		}
+		buyerIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

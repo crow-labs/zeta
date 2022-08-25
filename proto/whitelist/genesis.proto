@@ -4,6 +4,7 @@ package zeta.whitelist;
 import "gogoproto/gogo.proto";
 import "whitelist/params.proto";
 import "whitelist/member.proto";
+import "whitelist/buyer.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "zeta/x/whitelist/types";
@@ -12,5 +13,6 @@ option go_package = "zeta/x/whitelist/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Member memberList = 2 [(gogoproto.nullable) = false];
+  repeated Buyer buyerList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

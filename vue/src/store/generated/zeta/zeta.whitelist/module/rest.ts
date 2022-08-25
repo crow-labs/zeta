@@ -83,6 +83,17 @@ export interface V1Beta1PageResponse {
   total?: string;
 }
 
+export interface WhitelistBuyer {
+  /** @format uint64 */
+  buyerId?: string;
+  name?: string;
+  contactInfo?: string;
+  address?: string;
+  status?: string;
+  activeOrder?: string[];
+  completedOrder?: string[];
+}
+
 export interface WhitelistMember {
   baseAddr?: string;
   name?: string;
@@ -102,6 +113,21 @@ export interface WhitelistMember {
  */
 export type WhitelistParams = object;
 
+export interface WhitelistQueryAllBuyerResponse {
+  buyer?: WhitelistBuyer[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface WhitelistQueryAllMemberResponse {
   member?: WhitelistMember[];
 
@@ -115,6 +141,10 @@ export interface WhitelistQueryAllMemberResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface WhitelistQueryGetBuyerResponse {
+  buyer?: WhitelistBuyer;
 }
 
 export interface WhitelistQueryGetMemberResponse {
@@ -321,10 +351,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title whitelist/genesis.proto
+ * @title whitelist/buyer.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryBuyerAll
+   * @summary Queries a list of Buyer items.
+   * @request GET:/zeta/whitelist/buyer
+   */
+  queryBuyerAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<WhitelistQueryAllBuyerResponse, RpcStatus>({
+      path: `/zeta/whitelist/buyer`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryBuyer
+   * @summary Queries a Buyer by index.
+   * @request GET:/zeta/whitelist/buyer/{buyerId}
+   */
+  queryBuyer = (buyerId: string, params: RequestParams = {}) =>
+    this.request<WhitelistQueryGetBuyerResponse, RpcStatus>({
+      path: `/zeta/whitelist/buyer/${buyerId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

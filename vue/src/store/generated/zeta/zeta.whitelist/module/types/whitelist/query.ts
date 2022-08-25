@@ -1,11 +1,13 @@
 /* eslint-disable */
-import { Reader, Writer } from "protobufjs/minimal";
+import { Reader, util, configure, Writer } from "protobufjs/minimal";
+import * as Long from "long";
 import { Params } from "../whitelist/params";
 import { Member } from "../whitelist/member";
 import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Buyer } from "../whitelist/buyer";
 
 export const protobufPackage = "zeta.whitelist";
 
@@ -32,6 +34,23 @@ export interface QueryAllMemberRequest {
 
 export interface QueryAllMemberResponse {
   member: Member[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetBuyerRequest {
+  buyerId: number;
+}
+
+export interface QueryGetBuyerResponse {
+  buyer: Buyer | undefined;
+}
+
+export interface QueryAllBuyerRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllBuyerResponse {
+  buyer: Buyer[];
   pagination: PageResponse | undefined;
 }
 
@@ -408,6 +427,276 @@ export const QueryAllMemberResponse = {
   },
 };
 
+const baseQueryGetBuyerRequest: object = { buyerId: 0 };
+
+export const QueryGetBuyerRequest = {
+  encode(
+    message: QueryGetBuyerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.buyerId !== 0) {
+      writer.uint32(8).uint64(message.buyerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetBuyerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetBuyerRequest } as QueryGetBuyerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetBuyerRequest {
+    const message = { ...baseQueryGetBuyerRequest } as QueryGetBuyerRequest;
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = Number(object.buyerId);
+    } else {
+      message.buyerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetBuyerRequest): unknown {
+    const obj: any = {};
+    message.buyerId !== undefined && (obj.buyerId = message.buyerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetBuyerRequest>): QueryGetBuyerRequest {
+    const message = { ...baseQueryGetBuyerRequest } as QueryGetBuyerRequest;
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = object.buyerId;
+    } else {
+      message.buyerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetBuyerResponse: object = {};
+
+export const QueryGetBuyerResponse = {
+  encode(
+    message: QueryGetBuyerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.buyer !== undefined) {
+      Buyer.encode(message.buyer, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetBuyerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetBuyerResponse } as QueryGetBuyerResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyer = Buyer.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetBuyerResponse {
+    const message = { ...baseQueryGetBuyerResponse } as QueryGetBuyerResponse;
+    if (object.buyer !== undefined && object.buyer !== null) {
+      message.buyer = Buyer.fromJSON(object.buyer);
+    } else {
+      message.buyer = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetBuyerResponse): unknown {
+    const obj: any = {};
+    message.buyer !== undefined &&
+      (obj.buyer = message.buyer ? Buyer.toJSON(message.buyer) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetBuyerResponse>
+  ): QueryGetBuyerResponse {
+    const message = { ...baseQueryGetBuyerResponse } as QueryGetBuyerResponse;
+    if (object.buyer !== undefined && object.buyer !== null) {
+      message.buyer = Buyer.fromPartial(object.buyer);
+    } else {
+      message.buyer = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllBuyerRequest: object = {};
+
+export const QueryAllBuyerRequest = {
+  encode(
+    message: QueryAllBuyerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllBuyerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllBuyerRequest } as QueryAllBuyerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllBuyerRequest {
+    const message = { ...baseQueryAllBuyerRequest } as QueryAllBuyerRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllBuyerRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllBuyerRequest>): QueryAllBuyerRequest {
+    const message = { ...baseQueryAllBuyerRequest } as QueryAllBuyerRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllBuyerResponse: object = {};
+
+export const QueryAllBuyerResponse = {
+  encode(
+    message: QueryAllBuyerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.buyer) {
+      Buyer.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllBuyerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllBuyerResponse } as QueryAllBuyerResponse;
+    message.buyer = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyer.push(Buyer.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllBuyerResponse {
+    const message = { ...baseQueryAllBuyerResponse } as QueryAllBuyerResponse;
+    message.buyer = [];
+    if (object.buyer !== undefined && object.buyer !== null) {
+      for (const e of object.buyer) {
+        message.buyer.push(Buyer.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllBuyerResponse): unknown {
+    const obj: any = {};
+    if (message.buyer) {
+      obj.buyer = message.buyer.map((e) => (e ? Buyer.toJSON(e) : undefined));
+    } else {
+      obj.buyer = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllBuyerResponse>
+  ): QueryAllBuyerResponse {
+    const message = { ...baseQueryAllBuyerResponse } as QueryAllBuyerResponse;
+    message.buyer = [];
+    if (object.buyer !== undefined && object.buyer !== null) {
+      for (const e of object.buyer) {
+        message.buyer.push(Buyer.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -416,6 +705,10 @@ export interface Query {
   Member(request: QueryGetMemberRequest): Promise<QueryGetMemberResponse>;
   /** Queries a list of Member items. */
   MemberAll(request: QueryAllMemberRequest): Promise<QueryAllMemberResponse>;
+  /** Queries a Buyer by index. */
+  Buyer(request: QueryGetBuyerRequest): Promise<QueryGetBuyerResponse>;
+  /** Queries a list of Buyer items. */
+  BuyerAll(request: QueryAllBuyerRequest): Promise<QueryAllBuyerResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -444,6 +737,22 @@ export class QueryClientImpl implements Query {
       QueryAllMemberResponse.decode(new Reader(data))
     );
   }
+
+  Buyer(request: QueryGetBuyerRequest): Promise<QueryGetBuyerResponse> {
+    const data = QueryGetBuyerRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "Buyer", data);
+    return promise.then((data) =>
+      QueryGetBuyerResponse.decode(new Reader(data))
+    );
+  }
+
+  BuyerAll(request: QueryAllBuyerRequest): Promise<QueryAllBuyerResponse> {
+    const data = QueryAllBuyerRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "BuyerAll", data);
+    return promise.then((data) =>
+      QueryAllBuyerResponse.decode(new Reader(data))
+    );
+  }
 }
 
 interface Rpc {
@@ -453,6 +762,16 @@ interface Rpc {
     data: Uint8Array
   ): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -464,3 +783,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}
