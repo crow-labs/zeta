@@ -130,7 +130,7 @@ func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error 
 	return nil
 }
 
-func (k Keeper) GetOrdersWithItemId(ctx sdk.Context, seller types.Seller, itemId uint64) ([]uint64, error) {
+func (k Keeper) GetSellOrdersWithItemId(ctx sdk.Context, seller types.Seller, itemId uint64) ([]uint64, error) {
 	if len(seller.ActiveOrder) == 0 {
 		return nil, nil
 	}
@@ -152,10 +152,12 @@ func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) e
 	}
 
 	// TODO: change to orders, err := ... once orders have been added
-	_, err := k.GetOrdersWithItemId(ctx, seller, itemId)
+	_, err := k.GetSellOrdersWithItemId(ctx, seller, itemId)
 	if err != nil {
 		return err
 	}
+	// TODO: check if returned orders contain are in escrow - if so error
+	// or - should GetSellOrdersWithItemId only return sell orders that are not in escrow?
 
 	items := make([]uint64, 0, len(seller.ActiveItem)-1)
 
