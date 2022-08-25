@@ -1,0 +1,14 @@
+syntax = "proto3";
+package zeta.market;
+
+option go_package = "zeta/x/market/types";
+
+message Item {
+  uint64 itemId = 1; 
+  string title = 2; 
+  string description = 3; 
+  string externalLink = 4; 
+  uint64 sellerId = 5; 
+  
+}
+

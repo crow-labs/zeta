@@ -1,0 +1,18 @@
+syntax = "proto3";
+package zeta.market;
+
+import "gogoproto/gogo.proto";
+import "market/params.proto";
+import "market/item.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "zeta/x/market/types";
+
+// GenesisState defines the market module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  string port_id = 2;
+  repeated Item itemList = 3 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+  uint64 nextItemId = 4;
+}

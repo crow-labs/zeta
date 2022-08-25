@@ -98,3 +98,12 @@ func (k Keeper) getNextBuyerIdAndIncrement(ctx sdk.Context) uint64 {
 	k.SetNextBuyerId(ctx, nextBuyerId+1)
 	return nextBuyerId
 }
+
+func (k Keeper) GetBuyerAddrFromId(ctx sdk.Context, buyerId uint64) (string, error) {
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return "", types.ErrBuyerNotFound
+	}
+
+	return buyer.Address, nil
+}
