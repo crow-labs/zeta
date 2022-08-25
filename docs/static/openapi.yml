@@ -52836,6 +52836,8 @@ definitions:
       itemId:
         type: string
         format: uint64
+  zeta.market.MsgRemoveItemResponse:
+    type: object
   zeta.market.Params:
     type: object
     description: Params defines the parameters for the module.

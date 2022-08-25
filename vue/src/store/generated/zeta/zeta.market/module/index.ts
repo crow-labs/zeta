@@ -5,10 +5,12 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgPrepareItem } from "./types/market/tx";
+import { MsgRemoveItem } from "./types/market/tx";
 
 
 const types = [
   ["/zeta.market.MsgPrepareItem", MsgPrepareItem],
+  ["/zeta.market.MsgRemoveItem", MsgRemoveItem],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -42,6 +44,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgPrepareItem: (data: MsgPrepareItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgPrepareItem", value: MsgPrepareItem.fromPartial( data ) }),
+    msgRemoveItem: (data: MsgRemoveItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgRemoveItem", value: MsgRemoveItem.fromPartial( data ) }),
     
   };
 };

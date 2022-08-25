@@ -12,4 +12,5 @@ var (
 	ErrInvalidPacketTimeout   = sdkerrors.Register(ModuleName, 2002, "invalid packet timeout")
 	ErrInvalidVersion         = sdkerrors.Register(ModuleName, 2003, "invalid version")
 	ErrInvalidSellerIdForAddr = sdkerrors.Register(ModuleName, 2004, "Seller Id not registered to msg creator")
+	ErrItemNotFound           = sdkerrors.Register(ModuleName, 2005, "Item with itemId: %s not found")
 )

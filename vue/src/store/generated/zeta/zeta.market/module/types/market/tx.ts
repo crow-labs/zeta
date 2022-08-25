@@ -16,6 +16,14 @@ export interface MsgPrepareItemResponse {
   itemId: number;
 }
 
+export interface MsgRemoveItem {
+  creator: string;
+  itemId: number;
+  sellerId: number;
+}
+
+export interface MsgRemoveItemResponse {}
+
 const baseMsgPrepareItem: object = {
   creator: "",
   title: "",
@@ -206,10 +214,138 @@ export const MsgPrepareItemResponse = {
   },
 };
 
+const baseMsgRemoveItem: object = { creator: "", itemId: 0, sellerId: 0 };
+
+export const MsgRemoveItem = {
+  encode(message: MsgRemoveItem, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.itemId !== 0) {
+      writer.uint32(16).uint64(message.itemId);
+    }
+    if (message.sellerId !== 0) {
+      writer.uint32(24).uint64(message.sellerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveItem {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.itemId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRemoveItem {
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = Number(object.itemId);
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRemoveItem): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRemoveItem>): MsgRemoveItem {
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = object.itemId;
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgRemoveItemResponse: object = {};
+
+export const MsgRemoveItemResponse = {
+  encode(_: MsgRemoveItemResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveItemResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRemoveItemResponse {
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    return message;
+  },
+
+  toJSON(_: MsgRemoveItemResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgRemoveItemResponse>): MsgRemoveItemResponse {
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   PrepareItem(request: MsgPrepareItem): Promise<MsgPrepareItemResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RemoveItem(request: MsgRemoveItem): Promise<MsgRemoveItemResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -222,6 +358,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.market.Msg", "PrepareItem", data);
     return promise.then((data) =>
       MsgPrepareItemResponse.decode(new Reader(data))
+    );
+  }
+
+  RemoveItem(request: MsgRemoveItem): Promise<MsgRemoveItemResponse> {
+    const data = MsgRemoveItem.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Msg", "RemoveItem", data);
+    return promise.then((data) =>
+      MsgRemoveItemResponse.decode(new Reader(data))
     );
   }
 }

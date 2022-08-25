@@ -14,9 +14,7 @@ func (k Keeper) validatePrepareItem(ctx sdk.Context, msg types.MsgPrepareItem) e
 	sellerAddr, err := k.whitelistKeeper.GetSellerAddrFromId(ctx, msg.SellerId)
 	if err != nil {
 		return err
-	}
-
-	if sellerAddr != msg.Creator {
+	} else if sellerAddr != msg.Creator {
 		return types.ErrInvalidSellerIdForAddr
 	}
 
@@ -52,4 +50,35 @@ func (k Keeper) CreateItem(ctx sdk.Context, msg types.MsgPrepareItem) (uint64, e
 	k.SetItem(ctx, item)
 
 	return itemId, nil
+}
+
+func (k Keeper) validateRemoveItem(ctx sdk.Context, msg types.MsgRemoveItem) error {
+	item, found := k.GetItem(ctx, msg.ItemId)
+	if !found {
+		return types.ErrItemNotFound
+	}
+
+	if addr, err := k.whitelistKeeper.GetSellerAddrFromId(ctx, item.SellerId); err != nil {
+		return err
+	} else if addr != msg.Creator {
+		return types.ErrInvalidSellerIdForAddr
+	}
+
+	return nil
+}
+
+func (k Keeper) DeleteItem(ctx sdk.Context, msg types.MsgRemoveItem) error {
+	err := k.validateRemoveItem(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	err = k.whitelistKeeper.RemoveItemFromSeller(ctx, msg.SellerId, msg.ItemId)
+	if err != nil {
+		return err
+	}
+
+	k.RemoveItem(ctx, msg.ItemId)
+
+	return nil
 }

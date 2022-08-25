@@ -129,3 +129,27 @@ func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error 
 
 	return nil
 }
+
+func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	if len(seller.ActiveItem) == 0 {
+		return types.ErrItemNotFound
+	}
+
+	items := make([]uint64, 0, len(seller.ActiveItem)-1)
+
+	for i := 0; i < len(seller.ActiveItem); i++ {
+		if seller.ActiveItem[i] != itemId {
+			items = append(items, seller.ActiveItem[i])
+		}
+	}
+
+	seller.ActiveItem = items
+
+	k.SetSeller(ctx, seller)
+	return nil
+}
