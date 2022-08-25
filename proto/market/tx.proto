@@ -7,7 +7,20 @@ option go_package = "zeta/x/market/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc PrepareItem(MsgPrepareItem) returns (MsgPrepareItemResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgPrepareItem {
+  string creator = 1;
+  string title = 2;
+  string desciption = 3;
+  string externalLink = 4;
+  uint64 sellerId = 5;
+}
+
+message MsgPrepareItemResponse {
+  uint64 itemId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

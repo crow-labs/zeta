@@ -1,7 +1,8 @@
 /* eslint-disable */
+import * as Long from "long";
+import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../market/params";
 import { Item } from "../market/item";
-import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "zeta.market";
 
@@ -9,11 +10,12 @@ export const protobufPackage = "zeta.market";
 export interface GenesisState {
   params: Params | undefined;
   port_id: string;
-  /** this line is used by starport scaffolding # genesis/proto/state */
   itemList: Item[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  nextItemId: number;
 }
 
-const baseGenesisState: object = { port_id: "" };
+const baseGenesisState: object = { port_id: "", nextItemId: 0 };
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -25,6 +27,9 @@ export const GenesisState = {
     }
     for (const v of message.itemList) {
       Item.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.nextItemId !== 0) {
+      writer.uint32(32).uint64(message.nextItemId);
     }
     return writer;
   },
@@ -45,6 +50,9 @@ export const GenesisState = {
           break;
         case 3:
           message.itemList.push(Item.decode(reader, reader.uint32()));
+          break;
+        case 4:
+          message.nextItemId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -72,6 +80,11 @@ export const GenesisState = {
         message.itemList.push(Item.fromJSON(e));
       }
     }
+    if (object.nextItemId !== undefined && object.nextItemId !== null) {
+      message.nextItemId = Number(object.nextItemId);
+    } else {
+      message.nextItemId = 0;
+    }
     return message;
   },
 
@@ -87,6 +100,7 @@ export const GenesisState = {
     } else {
       obj.itemList = [];
     }
+    message.nextItemId !== undefined && (obj.nextItemId = message.nextItemId);
     return obj;
   },
 
@@ -108,9 +122,24 @@ export const GenesisState = {
         message.itemList.push(Item.fromPartial(e));
       }
     }
+    if (object.nextItemId !== undefined && object.nextItemId !== null) {
+      message.nextItemId = object.nextItemId;
+    } else {
+      message.nextItemId = 0;
+    }
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export type DeepPartial<T> = T extends Builtin
@@ -122,3 +151,15 @@ export type DeepPartial<T> = T extends Builtin
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+if (util.Long !== Long) {
+  util.Long = Long as any;
+  configure();
+}

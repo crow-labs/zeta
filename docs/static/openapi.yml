@@ -52830,6 +52830,12 @@ definitions:
       sellerId:
         type: string
         format: uint64
+  zeta.market.MsgPrepareItemResponse:
+    type: object
+    properties:
+      itemId:
+        type: string
+        format: uint64
   zeta.market.Params:
     type: object
     description: Params defines the parameters for the module.
