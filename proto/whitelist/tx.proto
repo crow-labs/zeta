@@ -9,6 +9,7 @@ option go_package = "zeta/x/whitelist/types";
 service Msg {
       rpc MembershipApplication(MsgMembershipApplication) returns (MsgMembershipApplicationResponse);
   rpc BuyerApplication(MsgBuyerApplication) returns (MsgBuyerApplicationResponse);
+  rpc SellerApplication(MsgSellerApplication) returns (MsgSellerApplicationResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -28,6 +29,16 @@ message MsgBuyerApplication {
 
 message MsgBuyerApplicationResponse {
   uint64 buyerId = 1;
+}
+
+message MsgSellerApplication {
+  string creator = 1;
+  string contactInfo = 2;
+  string name = 3;
+}
+
+message MsgSellerApplicationResponse {
+  uint64 sellerId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

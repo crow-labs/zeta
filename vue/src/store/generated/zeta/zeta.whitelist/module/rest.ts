@@ -117,6 +117,11 @@ export interface WhitelistMsgMembershipApplicationResponse {
   joined?: boolean;
 }
 
+export interface WhitelistMsgSellerApplicationResponse {
+  /** @format uint64 */
+  sellerId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
