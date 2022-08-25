@@ -9,6 +9,7 @@ import {
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Buyer } from "../whitelist/buyer";
 import { Seller } from "../whitelist/seller";
+import { Voter } from "../whitelist/voter";
 
 export const protobufPackage = "zeta.whitelist";
 
@@ -69,6 +70,23 @@ export interface QueryAllSellerRequest {
 
 export interface QueryAllSellerResponse {
   seller: Seller[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetVoterRequest {
+  voterId: number;
+}
+
+export interface QueryGetVoterResponse {
+  voter: Voter | undefined;
+}
+
+export interface QueryAllVoterRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllVoterResponse {
+  voter: Voter[];
   pagination: PageResponse | undefined;
 }
 
@@ -991,6 +1009,276 @@ export const QueryAllSellerResponse = {
   },
 };
 
+const baseQueryGetVoterRequest: object = { voterId: 0 };
+
+export const QueryGetVoterRequest = {
+  encode(
+    message: QueryGetVoterRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.voterId !== 0) {
+      writer.uint32(8).uint64(message.voterId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVoterRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetVoterRequest } as QueryGetVoterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.voterId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVoterRequest {
+    const message = { ...baseQueryGetVoterRequest } as QueryGetVoterRequest;
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = Number(object.voterId);
+    } else {
+      message.voterId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVoterRequest): unknown {
+    const obj: any = {};
+    message.voterId !== undefined && (obj.voterId = message.voterId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetVoterRequest>): QueryGetVoterRequest {
+    const message = { ...baseQueryGetVoterRequest } as QueryGetVoterRequest;
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = object.voterId;
+    } else {
+      message.voterId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetVoterResponse: object = {};
+
+export const QueryGetVoterResponse = {
+  encode(
+    message: QueryGetVoterResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.voter !== undefined) {
+      Voter.encode(message.voter, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetVoterResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetVoterResponse } as QueryGetVoterResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.voter = Voter.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetVoterResponse {
+    const message = { ...baseQueryGetVoterResponse } as QueryGetVoterResponse;
+    if (object.voter !== undefined && object.voter !== null) {
+      message.voter = Voter.fromJSON(object.voter);
+    } else {
+      message.voter = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetVoterResponse): unknown {
+    const obj: any = {};
+    message.voter !== undefined &&
+      (obj.voter = message.voter ? Voter.toJSON(message.voter) : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetVoterResponse>
+  ): QueryGetVoterResponse {
+    const message = { ...baseQueryGetVoterResponse } as QueryGetVoterResponse;
+    if (object.voter !== undefined && object.voter !== null) {
+      message.voter = Voter.fromPartial(object.voter);
+    } else {
+      message.voter = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVoterRequest: object = {};
+
+export const QueryAllVoterRequest = {
+  encode(
+    message: QueryAllVoterRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVoterRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllVoterRequest } as QueryAllVoterRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVoterRequest {
+    const message = { ...baseQueryAllVoterRequest } as QueryAllVoterRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVoterRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllVoterRequest>): QueryAllVoterRequest {
+    const message = { ...baseQueryAllVoterRequest } as QueryAllVoterRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllVoterResponse: object = {};
+
+export const QueryAllVoterResponse = {
+  encode(
+    message: QueryAllVoterResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.voter) {
+      Voter.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllVoterResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllVoterResponse } as QueryAllVoterResponse;
+    message.voter = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.voter.push(Voter.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllVoterResponse {
+    const message = { ...baseQueryAllVoterResponse } as QueryAllVoterResponse;
+    message.voter = [];
+    if (object.voter !== undefined && object.voter !== null) {
+      for (const e of object.voter) {
+        message.voter.push(Voter.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllVoterResponse): unknown {
+    const obj: any = {};
+    if (message.voter) {
+      obj.voter = message.voter.map((e) => (e ? Voter.toJSON(e) : undefined));
+    } else {
+      obj.voter = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllVoterResponse>
+  ): QueryAllVoterResponse {
+    const message = { ...baseQueryAllVoterResponse } as QueryAllVoterResponse;
+    message.voter = [];
+    if (object.voter !== undefined && object.voter !== null) {
+      for (const e of object.voter) {
+        message.voter.push(Voter.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -1007,6 +1295,10 @@ export interface Query {
   Seller(request: QueryGetSellerRequest): Promise<QueryGetSellerResponse>;
   /** Queries a list of Seller items. */
   SellerAll(request: QueryAllSellerRequest): Promise<QueryAllSellerResponse>;
+  /** Queries a Voter by index. */
+  Voter(request: QueryGetVoterRequest): Promise<QueryGetVoterResponse>;
+  /** Queries a list of Voter items. */
+  VoterAll(request: QueryAllVoterRequest): Promise<QueryAllVoterResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1065,6 +1357,22 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("zeta.whitelist.Query", "SellerAll", data);
     return promise.then((data) =>
       QueryAllSellerResponse.decode(new Reader(data))
+    );
+  }
+
+  Voter(request: QueryGetVoterRequest): Promise<QueryGetVoterResponse> {
+    const data = QueryGetVoterRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "Voter", data);
+    return promise.then((data) =>
+      QueryGetVoterResponse.decode(new Reader(data))
+    );
+  }
+
+  VoterAll(request: QueryAllVoterRequest): Promise<QueryAllVoterResponse> {
+    const data = QueryAllVoterRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.whitelist.Query", "VoterAll", data);
+    return promise.then((data) =>
+      QueryAllVoterResponse.decode(new Reader(data))
     );
   }
 }

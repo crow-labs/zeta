@@ -38,6 +38,14 @@ func TestGenesis(t *testing.T) {
 				SellerId: 1,
 			},
 		},
+		VoterList: []types.Voter{
+			{
+				VoterId: 0,
+			},
+			{
+				VoterId: 1,
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -52,5 +60,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.MemberList, got.MemberList)
 	require.ElementsMatch(t, genesisState.BuyerList, got.BuyerList)
 	require.ElementsMatch(t, genesisState.SellerList, got.SellerList)
+	require.ElementsMatch(t, genesisState.VoterList, got.VoterList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

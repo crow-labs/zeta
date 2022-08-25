@@ -6,6 +6,7 @@ import "whitelist/params.proto";
 import "whitelist/member.proto";
 import "whitelist/buyer.proto";
 import "whitelist/seller.proto";
+import "whitelist/voter.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "zeta/x/whitelist/types";
@@ -16,6 +17,7 @@ message GenesisState {
   repeated Member memberList = 2 [(gogoproto.nullable) = false];
   repeated Buyer buyerList = 3 [(gogoproto.nullable) = false];
   repeated Seller sellerList = 7 [(gogoproto.nullable) = false];
+  repeated Voter voterList = 8 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
   uint64 nextBuyerId = 4;
   uint64 nextSellerId = 5;

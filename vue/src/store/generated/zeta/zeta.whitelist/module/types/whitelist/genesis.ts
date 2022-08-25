@@ -5,6 +5,7 @@ import { Params } from "../whitelist/params";
 import { Member } from "../whitelist/member";
 import { Buyer } from "../whitelist/buyer";
 import { Seller } from "../whitelist/seller";
+import { Voter } from "../whitelist/voter";
 
 export const protobufPackage = "zeta.whitelist";
 
@@ -14,6 +15,7 @@ export interface GenesisState {
   memberList: Member[];
   buyerList: Buyer[];
   sellerList: Seller[];
+  voterList: Voter[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextBuyerId: number;
   nextSellerId: number;
@@ -40,6 +42,9 @@ export const GenesisState = {
     for (const v of message.sellerList) {
       Seller.encode(v!, writer.uint32(58).fork()).ldelim();
     }
+    for (const v of message.voterList) {
+      Voter.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     if (message.nextBuyerId !== 0) {
       writer.uint32(32).uint64(message.nextBuyerId);
     }
@@ -59,6 +64,7 @@ export const GenesisState = {
     message.memberList = [];
     message.buyerList = [];
     message.sellerList = [];
+    message.voterList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -73,6 +79,9 @@ export const GenesisState = {
           break;
         case 7:
           message.sellerList.push(Seller.decode(reader, reader.uint32()));
+          break;
+        case 8:
+          message.voterList.push(Voter.decode(reader, reader.uint32()));
           break;
         case 4:
           message.nextBuyerId = longToNumber(reader.uint64() as Long);
@@ -96,6 +105,7 @@ export const GenesisState = {
     message.memberList = [];
     message.buyerList = [];
     message.sellerList = [];
+    message.voterList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -114,6 +124,11 @@ export const GenesisState = {
     if (object.sellerList !== undefined && object.sellerList !== null) {
       for (const e of object.sellerList) {
         message.sellerList.push(Seller.fromJSON(e));
+      }
+    }
+    if (object.voterList !== undefined && object.voterList !== null) {
+      for (const e of object.voterList) {
+        message.voterList.push(Voter.fromJSON(e));
       }
     }
     if (object.nextBuyerId !== undefined && object.nextBuyerId !== null) {
@@ -159,6 +174,13 @@ export const GenesisState = {
     } else {
       obj.sellerList = [];
     }
+    if (message.voterList) {
+      obj.voterList = message.voterList.map((e) =>
+        e ? Voter.toJSON(e) : undefined
+      );
+    } else {
+      obj.voterList = [];
+    }
     message.nextBuyerId !== undefined &&
       (obj.nextBuyerId = message.nextBuyerId);
     message.nextSellerId !== undefined &&
@@ -173,6 +195,7 @@ export const GenesisState = {
     message.memberList = [];
     message.buyerList = [];
     message.sellerList = [];
+    message.voterList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -191,6 +214,11 @@ export const GenesisState = {
     if (object.sellerList !== undefined && object.sellerList !== null) {
       for (const e of object.sellerList) {
         message.sellerList.push(Seller.fromPartial(e));
+      }
+    }
+    if (object.voterList !== undefined && object.voterList !== null) {
+      for (const e of object.voterList) {
+        message.voterList.push(Voter.fromPartial(e));
       }
     }
     if (object.nextBuyerId !== undefined && object.nextBuyerId !== null) {

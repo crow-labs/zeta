@@ -4,9 +4,10 @@ import { Buyer } from "./module/types/whitelist/buyer"
 import { Member } from "./module/types/whitelist/member"
 import { Params } from "./module/types/whitelist/params"
 import { Seller } from "./module/types/whitelist/seller"
+import { Voter } from "./module/types/whitelist/voter"
 
 
-export { Buyer, Member, Params, Seller };
+export { Buyer, Member, Params, Seller, Voter };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -51,12 +52,15 @@ const getDefaultState = () => {
 				BuyerAll: {},
 				Seller: {},
 				SellerAll: {},
+				Voter: {},
+				VoterAll: {},
 				
 				_Structure: {
 						Buyer: getStructure(Buyer.fromPartial({})),
 						Member: getStructure(Member.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						Seller: getStructure(Seller.fromPartial({})),
+						Voter: getStructure(Voter.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -126,6 +130,18 @@ export default {
 						(<any> params).query=null
 					}
 			return state.SellerAll[JSON.stringify(params)] ?? {}
+		},
+				getVoter: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Voter[JSON.stringify(params)] ?? {}
+		},
+				getVoterAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.VoterAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -327,21 +343,54 @@ export default {
 		},
 		
 		
-		async sendMsgMembershipApplication({ rootGetters }, { value, fee = [], memo = '' }) {
+		
+		
+		 		
+		
+		
+		async QueryVoter({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
 			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgMembershipApplication(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryVoter( key.voterId)).data
+				
+					
+				commit('QUERY', { query: 'Voter', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryVoter', payload: { options: { all }, params: {...key},query }})
+				return getters['getVoter']( { params: {...key}, query}) ?? {}
 			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgMembershipApplication:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgMembershipApplication:Send Could not broadcast Tx: '+ e.message)
-				}
+				throw new Error('QueryClient:QueryVoter API Node Unavailable. Could not perform query: ' + e.message)
+				
 			}
 		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryVoterAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryVoterAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryVoterAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'VoterAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryVoterAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getVoterAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryVoterAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgSellerApplication({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -354,6 +403,21 @@ export default {
 					throw new Error('TxClient:MsgSellerApplication:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgSellerApplication:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgMembershipApplication({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgMembershipApplication(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgMembershipApplication:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgMembershipApplication:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -373,19 +437,6 @@ export default {
 			}
 		},
 		
-		async MsgMembershipApplication({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgMembershipApplication(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgMembershipApplication:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgMembershipApplication:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgSellerApplication({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -396,6 +447,19 @@ export default {
 					throw new Error('TxClient:MsgSellerApplication:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgSellerApplication:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgMembershipApplication({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgMembershipApplication(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgMembershipApplication:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgMembershipApplication:Create Could not create message: ' + e.message)
 				}
 			}
 		},
