@@ -1,9 +1,14 @@
 package keeper
 
 import (
+	"fmt"
+
+	gogotypes "github.com/gogo/protobuf/types"
+
+	"zeta/x/whitelist/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"zeta/x/whitelist/types"
 )
 
 // SetVoter set a specific voter in the store from its index
@@ -60,4 +65,37 @@ func (k Keeper) GetAllVoter(ctx sdk.Context) (list []types.Voter) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextVoterId(ctx sdk.Context, voterId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: voterId})
+	store.Set(types.KeyNextGlobalVoterId, bz)
+}
+
+func (k Keeper) GetNextVoterId(ctx sdk.Context) uint64 {
+	var nextVoterId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalVoterId)
+	if bz == nil {
+		panic(fmt.Errorf("voter has not been initialized -- should be done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		nextVoterId = val.GetValue()
+	}
+
+	return nextVoterId
+}
+
+func (k Keeper) getNextVoterIdAndIncrement(ctx sdk.Context) uint64 {
+	nextVoterId := k.GetNextVoterId(ctx)
+	k.SetNextVoterId(ctx, nextVoterId+1)
+	return nextVoterId
 }

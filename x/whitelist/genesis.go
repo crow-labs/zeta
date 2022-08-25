@@ -30,6 +30,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 	k.SetNextBuyerId(ctx, genState.NextBuyerId)
 	k.SetNextSellerId(ctx, genState.NextSellerId)
+	k.SetNextVoterId(ctx, genState.NextVoterId)
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -44,6 +45,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	// this line is used by starport scaffolding # genesis/module/export
 	genesis.NextBuyerId = k.GetNextBuyerId(ctx)
 	genesis.NextSellerId = k.GetNextSellerId(ctx)
+	genesis.NextVoterId = k.GetNextVoterId(ctx)
 
 	return genesis
 }
