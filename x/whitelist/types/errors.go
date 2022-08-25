@@ -13,5 +13,5 @@ var (
 	ErrAlreadyBuyer   = sdkerrors.Register(ModuleName, 3, "buyerId: %s already exists for member")
 	ErrAlreadySeller  = sdkerrors.Register(ModuleName, 4, "sellerId: %s already exists for member")
 	ErrAlreadyVoter   = sdkerrors.Register(ModuleName, 5, "voterId: %s already exists for member")
-	ErrSample         = sdkerrors.Register(ModuleName, 1100, "sample error")
+	ErrSellerNotFound = sdkerrors.Register(ModuleName, 6, "No seller found for sellerId: %s")
 )
