@@ -1,9 +1,13 @@
 package keeper
 
 import (
+	"fmt"
+	"zeta/x/market/types"
+
+	gogotypes "github.com/gogo/protobuf/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"zeta/x/market/types"
 )
 
 // SetItem set a specific item in the store from its index
@@ -60,4 +64,37 @@ func (k Keeper) GetAllItem(ctx sdk.Context) (list []types.Item) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextItemId(ctx sdk.Context, itemId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: itemId})
+	store.Set(types.KeyNextGlobalItemId, bz)
+}
+
+func (k Keeper) GetNextItemId(ctx sdk.Context) uint64 {
+	var nextItemId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalItemId)
+	if bz == nil {
+		panic(fmt.Errorf("item has not been initialized -- should have been done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		nextItemId = val.GetValue()
+	}
+
+	return nextItemId
+}
+
+func (k Keeper) getNextItemIdAndIncrement(ctx sdk.Context) uint64 {
+	nextItemId := k.GetNextItemId(ctx)
+	k.SetNextItemId(ctx, nextItemId+1)
+	return nextItemId
 }

@@ -16,3 +16,8 @@ type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 }
+
+type WhitelistKeeper interface {
+	GetBuyerAddrFromId(ctx sdk.Context, buyerId uint64) (string, error)
+	GetSellerAddrFromId(ctx sdk.Context, sellerId uint64) (string, error)
+}
