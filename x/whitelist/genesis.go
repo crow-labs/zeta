@@ -32,6 +32,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.MemberList = k.GetAllMember(ctx)
 	genesis.BuyerList = k.GetAllBuyer(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
+	genesis.NextBuyerId = k.GetNextBuyerId(ctx)
 
 	return genesis
 }

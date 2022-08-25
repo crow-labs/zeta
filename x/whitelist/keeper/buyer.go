@@ -69,7 +69,7 @@ func (k Keeper) GetAllBuyer(ctx sdk.Context) (list []types.Buyer) {
 func (k Keeper) SetNextBuyerId(ctx sdk.Context, buyerId uint64) {
 	store := ctx.KVStore(k.storeKey)
 	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: buyerId})
-	store.Set(types.BuyerKey(buyerId), bz)
+	store.Set(types.KeyNextGlobalBuyerId, bz)
 }
 
 func (k Keeper) GetNextBuyerId(ctx sdk.Context) uint64 {
