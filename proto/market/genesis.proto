@@ -3,6 +3,7 @@ package zeta.market;
 
 import "gogoproto/gogo.proto";
 import "market/params.proto";
+import "market/item.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "zeta/x/market/types";
@@ -11,5 +12,6 @@ option go_package = "zeta/x/market/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   string port_id = 2;
+  repeated Item itemList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

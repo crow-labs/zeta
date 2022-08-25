@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "market/params.proto";
+import "market/item.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "zeta/x/market/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/zeta/market/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Item by index.
+	rpc Item(QueryGetItemRequest) returns (QueryGetItemResponse) {
+		option (google.api.http).get = "/zeta/market/item/{itemId}";
+	}
+
+	// Queries a list of Item items.
+	rpc ItemAll(QueryAllItemRequest) returns (QueryAllItemResponse) {
+		option (google.api.http).get = "/zeta/market/item";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetItemRequest {
+	  uint64 itemId = 1;
+
+}
+
+message QueryGetItemResponse {
+	Item item = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllItemRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllItemResponse {
+	repeated Item item = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
