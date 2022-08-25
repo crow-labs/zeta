@@ -9,6 +9,10 @@ const (
 	BuyerKeyPrefix = "Buyer/value/"
 )
 
+var (
+	KeyNextGlobalBuyerId = []byte{0x01}
+)
+
 // BuyerKey returns the store key to retrieve a Buyer from the index fields
 func BuyerKey(
 	buyerId uint64,

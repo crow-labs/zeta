@@ -15,4 +15,5 @@ message GenesisState {
   repeated Member memberList = 2 [(gogoproto.nullable) = false];
   repeated Buyer buyerList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
+  uint64 nextBuyerId = 4;
 }
