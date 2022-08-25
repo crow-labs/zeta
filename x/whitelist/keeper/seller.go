@@ -108,3 +108,24 @@ func (k Keeper) GetSellerAddrFromId(ctx sdk.Context, sellerId uint64) (string, e
 
 	return seller.Address, nil
 }
+
+func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	numItems := len(seller.ActiveItem)
+	items := make([]uint64, 0, numItems+1)
+
+	for i := 0; i < numItems; i++ {
+		items = append(items, seller.ActiveItem[i])
+	}
+	items = append(items, itemId)
+
+	seller.ActiveItem = items
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}

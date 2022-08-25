@@ -3,15 +3,18 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"zeta/x/market/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) PrepareItem(goCtx context.Context, msg *types.MsgPrepareItem) (*types.MsgPrepareItemResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	itemId, err := k.CreateItem(ctx, *msg)
+	if err != nil {
+		return &types.MsgPrepareItemResponse{ItemId: 0}, err
+	}
 
-	return &types.MsgPrepareItemResponse{}, nil
+	return &types.MsgPrepareItemResponse{ItemId: itemId}, nil
 }

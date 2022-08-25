@@ -5,11 +5,12 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
+	"zeta/x/market/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 	"github.com/ignite/cli/ignite/pkg/cosmosibckeeper"
-	"zeta/x/market/types"
 )
 
 type (
@@ -20,8 +21,9 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper    types.BankKeeper
-		accountKeeper types.AccountKeeper
+		bankKeeper      types.BankKeeper
+		accountKeeper   types.AccountKeeper
+		whitelistKeeper types.WhitelistKeeper
 	}
 )
 
@@ -34,6 +36,7 @@ func NewKeeper(
 	portKeeper cosmosibckeeper.PortKeeper,
 	scopedKeeper cosmosibckeeper.ScopedKeeper,
 	bankKeeper types.BankKeeper, accountKeeper types.AccountKeeper,
+	whitelistKeeper types.WhitelistKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -53,6 +56,7 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 		bankKeeper: bankKeeper, accountKeeper: accountKeeper,
+		whitelistKeeper: whitelistKeeper,
 	}
 }
 

@@ -25,12 +25,19 @@ func (k Keeper) validateSellerApplication(ctx sdk.Context, msg types.MsgSellerAp
 }
 
 func NewSeller(sellerId uint64, name, contactInfo, address string) types.Seller {
+	activeItems := make([]uint64, 0)
+	activeOrders := make([]uint64, 0)
+	completedOrders := make([]uint64, 0)
+
 	seller := &types.Seller{
-		SellerId:    sellerId,
-		Name:        name,
-		ContactInfo: contactInfo,
-		Address:     address,
-		Status:      "whitelisted",
+		SellerId:       sellerId,
+		Name:           name,
+		ContactInfo:    contactInfo,
+		Address:        address,
+		Status:         "whitelisted",
+		ActiveItem:     activeItems,
+		ActiveOrder:    activeOrders,
+		CompletedOrder: completedOrders,
 	}
 
 	return *seller

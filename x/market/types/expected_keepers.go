@@ -20,4 +20,5 @@ type BankKeeper interface {
 type WhitelistKeeper interface {
 	GetBuyerAddrFromId(ctx sdk.Context, buyerId uint64) (string, error)
 	GetSellerAddrFromId(ctx sdk.Context, sellerId uint64) (string, error)
+	AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error
 }

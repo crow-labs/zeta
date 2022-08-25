@@ -77,6 +77,7 @@ func MarketKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 		capabilityKeeper.ScopeToModule("MarketScopedKeeper"),
 		nil,
 		nil,
+		nil,
 	)
 
 	ctx := sdk.NewContext(stateStore, tmproto.Header{}, false, logger)
