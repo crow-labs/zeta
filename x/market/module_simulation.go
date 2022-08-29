@@ -40,6 +40,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgPlaceBuyOrder int = 100
 
+	opWeightMsgAcceptBuyOrder = "op_weight_msg_accept_buy_order"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAcceptBuyOrder int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -117,6 +121,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgPlaceBuyOrder,
 		marketsimulation.SimulateMsgPlaceBuyOrder(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAcceptBuyOrder int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAcceptBuyOrder, &weightMsgAcceptBuyOrder, nil,
+		func(_ *rand.Rand) {
+			weightMsgAcceptBuyOrder = defaultWeightMsgAcceptBuyOrder
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAcceptBuyOrder,
+		marketsimulation.SimulateMsgAcceptBuyOrder(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

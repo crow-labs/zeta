@@ -16,4 +16,6 @@ var (
 	ErrInvalidBuyerIdForAddr  = sdkerrors.Register(ModuleName, 2006, "Buyer Id not registered to msg creator")
 	ErrBuyerIsSeller          = sdkerrors.Register(ModuleName, 2007, "Buyer can't place an order for their own sell order")
 	ErrSellOrderNotFound      = sdkerrors.Register(ModuleName, 2008, "Sell order with sell order Id: %s not found")
+	ErrBuyOrderNotFound       = sdkerrors.Register(ModuleName, 2009, "Buy order with buy order id: %s  not found")
+	ErrNotSellerForBuyOrder   = sdkerrors.Register(ModuleName, 2010, "Can't accept a buy order unless the seller of the sell order")
 )

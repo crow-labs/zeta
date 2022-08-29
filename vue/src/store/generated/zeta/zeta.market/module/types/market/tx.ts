@@ -49,6 +49,14 @@ export interface MsgPlaceBuyOrderResponse {
   buyOrderId: number;
 }
 
+export interface MsgAcceptBuyOrder {
+  creator: string;
+  buyOrderId: number;
+  sellerId: number;
+}
+
+export interface MsgAcceptBuyOrderResponse {}
+
 const baseMsgPrepareItem: object = {
   creator: "",
   title: "",
@@ -753,13 +761,161 @@ export const MsgPlaceBuyOrderResponse = {
   },
 };
 
+const baseMsgAcceptBuyOrder: object = {
+  creator: "",
+  buyOrderId: 0,
+  sellerId: 0,
+};
+
+export const MsgAcceptBuyOrder = {
+  encode(message: MsgAcceptBuyOrder, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.buyOrderId !== 0) {
+      writer.uint32(16).uint64(message.buyOrderId);
+    }
+    if (message.sellerId !== 0) {
+      writer.uint32(24).uint64(message.sellerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAcceptBuyOrder {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAcceptBuyOrder } as MsgAcceptBuyOrder;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.buyOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAcceptBuyOrder {
+    const message = { ...baseMsgAcceptBuyOrder } as MsgAcceptBuyOrder;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = Number(object.buyOrderId);
+    } else {
+      message.buyOrderId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAcceptBuyOrder): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.buyOrderId !== undefined && (obj.buyOrderId = message.buyOrderId);
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgAcceptBuyOrder>): MsgAcceptBuyOrder {
+    const message = { ...baseMsgAcceptBuyOrder } as MsgAcceptBuyOrder;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = object.buyOrderId;
+    } else {
+      message.buyOrderId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgAcceptBuyOrderResponse: object = {};
+
+export const MsgAcceptBuyOrderResponse = {
+  encode(
+    _: MsgAcceptBuyOrderResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgAcceptBuyOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgAcceptBuyOrderResponse,
+    } as MsgAcceptBuyOrderResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgAcceptBuyOrderResponse {
+    const message = {
+      ...baseMsgAcceptBuyOrderResponse,
+    } as MsgAcceptBuyOrderResponse;
+    return message;
+  },
+
+  toJSON(_: MsgAcceptBuyOrderResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgAcceptBuyOrderResponse>
+  ): MsgAcceptBuyOrderResponse {
+    const message = {
+      ...baseMsgAcceptBuyOrderResponse,
+    } as MsgAcceptBuyOrderResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   PrepareItem(request: MsgPrepareItem): Promise<MsgPrepareItemResponse>;
   RemoveItem(request: MsgRemoveItem): Promise<MsgRemoveItemResponse>;
   ListItem(request: MsgListItem): Promise<MsgListItemResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   PlaceBuyOrder(request: MsgPlaceBuyOrder): Promise<MsgPlaceBuyOrderResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AcceptBuyOrder(
+    request: MsgAcceptBuyOrder
+  ): Promise<MsgAcceptBuyOrderResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -794,6 +950,16 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.market.Msg", "PlaceBuyOrder", data);
     return promise.then((data) =>
       MsgPlaceBuyOrderResponse.decode(new Reader(data))
+    );
+  }
+
+  AcceptBuyOrder(
+    request: MsgAcceptBuyOrder
+  ): Promise<MsgAcceptBuyOrderResponse> {
+    const data = MsgAcceptBuyOrder.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Msg", "AcceptBuyOrder", data);
+    return promise.then((data) =>
+      MsgAcceptBuyOrderResponse.decode(new Reader(data))
     );
   }
 }

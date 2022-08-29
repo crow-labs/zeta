@@ -5,16 +5,18 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgListItem } from "./types/market/tx";
-import { MsgRemoveItem } from "./types/market/tx";
 import { MsgPlaceBuyOrder } from "./types/market/tx";
 import { MsgPrepareItem } from "./types/market/tx";
+import { MsgRemoveItem } from "./types/market/tx";
+import { MsgAcceptBuyOrder } from "./types/market/tx";
 
 
 const types = [
   ["/zeta.market.MsgListItem", MsgListItem],
-  ["/zeta.market.MsgRemoveItem", MsgRemoveItem],
   ["/zeta.market.MsgPlaceBuyOrder", MsgPlaceBuyOrder],
   ["/zeta.market.MsgPrepareItem", MsgPrepareItem],
+  ["/zeta.market.MsgRemoveItem", MsgRemoveItem],
+  ["/zeta.market.MsgAcceptBuyOrder", MsgAcceptBuyOrder],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -48,9 +50,10 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgListItem: (data: MsgListItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgListItem", value: MsgListItem.fromPartial( data ) }),
-    msgRemoveItem: (data: MsgRemoveItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgRemoveItem", value: MsgRemoveItem.fromPartial( data ) }),
     msgPlaceBuyOrder: (data: MsgPlaceBuyOrder): EncodeObject => ({ typeUrl: "/zeta.market.MsgPlaceBuyOrder", value: MsgPlaceBuyOrder.fromPartial( data ) }),
     msgPrepareItem: (data: MsgPrepareItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgPrepareItem", value: MsgPrepareItem.fromPartial( data ) }),
+    msgRemoveItem: (data: MsgRemoveItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgRemoveItem", value: MsgRemoveItem.fromPartial( data ) }),
+    msgAcceptBuyOrder: (data: MsgAcceptBuyOrder): EncodeObject => ({ typeUrl: "/zeta.market.MsgAcceptBuyOrder", value: MsgAcceptBuyOrder.fromPartial( data ) }),
     
   };
 };

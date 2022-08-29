@@ -13,6 +13,7 @@ service Msg {
   rpc RemoveItem(MsgRemoveItem) returns (MsgRemoveItemResponse);
   rpc ListItem(MsgListItem) returns (MsgListItemResponse);
   rpc PlaceBuyOrder(MsgPlaceBuyOrder) returns (MsgPlaceBuyOrderResponse);
+  rpc AcceptBuyOrder(MsgAcceptBuyOrder) returns (MsgAcceptBuyOrderResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -59,6 +60,15 @@ message MsgPlaceBuyOrder {
 
 message MsgPlaceBuyOrderResponse {
   uint64 buyOrderId = 1;
+}
+
+message MsgAcceptBuyOrder {
+  string creator = 1;
+  uint64 buyOrderId = 2;
+  uint64 sellerId = 3;
+}
+
+message MsgAcceptBuyOrderResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

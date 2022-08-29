@@ -38,6 +38,7 @@ func NewBuyOrder(buyOrderId, sellOrderId, buyerId uint64, price, collateral sdk.
 		BuyOrderId:  buyOrderId,
 		SellOrderId: sellOrderId,
 		BuyerId:     buyerId,
+		CrowId:      0,
 		Price:       price,
 		Collateral:  collateral,
 	}

@@ -26,6 +26,7 @@ func NewSellOrder(sellOrderId, itemId, sellerId uint64, price, collateral sdk.Co
 		SellOrderId: sellOrderId,
 		ItemId:      itemId,
 		SellerId:    sellerId,
+		CrowId:      0,
 		Price:       price,
 		Collateral:  collateral,
 	}
@@ -50,4 +51,53 @@ func (k Keeper) CreateSellOrder(ctx sdk.Context, msg types.MsgListItem) (uint64,
 	k.SetSellOrder(ctx, sellOrder)
 
 	return sellOrderId, nil
+}
+
+func (k Keeper) validateAcceptBuyOrder(ctx sdk.Context, msg types.MsgAcceptBuyOrder) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
+	buyOrder, found := k.GetBuyOrder(ctx, msg.BuyOrderId)
+	if !found {
+		return types.ErrBuyOrderNotFound
+	}
+
+	sellOrder, found := k.GetSellOrder(ctx, buyOrder.SellOrderId)
+	if !found {
+		return types.ErrSellOrderNotFound
+	}
+
+	if sellOrder.SellerId != msg.SellerId {
+		return types.ErrNotSellerForBuyOrder
+	}
+
+	sellerAddr, err := k.whitelistKeeper.GetSellerAddrFromId(ctx, sellOrder.SellerId)
+	if err != nil {
+		return err
+	} else if sellerAddr != msg.Creator {
+		return types.ErrInvalidSellerIdForAddr
+	}
+
+	// validate seller has collateral to spend
+
+	return nil
+}
+
+func (k Keeper) AcceptBuyOrder(ctx sdk.Context, msg types.MsgAcceptBuyOrder) error {
+	if err := k.validateAcceptBuyOrder(ctx, msg); err != nil {
+		return err
+	}
+
+	// get next crow id
+
+	// create crow with crow id
+
+	// update sellOrder crowId
+
+	// update buyOrder crowId
+
+	// escrow collateral
+
+	return nil
 }
