@@ -37,6 +37,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	k.SetParams(ctx, genState.Params)
 	k.SetNextItemId(ctx, genState.NextItemId)
 	k.SetNextSellOrderId(ctx, genState.NextSellOrderId)
+	k.SetNextBuyOrderId(ctx, genState.NextBuyOrderId)
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -52,5 +53,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.NextItemId = k.GetNextItemId(ctx)
 	genesis.NextSellOrderId = k.GetNextSellOrderId(ctx)
+	genesis.NextBuyOrderId = k.GetNextBuyOrderId(ctx)
 	return genesis
 }

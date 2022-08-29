@@ -53364,6 +53364,7 @@ definitions:
     properties:
       buyOrderId:
         type: string
+        format: uint64
   zeta.market.MsgPrepareItemResponse:
     type: object
     properties:

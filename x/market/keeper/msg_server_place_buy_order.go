@@ -3,15 +3,18 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"zeta/x/market/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) PlaceBuyOrder(goCtx context.Context, msg *types.MsgPlaceBuyOrder) (*types.MsgPlaceBuyOrderResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	buyOrderId, err := k.CreateBuyOrder(ctx, *msg)
+	if err != nil {
+		return &types.MsgPlaceBuyOrderResponse{BuyOrderId: 0}, err
+	}
 
-	return &types.MsgPlaceBuyOrderResponse{}, nil
+	return &types.MsgPlaceBuyOrderResponse{BuyOrderId: buyOrderId}, nil
 }

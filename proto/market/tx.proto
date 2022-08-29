@@ -58,7 +58,7 @@ message MsgPlaceBuyOrder {
 }
 
 message MsgPlaceBuyOrderResponse {
-  string buyOrderId = 1;
+  uint64 buyOrderId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

@@ -23,4 +23,5 @@ type WhitelistKeeper interface {
 	AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error
 	RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) error
 	AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint64) error
+	AddBuyOrderToBuyer(ctx sdk.Context, buyerId, orderId uint64) error
 }

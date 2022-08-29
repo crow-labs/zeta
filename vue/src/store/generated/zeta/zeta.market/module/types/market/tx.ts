@@ -46,7 +46,7 @@ export interface MsgPlaceBuyOrder {
 }
 
 export interface MsgPlaceBuyOrderResponse {
-  buyOrderId: string;
+  buyOrderId: number;
 }
 
 const baseMsgPrepareItem: object = {
@@ -684,15 +684,15 @@ export const MsgPlaceBuyOrder = {
   },
 };
 
-const baseMsgPlaceBuyOrderResponse: object = { buyOrderId: "" };
+const baseMsgPlaceBuyOrderResponse: object = { buyOrderId: 0 };
 
 export const MsgPlaceBuyOrderResponse = {
   encode(
     message: MsgPlaceBuyOrderResponse,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.buyOrderId !== "") {
-      writer.uint32(10).string(message.buyOrderId);
+    if (message.buyOrderId !== 0) {
+      writer.uint32(8).uint64(message.buyOrderId);
     }
     return writer;
   },
@@ -710,7 +710,7 @@ export const MsgPlaceBuyOrderResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.buyOrderId = reader.string();
+          message.buyOrderId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -725,9 +725,9 @@ export const MsgPlaceBuyOrderResponse = {
       ...baseMsgPlaceBuyOrderResponse,
     } as MsgPlaceBuyOrderResponse;
     if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
-      message.buyOrderId = String(object.buyOrderId);
+      message.buyOrderId = Number(object.buyOrderId);
     } else {
-      message.buyOrderId = "";
+      message.buyOrderId = 0;
     }
     return message;
   },
@@ -747,7 +747,7 @@ export const MsgPlaceBuyOrderResponse = {
     if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
       message.buyOrderId = object.buyOrderId;
     } else {
-      message.buyOrderId = "";
+      message.buyOrderId = 0;
     }
     return message;
   },

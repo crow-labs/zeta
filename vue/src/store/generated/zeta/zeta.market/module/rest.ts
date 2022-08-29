@@ -56,6 +56,7 @@ export interface MarketMsgListItemResponse {
 }
 
 export interface MarketMsgPlaceBuyOrderResponse {
+  /** @format uint64 */
   buyOrderId?: string;
 }
 

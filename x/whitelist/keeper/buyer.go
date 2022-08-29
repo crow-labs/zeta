@@ -107,3 +107,25 @@ func (k Keeper) GetBuyerAddrFromId(ctx sdk.Context, buyerId uint64) (string, err
 
 	return buyer.Address, nil
 }
+
+func (k Keeper) AddBuyOrderToBuyer(ctx sdk.Context, buyerId, orderId uint64) error {
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return types.ErrBuyerNotFound
+	}
+
+	numOrder := len(buyer.ActiveOrder)
+	orders := make([]uint64, 0, numOrder+1)
+
+	for i := 0; i < numOrder; i++ {
+		orders = append(orders, buyer.ActiveOrder[i])
+	}
+
+	orders = append(orders, orderId)
+
+	buyer.ActiveOrder = orders
+
+	k.SetBuyer(ctx, buyer)
+
+	return nil
+}

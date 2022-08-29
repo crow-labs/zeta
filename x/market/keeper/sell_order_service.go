@@ -36,7 +36,7 @@ func NewSellOrder(sellOrderId, itemId, sellerId uint64, price, collateral sdk.Co
 func (k Keeper) CreateSellOrder(ctx sdk.Context, msg types.MsgListItem) (uint64, error) {
 	err := k.validateListItem(ctx, msg)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	sellOrderId := k.getNextSellOrderIdAndIncrement(ctx)
