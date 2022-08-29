@@ -99,6 +99,9 @@ import (
 	monitoringptypes "github.com/tendermint/spn/x/monitoringp/types"
 
 	"zeta/docs"
+	escrowmodule "zeta/x/escrow"
+	escrowmodulekeeper "zeta/x/escrow/keeper"
+	escrowmoduletypes "zeta/x/escrow/types"
 	marketmodule "zeta/x/market"
 	marketmodulekeeper "zeta/x/market/keeper"
 	marketmoduletypes "zeta/x/market/types"
@@ -161,6 +164,7 @@ var (
 		monitoringp.AppModuleBasic{},
 		whitelistmodule.AppModuleBasic{},
 		marketmodule.AppModuleBasic{},
+		escrowmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -174,6 +178,7 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		marketmoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+		escrowmoduletypes.ModuleName:   {authtypes.Minter, authtypes.Burner, authtypes.Staking},
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -237,6 +242,8 @@ type App struct {
 	WhitelistKeeper    whitelistmodulekeeper.Keeper
 	ScopedMarketKeeper capabilitykeeper.ScopedKeeper
 	MarketKeeper       marketmodulekeeper.Keeper
+
+	EscrowKeeper escrowmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -275,6 +282,7 @@ func New(
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		whitelistmoduletypes.StoreKey,
 		marketmoduletypes.StoreKey,
+		escrowmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -422,6 +430,17 @@ func New(
 	)
 	marketModule := marketmodule.NewAppModule(appCodec, app.MarketKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.EscrowKeeper = *escrowmodulekeeper.NewKeeper(
+		appCodec,
+		keys[escrowmoduletypes.StoreKey],
+		keys[escrowmoduletypes.MemStoreKey],
+		app.GetSubspace(escrowmoduletypes.ModuleName),
+
+		app.AccountKeeper,
+		app.BankKeeper,
+	)
+	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -466,6 +485,7 @@ func New(
 		monitoringModule,
 		whitelistModule,
 		marketModule,
+		escrowModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -495,6 +515,7 @@ func New(
 		monitoringptypes.ModuleName,
 		whitelistmoduletypes.ModuleName,
 		marketmoduletypes.ModuleName,
+		escrowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -520,6 +541,7 @@ func New(
 		monitoringptypes.ModuleName,
 		whitelistmoduletypes.ModuleName,
 		marketmoduletypes.ModuleName,
+		escrowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -550,6 +572,7 @@ func New(
 		monitoringptypes.ModuleName,
 		whitelistmoduletypes.ModuleName,
 		marketmoduletypes.ModuleName,
+		escrowmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -576,6 +599,7 @@ func New(
 		monitoringModule,
 		whitelistModule,
 		marketModule,
+		escrowModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -767,6 +791,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(whitelistmoduletypes.ModuleName)
 	paramsKeeper.Subspace(marketmoduletypes.ModuleName)
+	paramsKeeper.Subspace(escrowmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
