@@ -14,6 +14,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ItemList {
 		k.SetItem(ctx, elem)
 	}
+	// Set all the sellOrder
+	for _, elem := range genState.SellOrderList {
+		k.SetSellOrder(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -37,6 +41,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.PortId = k.GetPort(ctx)
 	genesis.ItemList = k.GetAllItem(ctx)
+	genesis.SellOrderList = k.GetAllSellOrder(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.NextItemId = k.GetNextItemId(ctx)

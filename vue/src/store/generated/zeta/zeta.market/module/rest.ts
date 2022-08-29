@@ -20,6 +20,11 @@ export interface MarketItem {
   sellerId?: string;
 }
 
+export interface MarketMsgListItemResponse {
+  /** @format uint64 */
+  sellOrderId?: string;
+}
+
 export interface MarketMsgPrepareItemResponse {
   /** @format uint64 */
   itemId?: string;
@@ -47,8 +52,27 @@ export interface MarketQueryAllItemResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface MarketQueryAllSellOrderResponse {
+  sellOrder?: MarketSellOrder[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface MarketQueryGetItemResponse {
   item?: MarketItem;
+}
+
+export interface MarketQueryGetSellOrderResponse {
+  sellOrder?: MarketSellOrder;
 }
 
 /**
@@ -57,6 +81,36 @@ export interface MarketQueryGetItemResponse {
 export interface MarketQueryParamsResponse {
   /** params holds all the parameters of this module. */
   params?: MarketParams;
+}
+
+export interface MarketSellOrder {
+  /** @format uint64 */
+  sellOrderId?: string;
+
+  /** @format uint64 */
+  itemId?: string;
+
+  /** @format uint64 */
+  sellerId?: string;
+
+  /** @format uint64 */
+  crowId?: string;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  price?: V1Beta1Coin;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  collateral?: V1Beta1Coin;
 }
 
 export interface ProtobufAny {
@@ -68,6 +122,17 @@ export interface RpcStatus {
   code?: number;
   message?: string;
   details?: ProtobufAny[];
+}
+
+/**
+* Coin defines a token with a denomination and an amount.
+
+NOTE: The amount field is an Int which implements the custom method
+signatures required by gogoproto.
+*/
+export interface V1Beta1Coin {
+  denom?: string;
+  amount?: string;
 }
 
 /**
@@ -374,6 +439,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<MarketQueryParamsResponse, RpcStatus>({
       path: `/zeta/market/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySellOrderAll
+   * @summary Queries a list of SellOrder items.
+   * @request GET:/zeta/market/sell_order
+   */
+  querySellOrderAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<MarketQueryAllSellOrderResponse, RpcStatus>({
+      path: `/zeta/market/sell_order`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySellOrder
+   * @summary Queries a SellOrder by index.
+   * @request GET:/zeta/market/sell_order/{sellOrderId}
+   */
+  querySellOrder = (sellOrderId: string, params: RequestParams = {}) =>
+    this.request<MarketQueryGetSellOrderResponse, RpcStatus>({
+      path: `/zeta/market/sell_order/${sellOrderId}`,
       method: "GET",
       format: "json",
       ...params,

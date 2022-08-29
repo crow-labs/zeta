@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						ItemId: 1,
 					},
 				},
+				SellOrderList: []types.SellOrder{
+					{
+						SellOrderId: 0,
+					},
+					{
+						SellOrderId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -43,6 +51,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						ItemId: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated sellOrder",
+			genState: &types.GenesisState{
+				SellOrderList: []types.SellOrder{
+					{
+						SellOrderId: 0,
+					},
+					{
+						SellOrderId: 0,
 					},
 				},
 			},

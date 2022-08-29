@@ -161,6 +161,10 @@ func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) e
 
 	items := make([]uint64, 0, len(seller.ActiveItem)-1)
 
+	// is there a faster way to do this thats not O(n)?
+	// should we use a map and how would it be indexed?
+	// the items list per seller shouldn't be too large so this shouldn't be an issue
+	// however it should still be considered
 	for i := 0; i < len(seller.ActiveItem); i++ {
 		if seller.ActiveItem[i] != itemId {
 			items = append(items, seller.ActiveItem[i])
