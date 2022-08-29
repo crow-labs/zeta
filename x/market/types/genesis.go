@@ -16,8 +16,10 @@ func DefaultGenesis() *GenesisState {
 		ItemList:      []Item{},
 		SellOrderList: []SellOrder{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params:     DefaultParams(),
-		NextItemId: 1,
+		Params:          DefaultParams(),
+		NextItemId:      1,
+		NextSellOrderId: 1,
+		NextBuyOrderId:  1,
 	}
 }
 

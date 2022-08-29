@@ -1,9 +1,14 @@
 package keeper
 
 import (
+	"fmt"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	gogotypes "github.com/gogo/protobuf/types"
+
 	"zeta/x/market/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // SetSellOrder set a specific sellOrder in the store from its index
@@ -60,4 +65,37 @@ func (k Keeper) GetAllSellOrder(ctx sdk.Context) (list []types.SellOrder) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextSellOrderId(ctx sdk.Context, sellOrderId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: sellOrderId})
+	store.Set(types.KeyNextGlobalSellOrderId, bz)
+}
+
+func (k Keeper) GetNextSellOrderId(ctx sdk.Context) uint64 {
+	var nextSellOrderId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalSellOrderId)
+	if bz == nil {
+		panic(fmt.Errorf("sell order has not been initialized -- should have been done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		nextSellOrderId = val.GetValue()
+	}
+
+	return nextSellOrderId
+}
+
+func (k Keeper) getNextSellOrderIdAndIncrement(ctx sdk.Context) uint64 {
+	nextSellOrderId := k.GetNextSellOrderId(ctx)
+	k.SetNextSellOrderId(ctx, nextSellOrderId+1)
+	return nextSellOrderId
 }

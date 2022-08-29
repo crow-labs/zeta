@@ -15,9 +15,16 @@ export interface GenesisState {
   sellOrderList: SellOrder[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextItemId: number;
+  nextSellOrderId: number;
+  nextBuyOrderId: number;
 }
 
-const baseGenesisState: object = { port_id: "", nextItemId: 0 };
+const baseGenesisState: object = {
+  port_id: "",
+  nextItemId: 0,
+  nextSellOrderId: 0,
+  nextBuyOrderId: 0,
+};
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -31,10 +38,16 @@ export const GenesisState = {
       Item.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     for (const v of message.sellOrderList) {
-      SellOrder.encode(v!, writer.uint32(42).fork()).ldelim();
+      SellOrder.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     if (message.nextItemId !== 0) {
-      writer.uint32(32).uint64(message.nextItemId);
+      writer.uint32(40).uint64(message.nextItemId);
+    }
+    if (message.nextSellOrderId !== 0) {
+      writer.uint32(48).uint64(message.nextSellOrderId);
+    }
+    if (message.nextBuyOrderId !== 0) {
+      writer.uint32(56).uint64(message.nextBuyOrderId);
     }
     return writer;
   },
@@ -57,11 +70,17 @@ export const GenesisState = {
         case 3:
           message.itemList.push(Item.decode(reader, reader.uint32()));
           break;
-        case 5:
+        case 4:
           message.sellOrderList.push(SellOrder.decode(reader, reader.uint32()));
           break;
-        case 4:
+        case 5:
           message.nextItemId = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nextSellOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        case 7:
+          message.nextBuyOrderId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -100,6 +119,19 @@ export const GenesisState = {
     } else {
       message.nextItemId = 0;
     }
+    if (
+      object.nextSellOrderId !== undefined &&
+      object.nextSellOrderId !== null
+    ) {
+      message.nextSellOrderId = Number(object.nextSellOrderId);
+    } else {
+      message.nextSellOrderId = 0;
+    }
+    if (object.nextBuyOrderId !== undefined && object.nextBuyOrderId !== null) {
+      message.nextBuyOrderId = Number(object.nextBuyOrderId);
+    } else {
+      message.nextBuyOrderId = 0;
+    }
     return message;
   },
 
@@ -123,6 +155,10 @@ export const GenesisState = {
       obj.sellOrderList = [];
     }
     message.nextItemId !== undefined && (obj.nextItemId = message.nextItemId);
+    message.nextSellOrderId !== undefined &&
+      (obj.nextSellOrderId = message.nextSellOrderId);
+    message.nextBuyOrderId !== undefined &&
+      (obj.nextBuyOrderId = message.nextBuyOrderId);
     return obj;
   },
 
@@ -154,6 +190,19 @@ export const GenesisState = {
       message.nextItemId = object.nextItemId;
     } else {
       message.nextItemId = 0;
+    }
+    if (
+      object.nextSellOrderId !== undefined &&
+      object.nextSellOrderId !== null
+    ) {
+      message.nextSellOrderId = object.nextSellOrderId;
+    } else {
+      message.nextSellOrderId = 0;
+    }
+    if (object.nextBuyOrderId !== undefined && object.nextBuyOrderId !== null) {
+      message.nextBuyOrderId = object.nextBuyOrderId;
+    } else {
+      message.nextBuyOrderId = 0;
     }
     return message;
   },

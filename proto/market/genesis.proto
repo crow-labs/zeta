@@ -14,7 +14,9 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   string port_id = 2;
   repeated Item itemList = 3 [(gogoproto.nullable) = false];
-  repeated SellOrder sellOrderList = 5 [(gogoproto.nullable) = false];
+  repeated SellOrder sellOrderList = 4 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
-  uint64 nextItemId = 4;
+  uint64 nextItemId = 5;
+  uint64 nextSellOrderId = 6;
+  uint64 nextBuyOrderId = 7;
 }

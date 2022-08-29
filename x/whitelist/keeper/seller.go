@@ -176,3 +176,24 @@ func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) e
 	k.SetSeller(ctx, seller)
 	return nil
 }
+
+func (k Keeper) AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	numOrder := len(seller.ActiveOrder)
+	order := make([]uint64, 0, numOrder+1)
+
+	for i := 0; i < numOrder; i++ {
+		order = append(order, seller.ActiveOrder[i])
+	}
+	order = append(order, sellOrderId)
+
+	seller.ActiveOrder = order
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}
