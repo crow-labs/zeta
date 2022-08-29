@@ -4,6 +4,7 @@ import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../market/params";
 import { Item } from "../market/item";
 import { SellOrder } from "../market/sell_order";
+import { BuyOrder } from "../market/buy_order";
 
 export const protobufPackage = "zeta.market";
 
@@ -13,6 +14,7 @@ export interface GenesisState {
   port_id: string;
   itemList: Item[];
   sellOrderList: SellOrder[];
+  buyOrderList: BuyOrder[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextItemId: number;
   nextSellOrderId: number;
@@ -40,6 +42,9 @@ export const GenesisState = {
     for (const v of message.sellOrderList) {
       SellOrder.encode(v!, writer.uint32(34).fork()).ldelim();
     }
+    for (const v of message.buyOrderList) {
+      BuyOrder.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     if (message.nextItemId !== 0) {
       writer.uint32(40).uint64(message.nextItemId);
     }
@@ -58,6 +63,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
     message.sellOrderList = [];
+    message.buyOrderList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -72,6 +78,9 @@ export const GenesisState = {
           break;
         case 4:
           message.sellOrderList.push(SellOrder.decode(reader, reader.uint32()));
+          break;
+        case 8:
+          message.buyOrderList.push(BuyOrder.decode(reader, reader.uint32()));
           break;
         case 5:
           message.nextItemId = longToNumber(reader.uint64() as Long);
@@ -94,6 +103,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
     message.sellOrderList = [];
+    message.buyOrderList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -112,6 +122,11 @@ export const GenesisState = {
     if (object.sellOrderList !== undefined && object.sellOrderList !== null) {
       for (const e of object.sellOrderList) {
         message.sellOrderList.push(SellOrder.fromJSON(e));
+      }
+    }
+    if (object.buyOrderList !== undefined && object.buyOrderList !== null) {
+      for (const e of object.buyOrderList) {
+        message.buyOrderList.push(BuyOrder.fromJSON(e));
       }
     }
     if (object.nextItemId !== undefined && object.nextItemId !== null) {
@@ -154,6 +169,13 @@ export const GenesisState = {
     } else {
       obj.sellOrderList = [];
     }
+    if (message.buyOrderList) {
+      obj.buyOrderList = message.buyOrderList.map((e) =>
+        e ? BuyOrder.toJSON(e) : undefined
+      );
+    } else {
+      obj.buyOrderList = [];
+    }
     message.nextItemId !== undefined && (obj.nextItemId = message.nextItemId);
     message.nextSellOrderId !== undefined &&
       (obj.nextSellOrderId = message.nextSellOrderId);
@@ -166,6 +188,7 @@ export const GenesisState = {
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
     message.sellOrderList = [];
+    message.buyOrderList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -184,6 +207,11 @@ export const GenesisState = {
     if (object.sellOrderList !== undefined && object.sellOrderList !== null) {
       for (const e of object.sellOrderList) {
         message.sellOrderList.push(SellOrder.fromPartial(e));
+      }
+    }
+    if (object.buyOrderList !== undefined && object.buyOrderList !== null) {
+      for (const e of object.buyOrderList) {
+        message.buyOrderList.push(BuyOrder.fromPartial(e));
       }
     }
     if (object.nextItemId !== undefined && object.nextItemId !== null) {

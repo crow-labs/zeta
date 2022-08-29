@@ -1,0 +1,17 @@
+syntax = "proto3";
+package zeta.market;
+
+option go_package = "zeta/x/market/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message BuyOrder {
+  uint64 buyOrderId = 1; 
+  uint64 sellOrderId = 2; 
+  uint64 buyerId = 3; 
+  uint64 crowId = 4; 
+  cosmos.base.v1beta1.Coin price = 5 [(gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin collateral = 6 [(gogoproto.nullable) = false]; 
+  
+}
+

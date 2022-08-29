@@ -9,6 +9,36 @@
  * ---------------------------------------------------------------
  */
 
+export interface MarketBuyOrder {
+  /** @format uint64 */
+  buyOrderId?: string;
+
+  /** @format uint64 */
+  sellOrderId?: string;
+
+  /** @format uint64 */
+  buyerId?: string;
+
+  /** @format uint64 */
+  crowId?: string;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  price?: V1Beta1Coin;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  collateral?: V1Beta1Coin;
+}
+
 export interface MarketItem {
   /** @format uint64 */
   itemId?: string;
@@ -25,6 +55,10 @@ export interface MarketMsgListItemResponse {
   sellOrderId?: string;
 }
 
+export interface MarketMsgPlaceBuyOrderResponse {
+  buyOrderId?: string;
+}
+
 export interface MarketMsgPrepareItemResponse {
   /** @format uint64 */
   itemId?: string;
@@ -36,6 +70,21 @@ export type MarketMsgRemoveItemResponse = object;
  * Params defines the parameters for the module.
  */
 export type MarketParams = object;
+
+export interface MarketQueryAllBuyOrderResponse {
+  buyOrder?: MarketBuyOrder[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface MarketQueryAllItemResponse {
   item?: MarketItem[];
@@ -65,6 +114,10 @@ export interface MarketQueryAllSellOrderResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface MarketQueryGetBuyOrderResponse {
+  buyOrder?: MarketBuyOrder;
 }
 
 export interface MarketQueryGetItemResponse {
@@ -172,6 +225,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -383,10 +443,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title market/genesis.proto
+ * @title market/buy_order.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryBuyOrderAll
+   * @summary Queries a list of BuyOrder items.
+   * @request GET:/zeta/market/buy_order
+   */
+  queryBuyOrderAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<MarketQueryAllBuyOrderResponse, RpcStatus>({
+      path: `/zeta/market/buy_order`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryBuyOrder
+   * @summary Queries a BuyOrder by index.
+   * @request GET:/zeta/market/buy_order/{buyOrderId}
+   */
+  queryBuyOrder = (buyOrderId: string, params: RequestParams = {}) =>
+    this.request<MarketQueryGetBuyOrderResponse, RpcStatus>({
+      path: `/zeta/market/buy_order/${buyOrderId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *
@@ -401,6 +503,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -458,6 +561,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

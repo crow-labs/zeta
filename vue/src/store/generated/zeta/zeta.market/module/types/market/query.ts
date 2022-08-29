@@ -8,6 +8,7 @@ import {
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { SellOrder } from "../market/sell_order";
+import { BuyOrder } from "../market/buy_order";
 
 export const protobufPackage = "zeta.market";
 
@@ -51,6 +52,23 @@ export interface QueryAllSellOrderRequest {
 
 export interface QueryAllSellOrderResponse {
   sellOrder: SellOrder[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetBuyOrderRequest {
+  buyOrderId: number;
+}
+
+export interface QueryGetBuyOrderResponse {
+  buyOrder: BuyOrder | undefined;
+}
+
+export interface QueryAllBuyOrderRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllBuyOrderResponse {
+  buyOrder: BuyOrder[];
   pagination: PageResponse | undefined;
 }
 
@@ -732,6 +750,314 @@ export const QueryAllSellOrderResponse = {
   },
 };
 
+const baseQueryGetBuyOrderRequest: object = { buyOrderId: 0 };
+
+export const QueryGetBuyOrderRequest = {
+  encode(
+    message: QueryGetBuyOrderRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.buyOrderId !== 0) {
+      writer.uint32(8).uint64(message.buyOrderId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetBuyOrderRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetBuyOrderRequest,
+    } as QueryGetBuyOrderRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetBuyOrderRequest {
+    const message = {
+      ...baseQueryGetBuyOrderRequest,
+    } as QueryGetBuyOrderRequest;
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = Number(object.buyOrderId);
+    } else {
+      message.buyOrderId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetBuyOrderRequest): unknown {
+    const obj: any = {};
+    message.buyOrderId !== undefined && (obj.buyOrderId = message.buyOrderId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetBuyOrderRequest>
+  ): QueryGetBuyOrderRequest {
+    const message = {
+      ...baseQueryGetBuyOrderRequest,
+    } as QueryGetBuyOrderRequest;
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = object.buyOrderId;
+    } else {
+      message.buyOrderId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetBuyOrderResponse: object = {};
+
+export const QueryGetBuyOrderResponse = {
+  encode(
+    message: QueryGetBuyOrderResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.buyOrder !== undefined) {
+      BuyOrder.encode(message.buyOrder, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetBuyOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetBuyOrderResponse,
+    } as QueryGetBuyOrderResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyOrder = BuyOrder.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetBuyOrderResponse {
+    const message = {
+      ...baseQueryGetBuyOrderResponse,
+    } as QueryGetBuyOrderResponse;
+    if (object.buyOrder !== undefined && object.buyOrder !== null) {
+      message.buyOrder = BuyOrder.fromJSON(object.buyOrder);
+    } else {
+      message.buyOrder = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetBuyOrderResponse): unknown {
+    const obj: any = {};
+    message.buyOrder !== undefined &&
+      (obj.buyOrder = message.buyOrder
+        ? BuyOrder.toJSON(message.buyOrder)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetBuyOrderResponse>
+  ): QueryGetBuyOrderResponse {
+    const message = {
+      ...baseQueryGetBuyOrderResponse,
+    } as QueryGetBuyOrderResponse;
+    if (object.buyOrder !== undefined && object.buyOrder !== null) {
+      message.buyOrder = BuyOrder.fromPartial(object.buyOrder);
+    } else {
+      message.buyOrder = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllBuyOrderRequest: object = {};
+
+export const QueryAllBuyOrderRequest = {
+  encode(
+    message: QueryAllBuyOrderRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllBuyOrderRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllBuyOrderRequest,
+    } as QueryAllBuyOrderRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllBuyOrderRequest {
+    const message = {
+      ...baseQueryAllBuyOrderRequest,
+    } as QueryAllBuyOrderRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllBuyOrderRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllBuyOrderRequest>
+  ): QueryAllBuyOrderRequest {
+    const message = {
+      ...baseQueryAllBuyOrderRequest,
+    } as QueryAllBuyOrderRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllBuyOrderResponse: object = {};
+
+export const QueryAllBuyOrderResponse = {
+  encode(
+    message: QueryAllBuyOrderResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.buyOrder) {
+      BuyOrder.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryAllBuyOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryAllBuyOrderResponse,
+    } as QueryAllBuyOrderResponse;
+    message.buyOrder = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyOrder.push(BuyOrder.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllBuyOrderResponse {
+    const message = {
+      ...baseQueryAllBuyOrderResponse,
+    } as QueryAllBuyOrderResponse;
+    message.buyOrder = [];
+    if (object.buyOrder !== undefined && object.buyOrder !== null) {
+      for (const e of object.buyOrder) {
+        message.buyOrder.push(BuyOrder.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllBuyOrderResponse): unknown {
+    const obj: any = {};
+    if (message.buyOrder) {
+      obj.buyOrder = message.buyOrder.map((e) =>
+        e ? BuyOrder.toJSON(e) : undefined
+      );
+    } else {
+      obj.buyOrder = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryAllBuyOrderResponse>
+  ): QueryAllBuyOrderResponse {
+    const message = {
+      ...baseQueryAllBuyOrderResponse,
+    } as QueryAllBuyOrderResponse;
+    message.buyOrder = [];
+    if (object.buyOrder !== undefined && object.buyOrder !== null) {
+      for (const e of object.buyOrder) {
+        message.buyOrder.push(BuyOrder.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -748,6 +1074,12 @@ export interface Query {
   SellOrderAll(
     request: QueryAllSellOrderRequest
   ): Promise<QueryAllSellOrderResponse>;
+  /** Queries a BuyOrder by index. */
+  BuyOrder(request: QueryGetBuyOrderRequest): Promise<QueryGetBuyOrderResponse>;
+  /** Queries a list of BuyOrder items. */
+  BuyOrderAll(
+    request: QueryAllBuyOrderRequest
+  ): Promise<QueryAllBuyOrderResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -794,6 +1126,26 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("zeta.market.Query", "SellOrderAll", data);
     return promise.then((data) =>
       QueryAllSellOrderResponse.decode(new Reader(data))
+    );
+  }
+
+  BuyOrder(
+    request: QueryGetBuyOrderRequest
+  ): Promise<QueryGetBuyOrderResponse> {
+    const data = QueryGetBuyOrderRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Query", "BuyOrder", data);
+    return promise.then((data) =>
+      QueryGetBuyOrderResponse.decode(new Reader(data))
+    );
+  }
+
+  BuyOrderAll(
+    request: QueryAllBuyOrderRequest
+  ): Promise<QueryAllBuyOrderResponse> {
+    const data = QueryAllBuyOrderRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Query", "BuyOrderAll", data);
+    return promise.then((data) =>
+      QueryAllBuyOrderResponse.decode(new Reader(data))
     );
   }
 }

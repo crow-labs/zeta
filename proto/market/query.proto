@@ -6,6 +6,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "market/params.proto";
 import "market/item.proto";
 import "market/sell_order.proto";
+import "market/buy_order.proto";
 // this line is used by starport scaffolding # 1
 import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
@@ -36,6 +37,16 @@ service Query {
 	// Queries a list of SellOrder items.
 	rpc SellOrderAll(QueryAllSellOrderRequest) returns (QueryAllSellOrderResponse) {
 		option (google.api.http).get = "/zeta/market/sell_order";
+	}
+
+// Queries a BuyOrder by index.
+	rpc BuyOrder(QueryGetBuyOrderRequest) returns (QueryGetBuyOrderResponse) {
+		option (google.api.http).get = "/zeta/market/buy_order/{buyOrderId}";
+	}
+
+	// Queries a list of BuyOrder items.
+	rpc BuyOrderAll(QueryAllBuyOrderRequest) returns (QueryAllBuyOrderResponse) {
+		option (google.api.http).get = "/zeta/market/buy_order";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -83,6 +94,24 @@ message QueryAllSellOrderRequest {
 
 message QueryAllSellOrderResponse {
 	repeated SellOrder sellOrder = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetBuyOrderRequest {
+	  uint64 buyOrderId = 1;
+
+}
+
+message QueryGetBuyOrderResponse {
+	BuyOrder buyOrder = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllBuyOrderRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllBuyOrderResponse {
+	repeated BuyOrder buyOrder = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

@@ -12,6 +12,7 @@ service Msg {
       rpc PrepareItem(MsgPrepareItem) returns (MsgPrepareItemResponse);
   rpc RemoveItem(MsgRemoveItem) returns (MsgRemoveItemResponse);
   rpc ListItem(MsgListItem) returns (MsgListItemResponse);
+  rpc PlaceBuyOrder(MsgPlaceBuyOrder) returns (MsgPlaceBuyOrderResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -46,6 +47,18 @@ message MsgListItem {
 
 message MsgListItemResponse {
   uint64 sellOrderId = 1;
+}
+
+message MsgPlaceBuyOrder {
+  string creator = 1;
+  uint64 sellOrderId = 2;
+  uint64 buyerId = 3;
+  cosmos.base.v1beta1.Coin price = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin collateral = 5 [(gogoproto.nullable) = false];
+}
+
+message MsgPlaceBuyOrderResponse {
+  string buyOrderId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
