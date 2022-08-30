@@ -3,8 +3,7 @@ import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../market/params";
 import { Item } from "../market/item";
-import { SellOrder } from "../market/sell_order";
-import { BuyOrder } from "../market/buy_order";
+import { SellOrder, BuyOrder } from "../market/order";
 
 export const protobufPackage = "zeta.market";
 

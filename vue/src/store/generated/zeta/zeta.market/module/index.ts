@@ -4,16 +4,16 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgListItem } from "./types/market/tx";
 import { MsgRemoveItem } from "./types/market/tx";
 import { MsgPlaceBuyOrder } from "./types/market/tx";
+import { MsgListItem } from "./types/market/tx";
 import { MsgPrepareItem } from "./types/market/tx";
 
 
 const types = [
-  ["/zeta.market.MsgListItem", MsgListItem],
   ["/zeta.market.MsgRemoveItem", MsgRemoveItem],
   ["/zeta.market.MsgPlaceBuyOrder", MsgPlaceBuyOrder],
+  ["/zeta.market.MsgListItem", MsgListItem],
   ["/zeta.market.MsgPrepareItem", MsgPrepareItem],
   
 ];
@@ -47,9 +47,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgListItem: (data: MsgListItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgListItem", value: MsgListItem.fromPartial( data ) }),
     msgRemoveItem: (data: MsgRemoveItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgRemoveItem", value: MsgRemoveItem.fromPartial( data ) }),
     msgPlaceBuyOrder: (data: MsgPlaceBuyOrder): EncodeObject => ({ typeUrl: "/zeta.market.MsgPlaceBuyOrder", value: MsgPlaceBuyOrder.fromPartial( data ) }),
+    msgListItem: (data: MsgListItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgListItem", value: MsgListItem.fromPartial( data ) }),
     msgPrepareItem: (data: MsgPrepareItem): EncodeObject => ({ typeUrl: "/zeta.market.MsgPrepareItem", value: MsgPrepareItem.fromPartial( data ) }),
     
   };
