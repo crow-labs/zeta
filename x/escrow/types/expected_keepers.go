@@ -11,8 +11,9 @@ type MarketKeeper interface {
 	UpdateOrdersStatus(ctx sdk.Context, crowId, bOrderId uint64, bOrderStatus, sOrderStatus string) error
 	GetCollateralFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error)
 	GetBuyerPaymentFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error)
+	GetSellerAddrFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (string, error)
 	ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error
-	ValidateBuyerJoinEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error
+	ValidateBuyerInEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error
 }
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)

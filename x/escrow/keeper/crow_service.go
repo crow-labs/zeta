@@ -8,6 +8,13 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
+const (
+	beginEscrowStatus    = "begin"
+	sellerEscrowStatus   = "sellerEscrowedComplete"
+	buyerEscrowStatus    = "buyerEscrowComplete"
+	completeEscrowStatus = "completedEscrow"
+)
+
 func (k Keeper) validateCrowSeller(ctx sdk.Context, msg types.MsgBeginEscrow) error {
 	return k.marketKeeper.ValidateSellerBeginEscrow(ctx, msg.BuyOrderId, msg.Creator)
 }
@@ -22,7 +29,7 @@ func NewCrow(crowId, buyOrderId uint64) types.Crow {
 		BuyerPayment:     sdk.Coin{},
 		SellerCollateral: sdk.Coin{},
 		BuyerCollateral:  sdk.Coin{},
-		Status:           "begin",
+		Status:           beginEscrowStatus,
 		EscrowAddr:       types.NewCrowAddress(crowId).String(),
 	}
 
@@ -71,10 +78,10 @@ func (k Keeper) CreateCrow(ctx sdk.Context, msg types.MsgBeginEscrow) (uint64, e
 	}
 
 	crow.SellerCollateral = collateral
-	crow.Status = "sellerEscrowComplete"
+	crow.Status = sellerEscrowStatus
 
 	// TODO: make strings module constants
-	err = k.marketKeeper.UpdateOrdersStatus(ctx, crow.CrowId, crow.BuyOrderId, "sellerAccepted", "sellerEscrowed")
+	err = k.marketKeeper.UpdateOrdersStatus(ctx, crow.GetCrowId(), crow.GetBuyOrderId(), "sellerAccepted", "sellerEscrowed")
 	if err != nil {
 		return 0, err
 	}
@@ -83,17 +90,21 @@ func (k Keeper) CreateCrow(ctx sdk.Context, msg types.MsgBeginEscrow) (uint64, e
 	return crowId, nil
 }
 
-func (k Keeper) validateCrowBuyer(ctx sdk.Context, msg types.MsgJoinEscrow) error {
+func (k Keeper) validateCrowBuyerJoin(ctx sdk.Context, msg types.MsgJoinEscrow) error {
 	crow, found := k.GetCrow(ctx, msg.CrowId)
 	if !found {
 		return types.ErrCrowNotFound
 	}
 
-	return k.marketKeeper.ValidateBuyerJoinEscrow(ctx, crow.BuyOrderId, msg.Creator)
+	if crow.Status != sellerEscrowStatus {
+		return types.ErrInvalidCrowStateForMsg
+	}
+
+	return k.marketKeeper.ValidateBuyerInEscrow(ctx, crow.GetBuyOrderId(), msg.Creator)
 }
 
 func (k Keeper) JoinCrow(ctx sdk.Context, msg types.MsgJoinEscrow) error {
-	err := k.validateCrowBuyer(ctx, msg)
+	err := k.validateCrowBuyerJoin(ctx, msg)
 	if err != nil {
 		return err
 	}
@@ -105,12 +116,12 @@ func (k Keeper) JoinCrow(ctx sdk.Context, msg types.MsgJoinEscrow) error {
 		panic(fmt.Sprintf("could not bech32 decode Addr of crow w/ id: %d", crow.CrowId))
 	}
 
-	collateral, err := k.marketKeeper.GetCollateralFromBuyOrderId(ctx, crow.BuyOrderId)
+	collateral, err := k.marketKeeper.GetCollateralFromBuyOrderId(ctx, crow.GetBuyOrderId())
 	if err != nil {
 		return err
 	}
 
-	payment, err := k.marketKeeper.GetBuyerPaymentFromBuyOrderId(ctx, crow.BuyOrderId)
+	payment, err := k.marketKeeper.GetBuyerPaymentFromBuyOrderId(ctx, crow.GetBuyOrderId())
 	if err != nil {
 		return err
 	}
@@ -133,13 +144,76 @@ func (k Keeper) JoinCrow(ctx sdk.Context, msg types.MsgJoinEscrow) error {
 
 	crow.BuyerCollateral = collateral
 	crow.BuyerPayment = payment
-	crow.Status = "buyerEscrowComplete"
+	crow.Status = buyerEscrowStatus
 
 	// TODO: make strings module constants
 	err = k.marketKeeper.UpdateOrdersStatus(ctx, crow.CrowId, crow.BuyOrderId, "buyerEscrowed", "handling")
 	if err != nil {
 		return err
 	}
+
+	k.SetCrow(ctx, crow)
+	return nil
+}
+
+func (k Keeper) validateCrowBuyerComplete(ctx sdk.Context, msg types.MsgCompleteEscrowNoDispute) error {
+	crow, found := k.GetCrow(ctx, msg.CrowId)
+	if !found {
+		return types.ErrCrowNotFound
+	}
+
+	if crow.Status != buyerEscrowStatus {
+		return types.ErrInvalidCrowStateForMsg
+	}
+
+	return k.marketKeeper.ValidateBuyerInEscrow(ctx, crow.GetBuyOrderId(), msg.Creator)
+}
+
+func (k Keeper) CompleteCrowNoDispute(ctx sdk.Context, msg types.MsgCompleteEscrowNoDispute) error {
+	err := k.validateCrowBuyerComplete(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	crow, _ := k.GetCrow(ctx, msg.CrowId)
+
+	sellerAddr, err := k.marketKeeper.GetSellerAddrFromBuyOrderId(ctx, crow.GetBuyOrderId())
+	if err != nil {
+		return err
+	}
+
+	sellerAccAddr, err := sdk.AccAddressFromBech32(sellerAddr)
+	if err != nil {
+		panic(fmt.Sprintf("could not bech32 decode Addr of crow w/ id: %d", crow.CrowId))
+	}
+
+	err = k.bankKeeper.SendCoins(ctx, crow.GetAddress(), sellerAccAddr, sdk.NewCoins(crow.BuyerPayment))
+	if err != nil {
+		return err
+	}
+
+	crow.BuyerPayment = crow.BuyerPayment.Sub(crow.BuyerPayment)
+
+	err = k.bankKeeper.SendCoins(ctx, crow.GetAddress(), sellerAccAddr, sdk.NewCoins(crow.SellerCollateral))
+	if err != nil {
+		return err
+	}
+
+	crow.SellerCollateral = crow.SellerCollateral.Sub(crow.SellerCollateral)
+
+	buyerAccAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		return err
+	}
+
+	err = k.bankKeeper.SendCoins(ctx, crow.GetAddress(), buyerAccAddr, sdk.NewCoins(crow.BuyerCollateral))
+	if err != nil {
+		return err
+	}
+
+	crow.BuyerCollateral = crow.BuyerCollateral.Sub(crow.BuyerCollateral)
+
+	crow.Status = completeEscrowStatus
 
 	k.SetCrow(ctx, crow)
 	return nil

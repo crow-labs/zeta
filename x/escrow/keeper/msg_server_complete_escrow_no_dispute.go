@@ -3,15 +3,18 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"zeta/x/escrow/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) CompleteEscrowNoDispute(goCtx context.Context, msg *types.MsgCompleteEscrowNoDispute) (*types.MsgCompleteEscrowNoDisputeResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	err := k.CompleteCrowNoDispute(ctx, *msg)
+	if err != nil {
+		return &types.MsgCompleteEscrowNoDisputeResponse{}, err
+	}
 
 	return &types.MsgCompleteEscrowNoDisputeResponse{}, nil
 }
