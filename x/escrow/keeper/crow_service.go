@@ -16,6 +16,10 @@ const (
 )
 
 func (k Keeper) validateCrowSeller(ctx sdk.Context, msg types.MsgBeginEscrow) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
 	return k.marketKeeper.ValidateSellerBeginEscrow(ctx, msg.BuyOrderId, msg.Creator)
 }
 
@@ -91,6 +95,10 @@ func (k Keeper) CreateCrow(ctx sdk.Context, msg types.MsgBeginEscrow) (uint64, e
 }
 
 func (k Keeper) validateCrowBuyerJoin(ctx sdk.Context, msg types.MsgJoinEscrow) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
 	crow, found := k.GetCrow(ctx, msg.CrowId)
 	if !found {
 		return types.ErrCrowNotFound
@@ -157,6 +165,10 @@ func (k Keeper) JoinCrow(ctx sdk.Context, msg types.MsgJoinEscrow) error {
 }
 
 func (k Keeper) validateCrowBuyerComplete(ctx sdk.Context, msg types.MsgCompleteEscrowNoDispute) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
 	crow, found := k.GetCrow(ctx, msg.CrowId)
 	if !found {
 		return types.ErrCrowNotFound
