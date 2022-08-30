@@ -13,6 +13,13 @@ export interface MsgBeginEscrowResponse {
   crowId: number;
 }
 
+export interface MsgJoinEscrow {
+  creator: string;
+  crowId: number;
+}
+
+export interface MsgJoinEscrowResponse {}
+
 const baseMsgBeginEscrow: object = { creator: "", buyOrderId: 0 };
 
 export const MsgBeginEscrow = {
@@ -145,10 +152,121 @@ export const MsgBeginEscrowResponse = {
   },
 };
 
+const baseMsgJoinEscrow: object = { creator: "", crowId: 0 };
+
+export const MsgJoinEscrow = {
+  encode(message: MsgJoinEscrow, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.crowId !== 0) {
+      writer.uint32(16).uint64(message.crowId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgJoinEscrow {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgJoinEscrow } as MsgJoinEscrow;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.crowId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgJoinEscrow {
+    const message = { ...baseMsgJoinEscrow } as MsgJoinEscrow;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = Number(object.crowId);
+    } else {
+      message.crowId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgJoinEscrow): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.crowId !== undefined && (obj.crowId = message.crowId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgJoinEscrow>): MsgJoinEscrow {
+    const message = { ...baseMsgJoinEscrow } as MsgJoinEscrow;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = object.crowId;
+    } else {
+      message.crowId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgJoinEscrowResponse: object = {};
+
+export const MsgJoinEscrowResponse = {
+  encode(_: MsgJoinEscrowResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgJoinEscrowResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgJoinEscrowResponse } as MsgJoinEscrowResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgJoinEscrowResponse {
+    const message = { ...baseMsgJoinEscrowResponse } as MsgJoinEscrowResponse;
+    return message;
+  },
+
+  toJSON(_: MsgJoinEscrowResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgJoinEscrowResponse>): MsgJoinEscrowResponse {
+    const message = { ...baseMsgJoinEscrowResponse } as MsgJoinEscrowResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   BeginEscrow(request: MsgBeginEscrow): Promise<MsgBeginEscrowResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  JoinEscrow(request: MsgJoinEscrow): Promise<MsgJoinEscrowResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -161,6 +279,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.escrow.Msg", "BeginEscrow", data);
     return promise.then((data) =>
       MsgBeginEscrowResponse.decode(new Reader(data))
+    );
+  }
+
+  JoinEscrow(request: MsgJoinEscrow): Promise<MsgJoinEscrowResponse> {
+    const data = MsgJoinEscrow.encode(request).finish();
+    const promise = this.rpc.request("zeta.escrow.Msg", "JoinEscrow", data);
+    return promise.then((data) =>
+      MsgJoinEscrowResponse.decode(new Reader(data))
     );
   }
 }

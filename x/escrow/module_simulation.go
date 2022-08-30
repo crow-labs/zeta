@@ -28,6 +28,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgBeginEscrow int = 100
 
+	opWeightMsgJoinEscrow = "op_weight_msg_join_escrow"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgJoinEscrow int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +75,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgBeginEscrow,
 		escrowsimulation.SimulateMsgBeginEscrow(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgJoinEscrow int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgJoinEscrow, &weightMsgJoinEscrow, nil,
+		func(_ *rand.Rand) {
+			weightMsgJoinEscrow = defaultWeightMsgJoinEscrow
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgJoinEscrow,
+		escrowsimulation.SimulateMsgJoinEscrow(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

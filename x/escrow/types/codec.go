@@ -9,12 +9,16 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgBeginEscrow{}, "escrow/BeginEscrow", nil)
+	cdc.RegisterConcrete(&MsgJoinEscrow{}, "escrow/JoinEscrow", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgBeginEscrow{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgJoinEscrow{},
 	)
 	// this line is used by starport scaffolding # 3
 

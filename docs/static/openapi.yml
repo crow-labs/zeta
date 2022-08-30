@@ -53684,6 +53684,8 @@ definitions:
       crowId:
         type: string
         format: uint64
+  zeta.escrow.MsgJoinEscrowResponse:
+    type: object
   zeta.escrow.Params:
     type: object
     description: Params defines the parameters for the module.
