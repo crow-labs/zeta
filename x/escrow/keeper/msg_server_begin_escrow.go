@@ -3,15 +3,18 @@ package keeper
 import (
 	"context"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"zeta/x/escrow/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 func (k msgServer) BeginEscrow(goCtx context.Context, msg *types.MsgBeginEscrow) (*types.MsgBeginEscrowResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Handling the message
-	_ = ctx
+	crowId, err := k.CreateCrow(ctx, *msg)
+	if err != nil {
+		return &types.MsgBeginEscrowResponse{CrowId: 0}, err
+	}
 
-	return &types.MsgBeginEscrowResponse{}, nil
+	return &types.MsgBeginEscrowResponse{CrowId: crowId}, nil
 }

@@ -4,8 +4,7 @@ package zeta.market;
 import "gogoproto/gogo.proto";
 import "market/params.proto";
 import "market/item.proto";
-import "market/sell_order.proto";
-import "market/buy_order.proto";
+import "market/order.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "zeta/x/market/types";
