@@ -49,6 +49,11 @@ export interface EscrowCrow {
   escrowAddr?: string;
 }
 
+export interface EscrowMsgBeginEscrowResponse {
+  /** @format uint64 */
+  crowId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */

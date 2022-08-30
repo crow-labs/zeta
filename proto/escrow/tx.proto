@@ -7,7 +7,17 @@ option go_package = "zeta/x/escrow/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc BeginEscrow(MsgBeginEscrow) returns (MsgBeginEscrowResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgBeginEscrow {
+  string creator = 1;
+  uint64 buyOrderId = 2;
+}
+
+message MsgBeginEscrowResponse {
+  uint64 crowId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

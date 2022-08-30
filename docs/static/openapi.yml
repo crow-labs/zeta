@@ -53660,6 +53660,12 @@ definitions:
         type: string
       escrowAddr:
         type: string
+  zeta.escrow.MsgBeginEscrowResponse:
+    type: object
+    properties:
+      crowId:
+        type: string
+        format: uint64
   zeta.escrow.Params:
     type: object
     description: Params defines the parameters for the module.
