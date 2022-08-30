@@ -30446,6 +30446,8 @@ paths:
                         signatures required by gogoproto.
                     status:
                       type: string
+                    addr:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30612,6 +30614,8 @@ paths:
                       signatures required by gogoproto.
                   status:
                     type: string
+                  addr:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -30731,6 +30735,8 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
+                    status:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -30880,6 +30886,8 @@ paths:
                       custom method
 
                       signatures required by gogoproto.
+                  status:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -31171,6 +31179,8 @@ paths:
                         custom method
 
                         signatures required by gogoproto.
+                    status:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -31320,6 +31330,8 @@ paths:
                       custom method
 
                       signatures required by gogoproto.
+                  status:
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -53624,6 +53636,8 @@ definitions:
           signatures required by gogoproto.
       status:
         type: string
+      addr:
+        type: string
   zeta.escrow.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -53693,6 +53707,8 @@ definitions:
 
                 signatures required by gogoproto.
             status:
+              type: string
+            addr:
               type: string
       pagination:
         type: object
@@ -53784,6 +53800,8 @@ definitions:
               signatures required by gogoproto.
           status:
             type: string
+          addr:
+            type: string
   zeta.escrow.QueryParamsResponse:
     type: object
     properties:
@@ -53830,6 +53848,8 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
+      status:
+        type: string
   zeta.market.Item:
     type: object
     properties:
@@ -53920,6 +53940,8 @@ definitions:
                 method
 
                 signatures required by gogoproto.
+            status:
+              type: string
       pagination:
         type: object
         properties:
@@ -54040,6 +54062,8 @@ definitions:
                 method
 
                 signatures required by gogoproto.
+            status:
+              type: string
       pagination:
         type: object
         properties:
@@ -54113,6 +54137,8 @@ definitions:
               method
 
               signatures required by gogoproto.
+          status:
+            type: string
   zeta.market.QueryGetItemResponse:
     type: object
     properties:
@@ -54179,6 +54205,8 @@ definitions:
               method
 
               signatures required by gogoproto.
+          status:
+            type: string
   zeta.market.QueryParamsResponse:
     type: object
     properties:
@@ -54225,6 +54253,8 @@ definitions:
 
           NOTE: The amount field is an Int which implements the custom method
           signatures required by gogoproto.
+      status:
+        type: string
   zeta.whitelist.Buyer:
     type: object
     properties:

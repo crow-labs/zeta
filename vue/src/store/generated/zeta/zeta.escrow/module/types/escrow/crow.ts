@@ -14,6 +14,7 @@ export interface Crow {
   sellerCol: Coin | undefined;
   buyerCol: Coin | undefined;
   status: string;
+  addr: string;
 }
 
 const baseCrow: object = {
@@ -22,6 +23,7 @@ const baseCrow: object = {
   disputeId: 0,
   verdictId: 0,
   status: "",
+  addr: "",
 };
 
 export const Crow = {
@@ -49,6 +51,9 @@ export const Crow = {
     }
     if (message.status !== "") {
       writer.uint32(66).string(message.status);
+    }
+    if (message.addr !== "") {
+      writer.uint32(74).string(message.addr);
     }
     return writer;
   },
@@ -83,6 +88,9 @@ export const Crow = {
           break;
         case 8:
           message.status = reader.string();
+          break;
+        case 9:
+          message.addr = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -134,6 +142,11 @@ export const Crow = {
     } else {
       message.status = "";
     }
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = String(object.addr);
+    } else {
+      message.addr = "";
+    }
     return message;
   },
 
@@ -154,6 +167,7 @@ export const Crow = {
         ? Coin.toJSON(message.buyerCol)
         : undefined);
     message.status !== undefined && (obj.status = message.status);
+    message.addr !== undefined && (obj.addr = message.addr);
     return obj;
   },
 
@@ -198,6 +212,11 @@ export const Crow = {
       message.status = object.status;
     } else {
       message.status = "";
+    }
+    if (object.addr !== undefined && object.addr !== null) {
+      message.addr = object.addr;
+    } else {
+      message.addr = "";
     }
     return message;
   },

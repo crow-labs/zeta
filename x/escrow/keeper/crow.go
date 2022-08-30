@@ -1,9 +1,13 @@
 package keeper
 
 import (
+	"fmt"
+	"zeta/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"zeta/x/escrow/types"
+
+	gogotypes "github.com/gogo/protobuf/types"
 )
 
 // SetCrow set a specific crow in the store from its index
@@ -60,4 +64,37 @@ func (k Keeper) GetAllCrow(ctx sdk.Context) (list []types.Crow) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextCrowId(ctx sdk.Context, crowId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: crowId})
+	store.Set(types.KeyNextGlobalCrowId, bz)
+}
+
+func (k Keeper) GetNextCrowId(ctx sdk.Context) uint64 {
+	var nextCrowId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalCrowId)
+	if bz == nil {
+		panic(fmt.Errorf("crow has not been initialized -- should have been done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		nextCrowId = val.GetValue()
+	}
+
+	return nextCrowId
+}
+
+func (k Keeper) getNextCrowIdAndIncrement(ctx sdk.Context) uint64 {
+	nextCrowId := k.GetNextCrowId(ctx)
+	k.SetNextCrowId(ctx, nextCrowId+1)
+	return nextCrowId
 }

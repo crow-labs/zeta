@@ -14,6 +14,6 @@ message Crow {
   cosmos.base.v1beta1.Coin sellerCol = 6 [(gogoproto.nullable) = false]; 
   cosmos.base.v1beta1.Coin buyerCol = 7 [(gogoproto.nullable) = false]; 
   string status = 8; 
-  
+  string addr = 9;
 }
 

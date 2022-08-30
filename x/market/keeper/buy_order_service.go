@@ -41,6 +41,7 @@ func NewBuyOrder(buyOrderId, sellOrderId, buyerId uint64, price, collateral sdk.
 		CrowId:      0,
 		Price:       price,
 		Collateral:  collateral,
+		Status:      "pending",
 	}
 
 	return *buyOrder

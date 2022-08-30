@@ -427,6 +427,7 @@ func New(
 		app.BankKeeper,
 		app.AccountKeeper,
 		app.WhitelistKeeper,
+		app.EscrowKeeper,
 	)
 	marketModule := marketmodule.NewAppModule(appCodec, app.MarketKeeper, app.AccountKeeper, app.BankKeeper)
 

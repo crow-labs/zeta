@@ -1,9 +1,10 @@
 package escrow
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"zeta/x/escrow/keeper"
 	"zeta/x/escrow/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis
@@ -15,6 +16,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
+
+	k.SetNextCrowId(ctx, genState.NextCrowId)
 }
 
 // ExportGenesis returns the capability module's exported genesis.

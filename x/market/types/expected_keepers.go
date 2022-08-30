@@ -25,3 +25,7 @@ type WhitelistKeeper interface {
 	AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint64) error
 	AddBuyOrderToBuyer(ctx sdk.Context, buyerId, orderId uint64) error
 }
+
+type EscrowKeeper interface {
+	CreateCrow(ctx sdk.Context, buyOrderId uint64, addr sdk.AccAddress, collateral sdk.Coin) (uint64, error)
+}

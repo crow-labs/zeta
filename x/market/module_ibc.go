@@ -3,6 +3,8 @@ package market
 import (
 	"fmt"
 
+	"zeta/x/market/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
@@ -10,7 +12,6 @@ import (
 	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
 	ibcexported "github.com/cosmos/ibc-go/v3/modules/core/exported"
-	"zeta/x/market/types"
 )
 
 // OnChanOpenInit implements the IBCModule interface
@@ -127,7 +128,7 @@ func (am AppModule) OnRecvPacket(
 	modulePacket channeltypes.Packet,
 	relayer sdk.AccAddress,
 ) ibcexported.Acknowledgement {
-	var ack channeltypes.Acknowledgement
+	//var ack channeltypes.Acknowledgement
 
 	// this line is used by starport scaffolding # oracle/packet/module/recv
 
@@ -145,7 +146,7 @@ func (am AppModule) OnRecvPacket(
 	}
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
-	return ack
+	//return ack
 }
 
 // OnAcknowledgementPacket implements the IBCModule interface
@@ -224,5 +225,5 @@ func (am AppModule) OnTimeoutPacket(
 		return sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
 	}
 
-	return nil
+	//return nil
 }

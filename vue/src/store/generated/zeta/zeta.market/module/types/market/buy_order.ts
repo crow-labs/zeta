@@ -12,6 +12,7 @@ export interface BuyOrder {
   crowId: number;
   price: Coin | undefined;
   collateral: Coin | undefined;
+  status: string;
 }
 
 const baseBuyOrder: object = {
@@ -19,6 +20,7 @@ const baseBuyOrder: object = {
   sellOrderId: 0,
   buyerId: 0,
   crowId: 0,
+  status: "",
 };
 
 export const BuyOrder = {
@@ -40,6 +42,9 @@ export const BuyOrder = {
     }
     if (message.collateral !== undefined) {
       Coin.encode(message.collateral, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.status !== "") {
+      writer.uint32(58).string(message.status);
     }
     return writer;
   },
@@ -68,6 +73,9 @@ export const BuyOrder = {
           break;
         case 6:
           message.collateral = Coin.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.status = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -109,6 +117,11 @@ export const BuyOrder = {
     } else {
       message.collateral = undefined;
     }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = String(object.status);
+    } else {
+      message.status = "";
+    }
     return message;
   },
 
@@ -125,6 +138,7 @@ export const BuyOrder = {
       (obj.collateral = message.collateral
         ? Coin.toJSON(message.collateral)
         : undefined);
+    message.status !== undefined && (obj.status = message.status);
     return obj;
   },
 
@@ -159,6 +173,11 @@ export const BuyOrder = {
       message.collateral = Coin.fromPartial(object.collateral);
     } else {
       message.collateral = undefined;
+    }
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    } else {
+      message.status = "";
     }
     return message;
   },

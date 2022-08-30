@@ -24,6 +24,7 @@ type (
 		bankKeeper      types.BankKeeper
 		accountKeeper   types.AccountKeeper
 		whitelistKeeper types.WhitelistKeeper
+		escrowKeeper    types.EscrowKeeper
 	}
 )
 
@@ -37,6 +38,7 @@ func NewKeeper(
 	scopedKeeper cosmosibckeeper.ScopedKeeper,
 	bankKeeper types.BankKeeper, accountKeeper types.AccountKeeper,
 	whitelistKeeper types.WhitelistKeeper,
+	escrowKeeper types.EscrowKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -57,6 +59,7 @@ func NewKeeper(
 		paramstore: ps,
 		bankKeeper: bankKeeper, accountKeeper: accountKeeper,
 		whitelistKeeper: whitelistKeeper,
+		escrowKeeper:    escrowKeeper,
 	}
 }
 

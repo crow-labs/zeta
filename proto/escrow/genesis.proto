@@ -13,4 +13,8 @@ message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Crow crowList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
+  uint64 nextCrowId = 3;
+  uint64 nextDisputeId = 4;
+  uint64 nextVoteId = 5;
+  uint64 nextVerdictId = 6;
 }

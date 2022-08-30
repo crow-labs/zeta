@@ -12,7 +12,11 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		CrowList: []Crow{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
+		Params:        DefaultParams(),
+		NextCrowId:    1,
+		NextDisputeId: 1,
+		NextVoteId:    1,
+		NextVerdictId: 1,
 	}
 }
 

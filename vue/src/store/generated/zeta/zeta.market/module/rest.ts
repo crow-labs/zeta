@@ -37,6 +37,7 @@ export interface MarketBuyOrder {
    * signatures required by gogoproto.
    */
   collateral?: V1Beta1Coin;
+  status?: string;
 }
 
 export interface MarketItem {
@@ -167,6 +168,7 @@ export interface MarketSellOrder {
    * signatures required by gogoproto.
    */
   collateral?: V1Beta1Coin;
+  status?: string;
 }
 
 export interface ProtobufAny {
