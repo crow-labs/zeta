@@ -1,0 +1,20 @@
+syntax = "proto3";
+package zeta.escrow;
+
+option go_package = "zeta/x/escrow/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Crow {
+  uint64 crowId = 1; 
+  uint64 buyOrderId = 2; 
+  uint64 disputeId = 3; 
+  uint64 verdictId = 4; 
+  cosmos.base.v1beta1.Coin sellerCollateral = 5 [(gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin buyerPayment = 6 [(gogoproto.nullable) = false]; 
+  cosmos.base.v1beta1.Coin buyerCollateral = 7 [(gogoproto.nullable) = false]; 
+  string status = 8; 
+  string escrowAddr = 9; 
+  
+}
+

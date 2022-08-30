@@ -7,8 +7,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
-import { SellOrder } from "../market/sell_order";
-import { BuyOrder } from "../market/buy_order";
+import { SellOrder, BuyOrder } from "../market/order";
 
 export const protobufPackage = "zeta.market";
 
