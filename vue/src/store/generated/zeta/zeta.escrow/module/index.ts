@@ -4,9 +4,13 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgBeginEscrow } from "./types/escrow/tx";
+import { MsgRaiseBuyerDispute } from "./types/escrow/tx";
 
 
 const types = [
+  ["/zeta.escrow.MsgBeginEscrow", MsgBeginEscrow],
+  ["/zeta.escrow.MsgRaiseBuyerDispute", MsgRaiseBuyerDispute],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -39,6 +43,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgBeginEscrow: (data: MsgBeginEscrow): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgBeginEscrow", value: MsgBeginEscrow.fromPartial( data ) }),
+    msgRaiseBuyerDispute: (data: MsgRaiseBuyerDispute): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgRaiseBuyerDispute", value: MsgRaiseBuyerDispute.fromPartial( data ) }),
     
   };
 };

@@ -1,6 +1,8 @@
 package types
 
 import (
+	escrowtypes "zeta/x/escrow/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
 )
@@ -27,5 +29,5 @@ type WhitelistKeeper interface {
 }
 
 type EscrowKeeper interface {
-	CreateCrow(ctx sdk.Context, buyOrderId uint64, addr sdk.AccAddress, collateral sdk.Coin) (uint64, error)
+	CreateCrow(ctx sdk.Context, msg escrowtypes.MsgBeginEscrow) (uint64, error)
 }

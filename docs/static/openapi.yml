@@ -30540,6 +30540,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/zeta/escrow/crow/{crowId}':
@@ -53638,6 +53648,18 @@ definitions:
         type: string
       addr:
         type: string
+  zeta.escrow.MsgBeginEscrowResponse:
+    type: object
+    properties:
+      crowId:
+        type: string
+        format: uint64
+  zeta.escrow.MsgRaiseBuyerDisputeResponse:
+    type: object
+    properties:
+      disputeId:
+        type: string
+        format: uint64
   zeta.escrow.Params:
     type: object
     description: Params defines the parameters for the module.

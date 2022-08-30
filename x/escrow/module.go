@@ -11,14 +11,15 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
+	"zeta/x/escrow/client/cli"
+	"zeta/x/escrow/keeper"
+	"zeta/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cdctypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
-	"zeta/x/escrow/client/cli"
-	"zeta/x/escrow/keeper"
-	"zeta/x/escrow/types"
 )
 
 var (
@@ -101,6 +102,8 @@ type AppModule struct {
 	keeper        keeper.Keeper
 	accountKeeper types.AccountKeeper
 	bankKeeper    types.BankKeeper
+
+	marketKeeper types.MarketKeeper
 }
 
 func NewAppModule(
@@ -108,12 +111,14 @@ func NewAppModule(
 	keeper keeper.Keeper,
 	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
+	marketKeeper types.MarketKeeper,
 ) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
+		marketKeeper:   marketKeeper,
 	}
 }
 

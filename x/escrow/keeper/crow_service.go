@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"zeta/x/escrow/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -8,6 +9,7 @@ import (
 )
 
 func NewCrow(crowId, buyOrderId uint64) types.Crow {
+
 	crow := &types.Crow{
 		CrowId:     crowId,
 		BuyOrderId: buyOrderId,
@@ -23,11 +25,11 @@ func NewCrow(crowId, buyOrderId uint64) types.Crow {
 	return *crow
 }
 
-func (k Keeper) CreateCrow(ctx sdk.Context, buyOrderId uint64, sellerAccAddr sdk.AccAddress, collateral sdk.Coin) (uint64, error) {
+func (k Keeper) CreateCrow(ctx sdk.Context, msg types.MsgBeginEscrow) (uint64, error) {
 	crowId := k.getNextCrowIdAndIncrement(ctx)
-	crow := NewCrow(crowId, buyOrderId)
+	crow := NewCrow(crowId, msg.BuyOrderId)
 
-	// create pool
+	// create escrow account
 	acc := k.accountKeeper.NewAccount(
 		ctx,
 		authtypes.NewModuleAccount(
@@ -37,8 +39,13 @@ func (k Keeper) CreateCrow(ctx sdk.Context, buyOrderId uint64, sellerAccAddr sdk
 	)
 	k.accountKeeper.SetAccount(ctx, acc)
 
+	fromAddr, err := sdk.AccAddressFromBech32(msg.Creator)
+	if err != nil {
+		panic(fmt.Sprintf("could not bech32 decode Addr of crow w/ id: %d", crow.CrowId))
+	}
+
 	// escrow collateral from seller
-	err := k.bankKeeper.SendCoins(ctx, sellerAccAddr, crow.GetAddress(), sdk.NewCoins(collateral))
+	err = k.bankKeeper.SendCoins(ctx, fromAddr, crow.GetAddress())
 	if err != nil {
 		return 0, err
 	}

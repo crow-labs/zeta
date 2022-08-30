@@ -93,27 +93,28 @@ func (k Keeper) validateAcceptBuyOrder(ctx sdk.Context, msg types.MsgAcceptBuyOr
 }
 
 func (k Keeper) AcceptBuyOrderAndEscrow(ctx sdk.Context, msg types.MsgAcceptBuyOrder) (uint64, error) {
-	bOrder, sOrder, err := k.validateAcceptBuyOrder(ctx, msg)
+
+	_, _, err := k.validateAcceptBuyOrder(ctx, msg)
 	if err != nil {
 		return 0, err
 	}
 
 	// create crow and escrow seller collateral
-	crowId, err := k.escrowKeeper.CreateCrow(ctx, msg.BuyOrderId, sdk.AccAddress(msg.Creator), bOrder.Collateral)
-	if err != nil {
-		return 0, err
-	}
+	// crowId, err := k.escrowKeeper.CreateCrow(ctx, *msg)
+	// if err != nil {
+	// 	return 0, err
+	// }
 
-	// update buy order
-	bOrder.CrowId = crowId
-	bOrder.Status = "AcceptedBySeller"
+	// // update buy order
+	// bOrder.CrowId = crowId
+	// bOrder.Status = "AcceptedBySeller"
 
-	// update sell order
-	sOrder.CrowId = crowId
-	sOrder.Status = "AcceptedBuyOrder"
+	// // update sell order
+	// sOrder.CrowId = crowId
+	// sOrder.Status = "AcceptedBuyOrder"
 
-	// update store
-	k.SetBuyOrder(ctx, bOrder)
-	k.SetSellOrder(ctx, sOrder)
-	return crowId, nil
+	// // update store
+	// k.SetBuyOrder(ctx, bOrder)
+	// k.SetSellOrder(ctx, sOrder)
+	return 0, nil
 }

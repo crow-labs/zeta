@@ -5,10 +5,11 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
+	"zeta/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"zeta/x/escrow/types"
 )
 
 type (
@@ -20,6 +21,7 @@ type (
 
 		accountKeeper types.AccountKeeper
 		bankKeeper    types.BankKeeper
+		marketKeeper  types.MarketKeeper
 	}
 )
 
@@ -30,6 +32,7 @@ func NewKeeper(
 	ps paramtypes.Subspace,
 
 	accountKeeper types.AccountKeeper, bankKeeper types.BankKeeper,
+	marketKeeper types.MarketKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -43,6 +46,7 @@ func NewKeeper(
 		memKey:        memKey,
 		paramstore:    ps,
 		accountKeeper: accountKeeper, bankKeeper: bankKeeper,
+		marketKeeper: marketKeeper,
 	}
 }
 

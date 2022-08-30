@@ -2,12 +2,42 @@ syntax = "proto3";
 package zeta.escrow;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+
 
 option go_package = "zeta/x/escrow/types";
 
 // Msg defines the Msg service.
 service Msg {
-    // this line is used by starport scaffolding # proto/tx/rpc
+      rpc RaiseBuyerDispute(MsgRaiseBuyerDispute) returns (MsgRaiseBuyerDisputeResponse);
+  rpc BeginEscrow(MsgBeginEscrow) returns (MsgBeginEscrowResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgRaiseBuyerDispute {
+  string creator = 1;
+  uint64 crowId = 2;
+  uint64 buyerId = 3;
+  string title = 4;
+  string description = 5;
+  string externalLink = 6;
+  repeated uint64 votes = 7;
+}
+
+message MsgRaiseBuyerDisputeResponse {
+  uint64 disputeId = 1;
+}
+
+message MsgBeginEscrow {
+  string creator = 1;
+  uint64 buyOrderId = 2;
+  cosmos.base.v1beta1.Coin collateral = 5 [(gogoproto.nullable) = false];
+
+}
+
+message MsgBeginEscrowResponse {
+  uint64 crowId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

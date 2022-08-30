@@ -439,8 +439,9 @@ func New(
 
 		app.AccountKeeper,
 		app.BankKeeper,
+		app.MarketKeeper,
 	)
-	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper)
+	escrowModule := escrowmodule.NewAppModule(appCodec, app.EscrowKeeper, app.AccountKeeper, app.BankKeeper, app.MarketKeeper)
 
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 

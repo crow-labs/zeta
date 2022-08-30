@@ -65,3 +65,22 @@ func (k Keeper) CreateBuyOrder(ctx sdk.Context, msg types.MsgPlaceBuyOrder) (uin
 
 	return buyOrderId, nil
 }
+
+func (k Keeper) GetSellerAddrFromBuyOrderId(ctx sdk.Context, bId uint64) (string, error) {
+	buyOrder, found := k.GetBuyOrder(ctx, bId)
+	if !found {
+		return "", types.ErrBuyOrderNotFound
+	}
+
+	sellOrder, found := k.GetSellOrder(ctx, buyOrder.GetBuyOrderId())
+	if !found {
+		return "", types.ErrSellOrderNotFound
+	}
+
+	addr, err := k.whitelistKeeper.GetSellerAddrFromId(ctx, sellOrder.GetSellerId())
+	if err != nil {
+		return "", err
+	}
+
+	return addr, nil
+}
