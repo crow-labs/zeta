@@ -37,13 +37,22 @@ func (k Keeper) UpdateOrdersStatus(ctx sdk.Context, crowId, bOrderId uint64, bOr
 	return nil
 }
 
-func (k Keeper) GetCollateralFromBuyOrder(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error) {
+func (k Keeper) GetCollateralFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error) {
 	bOrder, found := k.GetBuyOrder(ctx, bOrderId)
 	if !found {
 		return sdk.Coin{}, types.ErrBuyOrderNotFound
 	}
 
 	return bOrder.Collateral, nil
+}
+
+func (k Keeper) GetBuyerPaymentFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error) {
+	bOrder, found := k.GetBuyOrder(ctx, bOrderId)
+	if !found {
+		return sdk.Coin{}, types.ErrBuyOrderNotFound
+	}
+
+	return bOrder.Price, nil
 }
 
 func (k Keeper) ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error {
@@ -64,6 +73,24 @@ func (k Keeper) ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, cr
 
 	if sellerAddr != creator {
 		return types.ErrInvalidSellerIdForAddr
+	}
+
+	return nil
+}
+
+func (k Keeper) ValidateBuyerJoinEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error {
+	bOrder, found := k.GetBuyOrder(ctx, buyOrderId)
+	if !found {
+		return types.ErrBuyOrderNotFound
+	}
+
+	buyerAddr, err := k.whitelistKeeper.GetBuyerAddrFromId(ctx, bOrder.BuyerId)
+	if err != nil {
+		return err
+	}
+
+	if buyerAddr != creator {
+		return types.ErrInvalidBuyerIdForAddr
 	}
 
 	return nil
