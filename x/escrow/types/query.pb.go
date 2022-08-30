@@ -6,7 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
+	_ "github.com/cosmos/cosmos-sdk/types"
+	query "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
@@ -113,33 +114,232 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
+type QueryGetCrowRequest struct {
+	CrowId uint64 `protobuf:"varint,1,opt,name=crowId,proto3" json:"crowId,omitempty"`
+}
+
+func (m *QueryGetCrowRequest) Reset()         { *m = QueryGetCrowRequest{} }
+func (m *QueryGetCrowRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCrowRequest) ProtoMessage()    {}
+func (*QueryGetCrowRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6d37bf65b8b6e159, []int{2}
+}
+func (m *QueryGetCrowRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCrowRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCrowRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCrowRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCrowRequest.Merge(m, src)
+}
+func (m *QueryGetCrowRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCrowRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCrowRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCrowRequest proto.InternalMessageInfo
+
+func (m *QueryGetCrowRequest) GetCrowId() uint64 {
+	if m != nil {
+		return m.CrowId
+	}
+	return 0
+}
+
+type QueryGetCrowResponse struct {
+	Crow Crow `protobuf:"bytes,1,opt,name=crow,proto3" json:"crow"`
+}
+
+func (m *QueryGetCrowResponse) Reset()         { *m = QueryGetCrowResponse{} }
+func (m *QueryGetCrowResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCrowResponse) ProtoMessage()    {}
+func (*QueryGetCrowResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6d37bf65b8b6e159, []int{3}
+}
+func (m *QueryGetCrowResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCrowResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCrowResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCrowResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCrowResponse.Merge(m, src)
+}
+func (m *QueryGetCrowResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCrowResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCrowResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCrowResponse proto.InternalMessageInfo
+
+func (m *QueryGetCrowResponse) GetCrow() Crow {
+	if m != nil {
+		return m.Crow
+	}
+	return Crow{}
+}
+
+type QueryAllCrowRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCrowRequest) Reset()         { *m = QueryAllCrowRequest{} }
+func (m *QueryAllCrowRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCrowRequest) ProtoMessage()    {}
+func (*QueryAllCrowRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6d37bf65b8b6e159, []int{4}
+}
+func (m *QueryAllCrowRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCrowRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCrowRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCrowRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCrowRequest.Merge(m, src)
+}
+func (m *QueryAllCrowRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCrowRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCrowRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCrowRequest proto.InternalMessageInfo
+
+func (m *QueryAllCrowRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllCrowResponse struct {
+	Crow       []Crow              `protobuf:"bytes,1,rep,name=crow,proto3" json:"crow"`
+	Pagination *query.PageResponse `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCrowResponse) Reset()         { *m = QueryAllCrowResponse{} }
+func (m *QueryAllCrowResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCrowResponse) ProtoMessage()    {}
+func (*QueryAllCrowResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_6d37bf65b8b6e159, []int{5}
+}
+func (m *QueryAllCrowResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCrowResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCrowResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCrowResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCrowResponse.Merge(m, src)
+}
+func (m *QueryAllCrowResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCrowResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCrowResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCrowResponse proto.InternalMessageInfo
+
+func (m *QueryAllCrowResponse) GetCrow() []Crow {
+	if m != nil {
+		return m.Crow
+	}
+	return nil
+}
+
+func (m *QueryAllCrowResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "zeta.escrow.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "zeta.escrow.QueryParamsResponse")
+	proto.RegisterType((*QueryGetCrowRequest)(nil), "zeta.escrow.QueryGetCrowRequest")
+	proto.RegisterType((*QueryGetCrowResponse)(nil), "zeta.escrow.QueryGetCrowResponse")
+	proto.RegisterType((*QueryAllCrowRequest)(nil), "zeta.escrow.QueryAllCrowRequest")
+	proto.RegisterType((*QueryAllCrowResponse)(nil), "zeta.escrow.QueryAllCrowResponse")
 }
 
 func init() { proto.RegisterFile("escrow/query.proto", fileDescriptor_6d37bf65b8b6e159) }
 
 var fileDescriptor_6d37bf65b8b6e159 = []byte{
-	// 276 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x90, 0x41, 0x4b, 0xc3, 0x30,
-	0x1c, 0xc5, 0x5b, 0xd1, 0x1e, 0xb2, 0x5b, 0x3a, 0x41, 0xaa, 0x64, 0xa3, 0x27, 0x11, 0x6c, 0xe8,
-	0xfc, 0x06, 0x3b, 0x79, 0xd4, 0x1d, 0xbd, 0xa5, 0xe3, 0x4f, 0x2d, 0xb8, 0xfc, 0xd3, 0x26, 0x53,
-	0xe7, 0xd1, 0x4f, 0x20, 0xf8, 0xa5, 0x76, 0x1c, 0x78, 0xf1, 0x24, 0xd2, 0xfa, 0x41, 0xa4, 0x49,
-	0x04, 0x8b, 0x78, 0x0b, 0xef, 0xfd, 0xde, 0xcb, 0x4b, 0x08, 0x05, 0xbd, 0x6c, 0xf0, 0x81, 0xd7,
-	0x6b, 0x68, 0x36, 0x99, 0x6a, 0xd0, 0x20, 0x1d, 0x3d, 0x81, 0x11, 0x99, 0x33, 0x92, 0x71, 0x89,
-	0x25, 0x5a, 0x9d, 0xf7, 0x27, 0x87, 0x24, 0x27, 0x25, 0x62, 0x79, 0x07, 0x5c, 0xa8, 0x8a, 0x0b,
-	0x29, 0xd1, 0x08, 0x53, 0xa1, 0xd4, 0xde, 0x3d, 0x5b, 0xa2, 0x5e, 0xa1, 0xe6, 0x85, 0xd0, 0xe0,
-	0x9a, 0xf9, 0x7d, 0x5e, 0x80, 0x11, 0x39, 0x57, 0xa2, 0xac, 0xa4, 0x85, 0x3d, 0x1b, 0xfb, 0x01,
-	0x4a, 0x34, 0x62, 0xe5, 0x0b, 0xd2, 0x31, 0xa1, 0xd7, 0x7d, 0xec, 0xca, 0x8a, 0x0b, 0xa8, 0xd7,
-	0xa0, 0x4d, 0x7a, 0x49, 0xe2, 0x81, 0xaa, 0x15, 0x4a, 0x0d, 0x34, 0x27, 0x91, 0x0b, 0x1f, 0x85,
-	0xd3, 0xf0, 0x74, 0x34, 0x8b, 0xb3, 0x5f, 0xfb, 0x33, 0x07, 0xcf, 0xf7, 0xb7, 0x1f, 0x93, 0x60,
-	0xe1, 0xc1, 0x59, 0x4d, 0x0e, 0x6c, 0x13, 0xbd, 0x25, 0x91, 0x03, 0xe8, 0x64, 0x90, 0xfa, 0x7b,
-	0x7b, 0x32, 0xfd, 0x1f, 0x70, 0x43, 0xd2, 0xe3, 0xe7, 0xb7, 0xaf, 0xd7, 0xbd, 0x43, 0x1a, 0xf3,
-	0x9e, 0xe4, 0x83, 0x87, 0xcd, 0xcf, 0xb7, 0x2d, 0x0b, 0x77, 0x2d, 0x0b, 0x3f, 0x5b, 0x16, 0xbe,
-	0x74, 0x2c, 0xd8, 0x75, 0x2c, 0x78, 0xef, 0x58, 0x70, 0x13, 0x5b, 0xfa, 0xf1, 0x87, 0x37, 0x1b,
-	0x05, 0xba, 0x88, 0xec, 0x47, 0x5c, 0x7c, 0x07, 0x00, 0x00, 0xff, 0xff, 0xaf, 0x1d, 0x58, 0x2f,
-	0xa0, 0x01, 0x00, 0x00,
+	// 463 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x93, 0x41, 0x6f, 0xd3, 0x30,
+	0x14, 0xc7, 0x93, 0x12, 0x82, 0xe4, 0x9d, 0xea, 0x14, 0x04, 0x61, 0xca, 0x86, 0x0f, 0x80, 0x40,
+	0xb3, 0xd5, 0xf1, 0x09, 0xb6, 0x49, 0x0c, 0x6e, 0x23, 0x47, 0x24, 0x0e, 0x6e, 0xb1, 0x42, 0xa4,
+	0x2c, 0xce, 0x62, 0x8f, 0x31, 0x10, 0x17, 0xce, 0x1c, 0x90, 0xf8, 0x52, 0xbd, 0x20, 0x55, 0xe2,
+	0xc2, 0x09, 0xa1, 0x96, 0x0f, 0x82, 0x6c, 0xbf, 0x40, 0x4c, 0x0b, 0xbd, 0x44, 0xe9, 0xeb, 0xff,
+	0xfd, 0x7f, 0x7f, 0xbf, 0xe7, 0x20, 0x2c, 0xd4, 0xb4, 0x95, 0x17, 0xec, 0xec, 0x5c, 0xb4, 0x97,
+	0xb4, 0x69, 0xa5, 0x96, 0x78, 0xeb, 0xad, 0xd0, 0x9c, 0xba, 0x3f, 0xd2, 0xed, 0x42, 0xca, 0xa2,
+	0x12, 0x8c, 0x37, 0x25, 0xe3, 0x75, 0x2d, 0x35, 0xd7, 0xa5, 0xac, 0x95, 0x93, 0xa6, 0x0f, 0xa6,
+	0x52, 0x9d, 0x4a, 0xc5, 0x26, 0x5c, 0x09, 0xe7, 0xc1, 0x5e, 0x8f, 0x27, 0x42, 0xf3, 0x31, 0x6b,
+	0x78, 0x51, 0xd6, 0x56, 0x0c, 0xda, 0x04, 0x50, 0x0d, 0x6f, 0xf9, 0x69, 0x67, 0x30, 0x84, 0xa2,
+	0x79, 0x40, 0x29, 0xeb, 0x7b, 0x76, 0x6e, 0x53, 0x59, 0x76, 0x3e, 0xa3, 0x42, 0x16, 0xd2, 0xbe,
+	0x32, 0xf3, 0xe6, 0xaa, 0x64, 0x84, 0xf0, 0x33, 0xc3, 0x3f, 0xb1, 0xee, 0xb9, 0x38, 0x3b, 0x17,
+	0x4a, 0x93, 0x27, 0x28, 0xf1, 0xaa, 0xaa, 0x91, 0xb5, 0x12, 0x78, 0x8c, 0x62, 0x97, 0xe2, 0x66,
+	0xb8, 0x1b, 0xde, 0xdf, 0xda, 0x4f, 0x68, 0xef, 0xc8, 0xd4, 0x89, 0x0f, 0xa3, 0xd9, 0xf7, 0x9d,
+	0x20, 0x07, 0x21, 0xd9, 0x03, 0xa7, 0x63, 0xa1, 0x8f, 0x5a, 0x79, 0x01, 0x00, 0x7c, 0x03, 0xc5,
+	0xa6, 0xe7, 0xe9, 0x4b, 0xeb, 0x14, 0xe5, 0xf0, 0x8b, 0x1c, 0xa1, 0x91, 0x2f, 0x07, 0xf2, 0x43,
+	0x14, 0x19, 0x05, 0x70, 0x87, 0x1e, 0xd7, 0x08, 0x81, 0x6a, 0x45, 0xe4, 0x05, 0x30, 0x0f, 0xaa,
+	0xaa, 0xcf, 0x7c, 0x8c, 0xd0, 0x9f, 0xe1, 0x82, 0xd3, 0x5d, 0xea, 0xa6, 0x46, 0xcd, 0xd4, 0xa8,
+	0xdb, 0x26, 0xcc, 0x8e, 0x9e, 0xf0, 0x42, 0x40, 0x6f, 0xde, 0xeb, 0x24, 0x1f, 0x43, 0x08, 0xf9,
+	0xdb, 0x7f, 0x25, 0xe4, 0x95, 0x8d, 0x21, 0xf1, 0xb1, 0x97, 0x66, 0x60, 0xd3, 0xdc, 0xdb, 0x98,
+	0xc6, 0x91, 0xfa, 0x71, 0xf6, 0xbf, 0x0c, 0xd0, 0x55, 0x1b, 0x07, 0xbf, 0x42, 0xb1, 0xdb, 0x01,
+	0xde, 0xf1, 0xd8, 0xab, 0x0b, 0x4e, 0x77, 0xff, 0x2d, 0x70, 0x08, 0x72, 0xfb, 0xc3, 0xd7, 0x9f,
+	0x9f, 0x07, 0xd7, 0x71, 0xc2, 0x8c, 0x92, 0x79, 0x97, 0x10, 0x4b, 0x14, 0x99, 0x03, 0xe1, 0x35,
+	0x36, 0xfe, 0xa2, 0xd3, 0x3b, 0xff, 0x51, 0x00, 0x89, 0x58, 0xd2, 0x36, 0x4e, 0x3d, 0x92, 0x7d,
+	0xbc, 0x73, 0xd7, 0xe2, 0x3d, 0x2e, 0xd1, 0x35, 0xd3, 0x73, 0x50, 0x55, 0xeb, 0x98, 0xfe, 0xa2,
+	0xd7, 0x31, 0xff, 0x5a, 0x15, 0xb9, 0x65, 0x99, 0x09, 0x1e, 0xae, 0x30, 0x0f, 0xf7, 0x66, 0x8b,
+	0x2c, 0x9c, 0x2f, 0xb2, 0xf0, 0xc7, 0x22, 0x0b, 0x3f, 0x2d, 0xb3, 0x60, 0xbe, 0xcc, 0x82, 0x6f,
+	0xcb, 0x2c, 0x78, 0x9e, 0x58, 0xed, 0x9b, 0x4e, 0xad, 0x2f, 0x1b, 0xa1, 0x26, 0xb1, 0xfd, 0x8e,
+	0x1e, 0xfd, 0x0a, 0x00, 0x00, 0xff, 0xff, 0xb6, 0xf6, 0x52, 0x56, 0x12, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -156,6 +356,10 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a Crow by index.
+	Crow(ctx context.Context, in *QueryGetCrowRequest, opts ...grpc.CallOption) (*QueryGetCrowResponse, error)
+	// Queries a list of Crow items.
+	CrowAll(ctx context.Context, in *QueryAllCrowRequest, opts ...grpc.CallOption) (*QueryAllCrowResponse, error)
 }
 
 type queryClient struct {
@@ -175,10 +379,32 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) Crow(ctx context.Context, in *QueryGetCrowRequest, opts ...grpc.CallOption) (*QueryGetCrowResponse, error) {
+	out := new(QueryGetCrowResponse)
+	err := c.cc.Invoke(ctx, "/zeta.escrow.Query/Crow", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CrowAll(ctx context.Context, in *QueryAllCrowRequest, opts ...grpc.CallOption) (*QueryAllCrowResponse, error) {
+	out := new(QueryAllCrowResponse)
+	err := c.cc.Invoke(ctx, "/zeta.escrow.Query/CrowAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a Crow by index.
+	Crow(context.Context, *QueryGetCrowRequest) (*QueryGetCrowResponse, error)
+	// Queries a list of Crow items.
+	CrowAll(context.Context, *QueryAllCrowRequest) (*QueryAllCrowResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -187,6 +413,12 @@ type UnimplementedQueryServer struct {
 
 func (*UnimplementedQueryServer) Params(ctx context.Context, req *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (*UnimplementedQueryServer) Crow(ctx context.Context, req *QueryGetCrowRequest) (*QueryGetCrowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Crow not implemented")
+}
+func (*UnimplementedQueryServer) CrowAll(ctx context.Context, req *QueryAllCrowRequest) (*QueryAllCrowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CrowAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -211,6 +443,42 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Crow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetCrowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Crow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zeta.escrow.Query/Crow",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Crow(ctx, req.(*QueryGetCrowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CrowAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllCrowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CrowAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zeta.escrow.Query/CrowAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CrowAll(ctx, req.(*QueryAllCrowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "zeta.escrow.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -218,6 +486,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "Crow",
+			Handler:    _Query_Crow_Handler,
+		},
+		{
+			MethodName: "CrowAll",
+			Handler:    _Query_CrowAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -280,6 +556,151 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetCrowRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCrowRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCrowRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.CrowId != 0 {
+		i = encodeVarintQuery(dAtA, i, uint64(m.CrowId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetCrowResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCrowResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCrowResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Crow.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCrowRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCrowRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCrowRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCrowResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCrowResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCrowResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Crow) > 0 {
+		for iNdEx := len(m.Crow) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.Crow[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -308,6 +729,61 @@ func (m *QueryParamsResponse) Size() (n int) {
 	_ = l
 	l = m.Params.Size()
 	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryGetCrowRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.CrowId != 0 {
+		n += 1 + sovQuery(uint64(m.CrowId))
+	}
+	return n
+}
+
+func (m *QueryGetCrowResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Crow.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllCrowRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllCrowResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.Crow) > 0 {
+		for _, e := range m.Crow {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
 	return n
 }
 
@@ -426,6 +902,364 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			if err := m.Params.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCrowRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCrowRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCrowRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CrowId", wireType)
+			}
+			m.CrowId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CrowId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCrowResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCrowResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCrowResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Crow", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Crow.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCrowRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCrowRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCrowRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCrowResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCrowResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCrowResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Crow", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Crow = append(m.Crow, Crow{})
+			if err := m.Crow[len(m.Crow)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
