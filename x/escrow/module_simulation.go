@@ -32,6 +32,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgJoinEscrow int = 100
 
+	opWeightMsgCompleteEscrowNoDispute = "op_weight_msg_complete_escrow_no_dispute"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCompleteEscrowNoDispute int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -86,6 +90,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgJoinEscrow,
 		escrowsimulation.SimulateMsgJoinEscrow(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCompleteEscrowNoDispute int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCompleteEscrowNoDispute, &weightMsgCompleteEscrowNoDispute, nil,
+		func(_ *rand.Rand) {
+			weightMsgCompleteEscrowNoDispute = defaultWeightMsgCompleteEscrowNoDispute
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCompleteEscrowNoDispute,
+		escrowsimulation.SimulateMsgCompleteEscrowNoDispute(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

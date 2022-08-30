@@ -20,6 +20,13 @@ export interface MsgJoinEscrow {
 
 export interface MsgJoinEscrowResponse {}
 
+export interface MsgCompleteEscrowNoDispute {
+  creator: string;
+  crowId: number;
+}
+
+export interface MsgCompleteEscrowNoDisputeResponse {}
+
 const baseMsgBeginEscrow: object = { creator: "", buyOrderId: 0 };
 
 export const MsgBeginEscrow = {
@@ -262,11 +269,152 @@ export const MsgJoinEscrowResponse = {
   },
 };
 
+const baseMsgCompleteEscrowNoDispute: object = { creator: "", crowId: 0 };
+
+export const MsgCompleteEscrowNoDispute = {
+  encode(
+    message: MsgCompleteEscrowNoDispute,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.crowId !== 0) {
+      writer.uint32(16).uint64(message.crowId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCompleteEscrowNoDispute {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCompleteEscrowNoDispute,
+    } as MsgCompleteEscrowNoDispute;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.crowId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCompleteEscrowNoDispute {
+    const message = {
+      ...baseMsgCompleteEscrowNoDispute,
+    } as MsgCompleteEscrowNoDispute;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = Number(object.crowId);
+    } else {
+      message.crowId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCompleteEscrowNoDispute): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.crowId !== undefined && (obj.crowId = message.crowId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCompleteEscrowNoDispute>
+  ): MsgCompleteEscrowNoDispute {
+    const message = {
+      ...baseMsgCompleteEscrowNoDispute,
+    } as MsgCompleteEscrowNoDispute;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = object.crowId;
+    } else {
+      message.crowId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgCompleteEscrowNoDisputeResponse: object = {};
+
+export const MsgCompleteEscrowNoDisputeResponse = {
+  encode(
+    _: MsgCompleteEscrowNoDisputeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCompleteEscrowNoDisputeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCompleteEscrowNoDisputeResponse,
+    } as MsgCompleteEscrowNoDisputeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCompleteEscrowNoDisputeResponse {
+    const message = {
+      ...baseMsgCompleteEscrowNoDisputeResponse,
+    } as MsgCompleteEscrowNoDisputeResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCompleteEscrowNoDisputeResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCompleteEscrowNoDisputeResponse>
+  ): MsgCompleteEscrowNoDisputeResponse {
+    const message = {
+      ...baseMsgCompleteEscrowNoDisputeResponse,
+    } as MsgCompleteEscrowNoDisputeResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   BeginEscrow(request: MsgBeginEscrow): Promise<MsgBeginEscrowResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   JoinEscrow(request: MsgJoinEscrow): Promise<MsgJoinEscrowResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CompleteEscrowNoDispute(
+    request: MsgCompleteEscrowNoDispute
+  ): Promise<MsgCompleteEscrowNoDisputeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -287,6 +435,20 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.escrow.Msg", "JoinEscrow", data);
     return promise.then((data) =>
       MsgJoinEscrowResponse.decode(new Reader(data))
+    );
+  }
+
+  CompleteEscrowNoDispute(
+    request: MsgCompleteEscrowNoDispute
+  ): Promise<MsgCompleteEscrowNoDisputeResponse> {
+    const data = MsgCompleteEscrowNoDispute.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.escrow.Msg",
+      "CompleteEscrowNoDispute",
+      data
+    );
+    return promise.then((data) =>
+      MsgCompleteEscrowNoDisputeResponse.decode(new Reader(data))
     );
   }
 }

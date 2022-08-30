@@ -54,6 +54,8 @@ export interface EscrowMsgBeginEscrowResponse {
   crowId?: string;
 }
 
+export type EscrowMsgCompleteEscrowNoDisputeResponse = object;
+
 export type EscrowMsgJoinEscrowResponse = object;
 
 /**
