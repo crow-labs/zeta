@@ -9,8 +9,11 @@ import (
 type MarketKeeper interface {
 	// Methods imported from market should be defined here
 	UpdateOrdersStatus(ctx sdk.Context, crowId, bOrderId uint64, bOrderStatus, sOrderStatus string) error
-	GetCollateralFromBuyOrder(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error)
+	GetCollateralFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error)
+	GetBuyerPaymentFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (sdk.Coin, error)
+	GetSellerAddrFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (string, error)
 	ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error
+	ValidateBuyerInEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error
 }
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
@@ -24,6 +27,7 @@ type AccountKeeper interface {
 
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
+	HasBalance(ctx sdk.Context, addr sdk.AccAddress, amt sdk.Coin) bool
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
 	// Methods imported from bank should be defined here
 	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error

@@ -8,6 +8,8 @@ option go_package = "zeta/x/escrow/types";
 // Msg defines the Msg service.
 service Msg {
       rpc BeginEscrow(MsgBeginEscrow) returns (MsgBeginEscrowResponse);
+  rpc JoinEscrow(MsgJoinEscrow) returns (MsgJoinEscrowResponse);
+  rpc CompleteEscrowNoDispute(MsgCompleteEscrowNoDispute) returns (MsgCompleteEscrowNoDisputeResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -18,6 +20,22 @@ message MsgBeginEscrow {
 
 message MsgBeginEscrowResponse {
   uint64 crowId = 1;
+}
+
+message MsgJoinEscrow {
+  string creator = 1;
+  uint64 crowId = 2;
+}
+
+message MsgJoinEscrowResponse {
+}
+
+message MsgCompleteEscrowNoDispute {
+  string creator = 1;
+  uint64 crowId = 2;
+}
+
+message MsgCompleteEscrowNoDisputeResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
