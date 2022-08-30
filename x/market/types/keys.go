@@ -25,8 +25,10 @@ const (
 
 var (
 	// PortKey defines the key to store the port ID in store
-	PortKey             = KeyPrefix("market-port-")
-	KeyNextGlobalItemId = []byte{0x04}
+	PortKey                  = KeyPrefix("market-port-")
+	KeyNextGlobalItemId      = []byte{0x04}
+	KeyNextGlobalSellOrderId = []byte{0x05}
+	KeyNextGlobalBuyOrderId  = []byte{0x06}
 )
 
 func KeyPrefix(p string) []byte {

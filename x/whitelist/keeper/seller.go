@@ -129,3 +129,71 @@ func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error 
 
 	return nil
 }
+
+func (k Keeper) GetSellOrdersWithItemId(ctx sdk.Context, seller types.Seller, itemId uint64) ([]uint64, error) {
+	if len(seller.ActiveOrder) == 0 {
+		return nil, nil
+	}
+
+	// TODO: for each active order for the seller, check if the item id matches the given itemId
+	// and add it to the list of order Id's to be returned
+
+	return nil, nil
+}
+
+func (k Keeper) RemoveItemFromSeller(ctx sdk.Context, sellerId, itemId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	if len(seller.ActiveItem) == 0 {
+		return types.ErrItemNotFound
+	}
+
+	// TODO: change to orders, err := ... once orders have been added
+	_, err := k.GetSellOrdersWithItemId(ctx, seller, itemId)
+	if err != nil {
+		return err
+	}
+	// TODO: check if returned orders contain are in escrow - if so error
+	// or - should GetSellOrdersWithItemId only return sell orders that are not in escrow?
+
+	items := make([]uint64, 0, len(seller.ActiveItem)-1)
+
+	// is there a faster way to do this thats not O(n)?
+	// should we use a map and how would it be indexed?
+	// the items list per seller shouldn't be too large so this shouldn't be an issue
+	// however it should still be considered
+	for i := 0; i < len(seller.ActiveItem); i++ {
+		if seller.ActiveItem[i] != itemId {
+			items = append(items, seller.ActiveItem[i])
+		}
+	}
+
+	seller.ActiveItem = items
+
+	k.SetSeller(ctx, seller)
+	return nil
+}
+
+func (k Keeper) AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	numOrder := len(seller.ActiveOrder)
+	order := make([]uint64, 0, numOrder+1)
+
+	for i := 0; i < numOrder; i++ {
+		order = append(order, seller.ActiveOrder[i])
+	}
+	order = append(order, sellOrderId)
+
+	seller.ActiveOrder = order
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}

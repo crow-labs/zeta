@@ -14,6 +14,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.ItemList {
 		k.SetItem(ctx, elem)
 	}
+	// Set all the sellOrder
+	for _, elem := range genState.SellOrderList {
+		k.SetSellOrder(ctx, elem)
+	}
+	// Set all the buyOrder
+	for _, elem := range genState.BuyOrderList {
+		k.SetBuyOrder(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetPort(ctx, genState.PortId)
 	// Only try to bind to port if it is not already bound, since we may already own
@@ -28,6 +36,8 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	}
 	k.SetParams(ctx, genState.Params)
 	k.SetNextItemId(ctx, genState.NextItemId)
+	k.SetNextSellOrderId(ctx, genState.NextSellOrderId)
+	k.SetNextBuyOrderId(ctx, genState.NextBuyOrderId)
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -37,8 +47,12 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.PortId = k.GetPort(ctx)
 	genesis.ItemList = k.GetAllItem(ctx)
+	genesis.SellOrderList = k.GetAllSellOrder(ctx)
+	genesis.BuyOrderList = k.GetAllBuyOrder(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	genesis.NextItemId = k.GetNextItemId(ctx)
+	genesis.NextSellOrderId = k.GetNextSellOrderId(ctx)
+	genesis.NextBuyOrderId = k.GetNextBuyOrderId(ctx)
 	return genesis
 }

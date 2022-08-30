@@ -3,6 +3,8 @@ import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../market/params";
 import { Item } from "../market/item";
+import { SellOrder } from "../market/sell_order";
+import { BuyOrder } from "../market/buy_order";
 
 export const protobufPackage = "zeta.market";
 
@@ -11,11 +13,20 @@ export interface GenesisState {
   params: Params | undefined;
   port_id: string;
   itemList: Item[];
+  sellOrderList: SellOrder[];
+  buyOrderList: BuyOrder[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextItemId: number;
+  nextSellOrderId: number;
+  nextBuyOrderId: number;
 }
 
-const baseGenesisState: object = { port_id: "", nextItemId: 0 };
+const baseGenesisState: object = {
+  port_id: "",
+  nextItemId: 0,
+  nextSellOrderId: 0,
+  nextBuyOrderId: 0,
+};
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -28,8 +39,20 @@ export const GenesisState = {
     for (const v of message.itemList) {
       Item.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    for (const v of message.sellOrderList) {
+      SellOrder.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    for (const v of message.buyOrderList) {
+      BuyOrder.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     if (message.nextItemId !== 0) {
-      writer.uint32(32).uint64(message.nextItemId);
+      writer.uint32(40).uint64(message.nextItemId);
+    }
+    if (message.nextSellOrderId !== 0) {
+      writer.uint32(48).uint64(message.nextSellOrderId);
+    }
+    if (message.nextBuyOrderId !== 0) {
+      writer.uint32(56).uint64(message.nextBuyOrderId);
     }
     return writer;
   },
@@ -39,6 +62,8 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
+    message.sellOrderList = [];
+    message.buyOrderList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -52,7 +77,19 @@ export const GenesisState = {
           message.itemList.push(Item.decode(reader, reader.uint32()));
           break;
         case 4:
+          message.sellOrderList.push(SellOrder.decode(reader, reader.uint32()));
+          break;
+        case 8:
+          message.buyOrderList.push(BuyOrder.decode(reader, reader.uint32()));
+          break;
+        case 5:
           message.nextItemId = longToNumber(reader.uint64() as Long);
+          break;
+        case 6:
+          message.nextSellOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        case 7:
+          message.nextBuyOrderId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -65,6 +102,8 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
+    message.sellOrderList = [];
+    message.buyOrderList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -80,10 +119,33 @@ export const GenesisState = {
         message.itemList.push(Item.fromJSON(e));
       }
     }
+    if (object.sellOrderList !== undefined && object.sellOrderList !== null) {
+      for (const e of object.sellOrderList) {
+        message.sellOrderList.push(SellOrder.fromJSON(e));
+      }
+    }
+    if (object.buyOrderList !== undefined && object.buyOrderList !== null) {
+      for (const e of object.buyOrderList) {
+        message.buyOrderList.push(BuyOrder.fromJSON(e));
+      }
+    }
     if (object.nextItemId !== undefined && object.nextItemId !== null) {
       message.nextItemId = Number(object.nextItemId);
     } else {
       message.nextItemId = 0;
+    }
+    if (
+      object.nextSellOrderId !== undefined &&
+      object.nextSellOrderId !== null
+    ) {
+      message.nextSellOrderId = Number(object.nextSellOrderId);
+    } else {
+      message.nextSellOrderId = 0;
+    }
+    if (object.nextBuyOrderId !== undefined && object.nextBuyOrderId !== null) {
+      message.nextBuyOrderId = Number(object.nextBuyOrderId);
+    } else {
+      message.nextBuyOrderId = 0;
     }
     return message;
   },
@@ -100,13 +162,33 @@ export const GenesisState = {
     } else {
       obj.itemList = [];
     }
+    if (message.sellOrderList) {
+      obj.sellOrderList = message.sellOrderList.map((e) =>
+        e ? SellOrder.toJSON(e) : undefined
+      );
+    } else {
+      obj.sellOrderList = [];
+    }
+    if (message.buyOrderList) {
+      obj.buyOrderList = message.buyOrderList.map((e) =>
+        e ? BuyOrder.toJSON(e) : undefined
+      );
+    } else {
+      obj.buyOrderList = [];
+    }
     message.nextItemId !== undefined && (obj.nextItemId = message.nextItemId);
+    message.nextSellOrderId !== undefined &&
+      (obj.nextSellOrderId = message.nextSellOrderId);
+    message.nextBuyOrderId !== undefined &&
+      (obj.nextBuyOrderId = message.nextBuyOrderId);
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.itemList = [];
+    message.sellOrderList = [];
+    message.buyOrderList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -122,10 +204,33 @@ export const GenesisState = {
         message.itemList.push(Item.fromPartial(e));
       }
     }
+    if (object.sellOrderList !== undefined && object.sellOrderList !== null) {
+      for (const e of object.sellOrderList) {
+        message.sellOrderList.push(SellOrder.fromPartial(e));
+      }
+    }
+    if (object.buyOrderList !== undefined && object.buyOrderList !== null) {
+      for (const e of object.buyOrderList) {
+        message.buyOrderList.push(BuyOrder.fromPartial(e));
+      }
+    }
     if (object.nextItemId !== undefined && object.nextItemId !== null) {
       message.nextItemId = object.nextItemId;
     } else {
       message.nextItemId = 0;
+    }
+    if (
+      object.nextSellOrderId !== undefined &&
+      object.nextSellOrderId !== null
+    ) {
+      message.nextSellOrderId = object.nextSellOrderId;
+    } else {
+      message.nextSellOrderId = 0;
+    }
+    if (object.nextBuyOrderId !== undefined && object.nextBuyOrderId !== null) {
+      message.nextBuyOrderId = object.nextBuyOrderId;
+    } else {
+      message.nextBuyOrderId = 0;
     }
     return message;
   },

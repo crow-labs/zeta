@@ -3,16 +3,17 @@ package cli
 import (
 	"context"
 
+	"zeta/x/market/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
-	"zeta/x/market/types"
 )
 
-func CmdListItem() *cobra.Command {
+func CmdListItems() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "list-item",
+		Use:   "list-items",
 		Short: "list all item",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx := client.GetClientContextFromCmd(cmd)

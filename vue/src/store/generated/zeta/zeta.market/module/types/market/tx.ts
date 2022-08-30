@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
+import { Coin } from "../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "zeta.market";
 
@@ -14,6 +15,38 @@ export interface MsgPrepareItem {
 
 export interface MsgPrepareItemResponse {
   itemId: number;
+}
+
+export interface MsgRemoveItem {
+  creator: string;
+  itemId: number;
+  sellerId: number;
+}
+
+export interface MsgRemoveItemResponse {}
+
+export interface MsgListItem {
+  creator: string;
+  itemId: number;
+  sellerId: number;
+  price: Coin | undefined;
+  collateral: Coin | undefined;
+}
+
+export interface MsgListItemResponse {
+  sellOrderId: number;
+}
+
+export interface MsgPlaceBuyOrder {
+  creator: string;
+  sellOrderId: number;
+  buyerId: number;
+  price: Coin | undefined;
+  collateral: Coin | undefined;
+}
+
+export interface MsgPlaceBuyOrderResponse {
+  buyOrderId: number;
 }
 
 const baseMsgPrepareItem: object = {
@@ -206,10 +239,527 @@ export const MsgPrepareItemResponse = {
   },
 };
 
+const baseMsgRemoveItem: object = { creator: "", itemId: 0, sellerId: 0 };
+
+export const MsgRemoveItem = {
+  encode(message: MsgRemoveItem, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.itemId !== 0) {
+      writer.uint32(16).uint64(message.itemId);
+    }
+    if (message.sellerId !== 0) {
+      writer.uint32(24).uint64(message.sellerId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveItem {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.itemId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRemoveItem {
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = Number(object.itemId);
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRemoveItem): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRemoveItem>): MsgRemoveItem {
+    const message = { ...baseMsgRemoveItem } as MsgRemoveItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = object.itemId;
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgRemoveItemResponse: object = {};
+
+export const MsgRemoveItemResponse = {
+  encode(_: MsgRemoveItemResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveItemResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRemoveItemResponse {
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    return message;
+  },
+
+  toJSON(_: MsgRemoveItemResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgRemoveItemResponse>): MsgRemoveItemResponse {
+    const message = { ...baseMsgRemoveItemResponse } as MsgRemoveItemResponse;
+    return message;
+  },
+};
+
+const baseMsgListItem: object = { creator: "", itemId: 0, sellerId: 0 };
+
+export const MsgListItem = {
+  encode(message: MsgListItem, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.itemId !== 0) {
+      writer.uint32(16).uint64(message.itemId);
+    }
+    if (message.sellerId !== 0) {
+      writer.uint32(24).uint64(message.sellerId);
+    }
+    if (message.price !== undefined) {
+      Coin.encode(message.price, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.collateral !== undefined) {
+      Coin.encode(message.collateral, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgListItem {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgListItem } as MsgListItem;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.itemId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.price = Coin.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.collateral = Coin.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgListItem {
+    const message = { ...baseMsgListItem } as MsgListItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = Number(object.itemId);
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
+    } else {
+      message.sellerId = 0;
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = Coin.fromJSON(object.price);
+    } else {
+      message.price = undefined;
+    }
+    if (object.collateral !== undefined && object.collateral !== null) {
+      message.collateral = Coin.fromJSON(object.collateral);
+    } else {
+      message.collateral = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgListItem): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.itemId !== undefined && (obj.itemId = message.itemId);
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    message.price !== undefined &&
+      (obj.price = message.price ? Coin.toJSON(message.price) : undefined);
+    message.collateral !== undefined &&
+      (obj.collateral = message.collateral
+        ? Coin.toJSON(message.collateral)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgListItem>): MsgListItem {
+    const message = { ...baseMsgListItem } as MsgListItem;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.itemId !== undefined && object.itemId !== null) {
+      message.itemId = object.itemId;
+    } else {
+      message.itemId = 0;
+    }
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
+    } else {
+      message.sellerId = 0;
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = Coin.fromPartial(object.price);
+    } else {
+      message.price = undefined;
+    }
+    if (object.collateral !== undefined && object.collateral !== null) {
+      message.collateral = Coin.fromPartial(object.collateral);
+    } else {
+      message.collateral = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgListItemResponse: object = { sellOrderId: 0 };
+
+export const MsgListItemResponse = {
+  encode(
+    message: MsgListItemResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.sellOrderId !== 0) {
+      writer.uint32(8).uint64(message.sellOrderId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgListItemResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgListItemResponse } as MsgListItemResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.sellOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgListItemResponse {
+    const message = { ...baseMsgListItemResponse } as MsgListItemResponse;
+    if (object.sellOrderId !== undefined && object.sellOrderId !== null) {
+      message.sellOrderId = Number(object.sellOrderId);
+    } else {
+      message.sellOrderId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgListItemResponse): unknown {
+    const obj: any = {};
+    message.sellOrderId !== undefined &&
+      (obj.sellOrderId = message.sellOrderId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgListItemResponse>): MsgListItemResponse {
+    const message = { ...baseMsgListItemResponse } as MsgListItemResponse;
+    if (object.sellOrderId !== undefined && object.sellOrderId !== null) {
+      message.sellOrderId = object.sellOrderId;
+    } else {
+      message.sellOrderId = 0;
+    }
+    return message;
+  },
+};
+
+const baseMsgPlaceBuyOrder: object = {
+  creator: "",
+  sellOrderId: 0,
+  buyerId: 0,
+};
+
+export const MsgPlaceBuyOrder = {
+  encode(message: MsgPlaceBuyOrder, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.sellOrderId !== 0) {
+      writer.uint32(16).uint64(message.sellOrderId);
+    }
+    if (message.buyerId !== 0) {
+      writer.uint32(24).uint64(message.buyerId);
+    }
+    if (message.price !== undefined) {
+      Coin.encode(message.price, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.collateral !== undefined) {
+      Coin.encode(message.collateral, writer.uint32(42).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgPlaceBuyOrder {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgPlaceBuyOrder } as MsgPlaceBuyOrder;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.sellOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.buyerId = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.price = Coin.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.collateral = Coin.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPlaceBuyOrder {
+    const message = { ...baseMsgPlaceBuyOrder } as MsgPlaceBuyOrder;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.sellOrderId !== undefined && object.sellOrderId !== null) {
+      message.sellOrderId = Number(object.sellOrderId);
+    } else {
+      message.sellOrderId = 0;
+    }
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = Number(object.buyerId);
+    } else {
+      message.buyerId = 0;
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = Coin.fromJSON(object.price);
+    } else {
+      message.price = undefined;
+    }
+    if (object.collateral !== undefined && object.collateral !== null) {
+      message.collateral = Coin.fromJSON(object.collateral);
+    } else {
+      message.collateral = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgPlaceBuyOrder): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.sellOrderId !== undefined &&
+      (obj.sellOrderId = message.sellOrderId);
+    message.buyerId !== undefined && (obj.buyerId = message.buyerId);
+    message.price !== undefined &&
+      (obj.price = message.price ? Coin.toJSON(message.price) : undefined);
+    message.collateral !== undefined &&
+      (obj.collateral = message.collateral
+        ? Coin.toJSON(message.collateral)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgPlaceBuyOrder>): MsgPlaceBuyOrder {
+    const message = { ...baseMsgPlaceBuyOrder } as MsgPlaceBuyOrder;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.sellOrderId !== undefined && object.sellOrderId !== null) {
+      message.sellOrderId = object.sellOrderId;
+    } else {
+      message.sellOrderId = 0;
+    }
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = object.buyerId;
+    } else {
+      message.buyerId = 0;
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = Coin.fromPartial(object.price);
+    } else {
+      message.price = undefined;
+    }
+    if (object.collateral !== undefined && object.collateral !== null) {
+      message.collateral = Coin.fromPartial(object.collateral);
+    } else {
+      message.collateral = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgPlaceBuyOrderResponse: object = { buyOrderId: 0 };
+
+export const MsgPlaceBuyOrderResponse = {
+  encode(
+    message: MsgPlaceBuyOrderResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.buyOrderId !== 0) {
+      writer.uint32(8).uint64(message.buyOrderId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgPlaceBuyOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgPlaceBuyOrderResponse,
+    } as MsgPlaceBuyOrderResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.buyOrderId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgPlaceBuyOrderResponse {
+    const message = {
+      ...baseMsgPlaceBuyOrderResponse,
+    } as MsgPlaceBuyOrderResponse;
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = Number(object.buyOrderId);
+    } else {
+      message.buyOrderId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgPlaceBuyOrderResponse): unknown {
+    const obj: any = {};
+    message.buyOrderId !== undefined && (obj.buyOrderId = message.buyOrderId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgPlaceBuyOrderResponse>
+  ): MsgPlaceBuyOrderResponse {
+    const message = {
+      ...baseMsgPlaceBuyOrderResponse,
+    } as MsgPlaceBuyOrderResponse;
+    if (object.buyOrderId !== undefined && object.buyOrderId !== null) {
+      message.buyOrderId = object.buyOrderId;
+    } else {
+      message.buyOrderId = 0;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   PrepareItem(request: MsgPrepareItem): Promise<MsgPrepareItemResponse>;
+  RemoveItem(request: MsgRemoveItem): Promise<MsgRemoveItemResponse>;
+  ListItem(request: MsgListItem): Promise<MsgListItemResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  PlaceBuyOrder(request: MsgPlaceBuyOrder): Promise<MsgPlaceBuyOrderResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -222,6 +772,28 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.market.Msg", "PrepareItem", data);
     return promise.then((data) =>
       MsgPrepareItemResponse.decode(new Reader(data))
+    );
+  }
+
+  RemoveItem(request: MsgRemoveItem): Promise<MsgRemoveItemResponse> {
+    const data = MsgRemoveItem.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Msg", "RemoveItem", data);
+    return promise.then((data) =>
+      MsgRemoveItemResponse.decode(new Reader(data))
+    );
+  }
+
+  ListItem(request: MsgListItem): Promise<MsgListItemResponse> {
+    const data = MsgListItem.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Msg", "ListItem", data);
+    return promise.then((data) => MsgListItemResponse.decode(new Reader(data)));
+  }
+
+  PlaceBuyOrder(request: MsgPlaceBuyOrder): Promise<MsgPlaceBuyOrderResponse> {
+    const data = MsgPlaceBuyOrder.encode(request).finish();
+    const promise = this.rpc.request("zeta.market.Msg", "PlaceBuyOrder", data);
+    return promise.then((data) =>
+      MsgPlaceBuyOrderResponse.decode(new Reader(data))
     );
   }
 }

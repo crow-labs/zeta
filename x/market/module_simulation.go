@@ -28,6 +28,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgPrepareItem int = 100
 
+	opWeightMsgRemoveItem = "op_weight_msg_remove_item"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRemoveItem int = 100
+
+	opWeightMsgListItem = "op_weight_msg_list_item"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgListItem int = 100
+
+	opWeightMsgPlaceBuyOrder = "op_weight_msg_place_buy_order"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgPlaceBuyOrder int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -72,6 +84,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgPrepareItem,
 		marketsimulation.SimulateMsgPrepareItem(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRemoveItem int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveItem, &weightMsgRemoveItem, nil,
+		func(_ *rand.Rand) {
+			weightMsgRemoveItem = defaultWeightMsgRemoveItem
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRemoveItem,
+		marketsimulation.SimulateMsgRemoveItem(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgListItem int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgListItem, &weightMsgListItem, nil,
+		func(_ *rand.Rand) {
+			weightMsgListItem = defaultWeightMsgListItem
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgListItem,
+		marketsimulation.SimulateMsgListItem(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgPlaceBuyOrder int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgPlaceBuyOrder, &weightMsgPlaceBuyOrder, nil,
+		func(_ *rand.Rand) {
+			weightMsgPlaceBuyOrder = defaultWeightMsgPlaceBuyOrder
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgPlaceBuyOrder,
+		marketsimulation.SimulateMsgPlaceBuyOrder(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

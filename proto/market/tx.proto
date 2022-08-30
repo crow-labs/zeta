@@ -2,12 +2,17 @@ syntax = "proto3";
 package zeta.market;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 
 option go_package = "zeta/x/market/types";
 
 // Msg defines the Msg service.
 service Msg {
       rpc PrepareItem(MsgPrepareItem) returns (MsgPrepareItemResponse);
+  rpc RemoveItem(MsgRemoveItem) returns (MsgRemoveItemResponse);
+  rpc ListItem(MsgListItem) returns (MsgListItemResponse);
+  rpc PlaceBuyOrder(MsgPlaceBuyOrder) returns (MsgPlaceBuyOrderResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -21,6 +26,39 @@ message MsgPrepareItem {
 
 message MsgPrepareItemResponse {
   uint64 itemId = 1;
+}
+
+message MsgRemoveItem {
+  string creator = 1;
+  uint64 itemId = 2;
+  uint64 sellerId = 3;
+}
+
+message MsgRemoveItemResponse {
+}
+
+message MsgListItem {
+  string creator = 1;
+  uint64 itemId = 2;
+  uint64 sellerId = 3;
+  cosmos.base.v1beta1.Coin price = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin collateral = 5 [(gogoproto.nullable) = false];
+}
+
+message MsgListItemResponse {
+  uint64 sellOrderId = 1;
+}
+
+message MsgPlaceBuyOrder {
+  string creator = 1;
+  uint64 sellOrderId = 2;
+  uint64 buyerId = 3;
+  cosmos.base.v1beta1.Coin price = 4 [(gogoproto.nullable) = false];
+  cosmos.base.v1beta1.Coin collateral = 5 [(gogoproto.nullable) = false];
+}
+
+message MsgPlaceBuyOrderResponse {
+  uint64 buyOrderId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
