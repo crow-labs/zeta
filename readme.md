@@ -17,14 +17,18 @@ Voters are linked to their member account by a VoterId after a voter-application
 # Market Module
 
 ## Item
-
-## Buy Order
+Items describe what the seller may want to sell in a sell order including a title, description and an external-link (to an image for example).
 
 ## Sell Order
+Sell orders are linked to an item by a itemId and contain the desired price and collateral for the item to be sold. 
+
+## Buy Order
+Buy orders are linked to a sell order by a sellOrderId and contain the offered price and collateral for the item. If the seller accepts a buy order, both the buyer and seller will put up this amount of collateral in escrow and the buyer will also put up the price.
 
 # Crow Module
 
 ## Crow 
+Crows are created when a seller accepts a buy order and are linked to the buy order via the buyOrderId. During creation, the seller deposits the collateral listed in the buy order to the created escrow account. A buyer confirms the buy order by joining thhe escrow and depositing both the collateral and payment for the item. At this point, the buyer and seller must communicate their confidential information such as the buyer's shipping address using the contact information provided on the buyer/seller pages. As of now this communication is assumed to be handled off-chain but in future development P2P encrypted messaging may be implemented on-chain. If the seller receives the item and does not have any disputes to raise, they can complete the escrow process with a complete escrow no dispute transaction. Doing so will send both the seller's collateral and buyer's payment to the seller from the escrow account and the buyer will also be sent back the buyer's collateral.  
 
 ## Dispute
 
