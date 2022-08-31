@@ -1,6 +1,9 @@
 # zeta
 **zeta** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
 
+# Basic Demo (No Dispute)
+https://vimeo.com/745164573/25a00b86c2
+
 # Whitelist Module
 ## Member
 Each Account Address can be linked to only one member by submitting a member-application transaction. Once enrolled as a member, users can choose to apply to act as a buyer, seller and/or voter in the market.   
