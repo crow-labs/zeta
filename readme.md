@@ -42,7 +42,7 @@ Buy orders are linked to a sell order by a sellOrderId and contain the offered p
 
 ## Transactions
 ### Prepare Item
-`zetad tx market prepare-item [item] [description] [external-link] [seller-id] [flags]`  
+`zetad tx market prepare-item [title] [description] [external-link] [seller-id] [flags]`  
 Transaction for a seller to create an item that can then be put up for sale in a sell order
 ### Remove Item
 `zetad tx market remove-item [item-id] [seller-id] [flags]`  
