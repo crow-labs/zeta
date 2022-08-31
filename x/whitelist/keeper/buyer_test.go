@@ -4,12 +4,13 @@ import (
 	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "zeta/testutil/keeper"
 	"zeta/testutil/nullify"
 	"zeta/x/whitelist/keeper"
 	"zeta/x/whitelist/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error

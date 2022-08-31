@@ -5,15 +5,19 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgVoterApplication = "voter_application"
-const TypeMsgSellerApplication = "seller_application"
-const TypeMsgBuyerApplication = "buyer_application"
-const TypeMsgMembershipApplication = "membership_application"
+const (
+	TypeMsgVoterApplication      = "voter_application"
+	TypeMsgSellerApplication     = "seller_application"
+	TypeMsgBuyerApplication      = "buyer_application"
+	TypeMsgMembershipApplication = "membership_application"
+)
 
-var _ sdk.Msg = &MsgVoterApplication{}
-var _ sdk.Msg = &MsgSellerApplication{}
-var _ sdk.Msg = &MsgBuyerApplication{}
-var _ sdk.Msg = &MsgMembershipApplication{}
+var (
+	_ sdk.Msg = &MsgVoterApplication{}
+	_ sdk.Msg = &MsgSellerApplication{}
+	_ sdk.Msg = &MsgBuyerApplication{}
+	_ sdk.Msg = &MsgMembershipApplication{}
+)
 
 func NewMsgVoterApplication(creator string, alias string) *MsgVoterApplication {
 	return &MsgVoterApplication{
