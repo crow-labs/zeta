@@ -1,0 +1,17 @@
+syntax = "proto3";
+package zeta.booth;
+
+option go_package = "zeta/x/booth/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message VoteParams {
+  
+  bool buyerGuilt = 1; 
+  bool sellerGuilt = 2; 
+  cosmos.base.v1beta1.Coin buyerReturn = 3 [(gogoproto.nullable) = false]; 
+  uint64 buyerJailTime = 4; 
+  uint64 sellerJailtime = 5; 
+  bool buyerBlacklist = 6; 
+  bool sellerBlacklist = 7; 
+}

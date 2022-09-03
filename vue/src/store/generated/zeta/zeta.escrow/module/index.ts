@@ -4,17 +4,19 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgRaiseBuyerDispute } from "./types/escrow/tx";
-import { MsgCompleteEscrowNoDispute } from "./types/escrow/tx";
 import { MsgJoinEscrow } from "./types/escrow/tx";
+import { MsgRaiseBuyerDispute } from "./types/escrow/tx";
+import { MsgPostSellerEvidence } from "./types/escrow/tx";
 import { MsgBeginEscrow } from "./types/escrow/tx";
+import { MsgCompleteEscrowNoDispute } from "./types/escrow/tx";
 
 
 const types = [
-  ["/zeta.escrow.MsgRaiseBuyerDispute", MsgRaiseBuyerDispute],
-  ["/zeta.escrow.MsgCompleteEscrowNoDispute", MsgCompleteEscrowNoDispute],
   ["/zeta.escrow.MsgJoinEscrow", MsgJoinEscrow],
+  ["/zeta.escrow.MsgRaiseBuyerDispute", MsgRaiseBuyerDispute],
+  ["/zeta.escrow.MsgPostSellerEvidence", MsgPostSellerEvidence],
   ["/zeta.escrow.MsgBeginEscrow", MsgBeginEscrow],
+  ["/zeta.escrow.MsgCompleteEscrowNoDispute", MsgCompleteEscrowNoDispute],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -47,10 +49,11 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgRaiseBuyerDispute: (data: MsgRaiseBuyerDispute): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgRaiseBuyerDispute", value: MsgRaiseBuyerDispute.fromPartial( data ) }),
-    msgCompleteEscrowNoDispute: (data: MsgCompleteEscrowNoDispute): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgCompleteEscrowNoDispute", value: MsgCompleteEscrowNoDispute.fromPartial( data ) }),
     msgJoinEscrow: (data: MsgJoinEscrow): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgJoinEscrow", value: MsgJoinEscrow.fromPartial( data ) }),
+    msgRaiseBuyerDispute: (data: MsgRaiseBuyerDispute): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgRaiseBuyerDispute", value: MsgRaiseBuyerDispute.fromPartial( data ) }),
+    msgPostSellerEvidence: (data: MsgPostSellerEvidence): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgPostSellerEvidence", value: MsgPostSellerEvidence.fromPartial( data ) }),
     msgBeginEscrow: (data: MsgBeginEscrow): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgBeginEscrow", value: MsgBeginEscrow.fromPartial( data ) }),
+    msgCompleteEscrowNoDispute: (data: MsgCompleteEscrowNoDispute): EncodeObject => ({ typeUrl: "/zeta.escrow.MsgCompleteEscrowNoDispute", value: MsgCompleteEscrowNoDispute.fromPartial( data ) }),
     
   };
 };

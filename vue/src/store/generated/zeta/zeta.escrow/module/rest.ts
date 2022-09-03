@@ -85,6 +85,8 @@ export type EscrowMsgCompleteEscrowNoDisputeResponse = object;
 
 export type EscrowMsgJoinEscrowResponse = object;
 
+export type EscrowMsgPostSellerEvidenceResponse = object;
+
 export interface EscrowMsgRaiseBuyerDisputeResponse {
   /** @format uint64 */
   disputeId?: string;
