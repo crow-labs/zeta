@@ -115,15 +115,7 @@ func (k Keeper) AddItemToSeller(ctx sdk.Context, sellerId, itemId uint64) error 
 		return types.ErrSellerNotFound
 	}
 
-	numItems := len(seller.ActiveItem)
-	items := make([]uint64, 0, numItems+1)
-
-	for i := 0; i < numItems; i++ {
-		items = append(items, seller.ActiveItem[i])
-	}
-	items = append(items, itemId)
-
-	seller.ActiveItem = items
+	seller.ActiveItem = append(seller.ActiveItem, itemId)
 
 	k.SetSeller(ctx, seller)
 
@@ -183,15 +175,7 @@ func (k Keeper) AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint
 		return types.ErrSellerNotFound
 	}
 
-	numOrder := len(seller.ActiveOrder)
-	order := make([]uint64, 0, numOrder+1)
-
-	for i := 0; i < numOrder; i++ {
-		order = append(order, seller.ActiveOrder[i])
-	}
-	order = append(order, sellOrderId)
-
-	seller.ActiveOrder = order
+	seller.ActiveOrder = append(seller.ActiveOrder, sellOrderId)
 
 	k.SetSeller(ctx, seller)
 

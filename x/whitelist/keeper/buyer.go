@@ -114,16 +114,7 @@ func (k Keeper) AddBuyOrderToBuyer(ctx sdk.Context, buyerId, orderId uint64) err
 		return types.ErrBuyerNotFound
 	}
 
-	numOrder := len(buyer.ActiveOrder)
-	orders := make([]uint64, 0, numOrder+1)
-
-	for i := 0; i < numOrder; i++ {
-		orders = append(orders, buyer.ActiveOrder[i])
-	}
-
-	orders = append(orders, orderId)
-
-	buyer.ActiveOrder = orders
+	buyer.ActiveOrder = append(buyer.ActiveOrder, orderId)
 
 	k.SetBuyer(ctx, buyer)
 
