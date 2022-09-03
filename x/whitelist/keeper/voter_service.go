@@ -55,3 +55,13 @@ func (k Keeper) CreateVoter(ctx sdk.Context, msg types.MsgVoterApplication) (uin
 	k.SetVoter(ctx, voter)
 	return voterId, nil
 }
+
+func (k Keeper) GetAccAddrFromVoterId(ctx sdk.Context, voterId uint64) (string, error) {
+	voter, found := k.GetVoter(ctx, voterId)
+	if !found {
+		return "", types.ErrVoterNotFound
+	}
+
+	return voter.GetAddress(), nil
+
+}

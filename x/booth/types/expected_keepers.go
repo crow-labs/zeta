@@ -11,6 +11,7 @@ type EscrowKeeper interface {
 
 type WhitelistKeeper interface {
 	// Methods imported from whitelist should be defined here
+	GetAccAddrFromVoterId(ctx sdk.Context, voterId uint64) (string, error)
 }
 
 // AccountKeeper defines the expected account keeper used for simulations (noalias)
