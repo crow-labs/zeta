@@ -1,0 +1,14 @@
+syntax = "proto3";
+package zeta.booth;
+
+option go_package = "zeta/x/booth/types";
+import "booth/vote_params.proto"; 
+
+message Vote {
+  uint64 voteId = 1; 
+  uint64 pollId = 2; 
+  uint64 voterId = 3; 
+  VoteParams ballot = 4; 
+  
+}
+
