@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						VoteId: 1,
 					},
 				},
+				PollList: []types.Poll{
+					{
+						PollId: 0,
+					},
+					{
+						PollId: 1,
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -43,6 +51,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						VoteId: 0,
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated poll",
+			genState: &types.GenesisState{
+				PollList: []types.Poll{
+					{
+						PollId: 0,
+					},
+					{
+						PollId: 0,
 					},
 				},
 			},

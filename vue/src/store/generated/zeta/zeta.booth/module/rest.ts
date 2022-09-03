@@ -14,6 +14,35 @@
  */
 export type BoothParams = object;
 
+export interface BoothPoll {
+  /** @format uint64 */
+  pollId?: string;
+  pollAccAddr?: string;
+
+  /** @format uint64 */
+  votingPower?: string;
+
+  /** @format uint64 */
+  disputeId?: string;
+  voteIds?: string[];
+  verdict?: BoothVoteParams;
+}
+
+export interface BoothQueryAllPollResponse {
+  poll?: BoothPoll[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface BoothQueryAllVoteResponse {
   vote?: BoothVote[];
 
@@ -27,6 +56,10 @@ export interface BoothQueryAllVoteResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface BoothQueryGetPollResponse {
+  poll?: BoothPoll;
 }
 
 export interface BoothQueryGetVoteResponse {
@@ -133,13 +166,6 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
-
-  /**
-   * reverse is set to true if results are to be returned in the descending order.
-   *
-   * Since: cosmos-sdk 0.43
-   */
-  reverse?: boolean;
 }
 
 /**
@@ -375,6 +401,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryPollAll
+   * @summary Queries a list of Poll items.
+   * @request GET:/zeta/booth/poll
+   */
+  queryPollAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<BoothQueryAllPollResponse, RpcStatus>({
+      path: `/zeta/booth/poll`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryPoll
+   * @summary Queries a Poll by index.
+   * @request GET:/zeta/booth/poll/{pollId}
+   */
+  queryPoll = (pollId: string, params: RequestParams = {}) =>
+    this.request<BoothQueryGetPollResponse, RpcStatus>({
+      path: `/zeta/booth/poll/${pollId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryVoteAll
    * @summary Queries a list of Vote items.
    * @request GET:/zeta/booth/vote
@@ -385,7 +452,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
-      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

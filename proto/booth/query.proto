@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "booth/params.proto";
 import "booth/vote.proto";
+import "booth/poll.proto";
 // this line is used by starport scaffolding # 1
 import "booth/vote_params.proto";
 
@@ -25,6 +26,16 @@ service Query {
 	// Queries a list of Vote items.
 	rpc VoteAll(QueryAllVoteRequest) returns (QueryAllVoteResponse) {
 		option (google.api.http).get = "/zeta/booth/vote";
+	}
+
+// Queries a Poll by index.
+	rpc Poll(QueryGetPollRequest) returns (QueryGetPollResponse) {
+		option (google.api.http).get = "/zeta/booth/poll/{pollId}";
+	}
+
+	// Queries a list of Poll items.
+	rpc PollAll(QueryAllPollRequest) returns (QueryAllPollResponse) {
+		option (google.api.http).get = "/zeta/booth/poll";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -54,6 +65,24 @@ message QueryAllVoteRequest {
 
 message QueryAllVoteResponse {
 	repeated Vote vote = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetPollRequest {
+	  uint64 pollId = 1;
+
+}
+
+message QueryGetPollResponse {
+	Poll poll = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPollRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPollResponse {
+	repeated Poll poll = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

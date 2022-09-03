@@ -7,6 +7,7 @@ import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Poll } from "../booth/poll";
 
 export const protobufPackage = "zeta.booth";
 
@@ -33,6 +34,23 @@ export interface QueryAllVoteRequest {
 
 export interface QueryAllVoteResponse {
   vote: Vote[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetPollRequest {
+  pollId: number;
+}
+
+export interface QueryGetPollResponse {
+  poll: Poll | undefined;
+}
+
+export interface QueryAllPollRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllPollResponse {
+  poll: Poll[];
   pagination: PageResponse | undefined;
 }
 
@@ -399,6 +417,272 @@ export const QueryAllVoteResponse = {
   },
 };
 
+const baseQueryGetPollRequest: object = { pollId: 0 };
+
+export const QueryGetPollRequest = {
+  encode(
+    message: QueryGetPollRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pollId !== 0) {
+      writer.uint32(8).uint64(message.pollId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPollRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetPollRequest } as QueryGetPollRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pollId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPollRequest {
+    const message = { ...baseQueryGetPollRequest } as QueryGetPollRequest;
+    if (object.pollId !== undefined && object.pollId !== null) {
+      message.pollId = Number(object.pollId);
+    } else {
+      message.pollId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetPollRequest): unknown {
+    const obj: any = {};
+    message.pollId !== undefined && (obj.pollId = message.pollId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetPollRequest>): QueryGetPollRequest {
+    const message = { ...baseQueryGetPollRequest } as QueryGetPollRequest;
+    if (object.pollId !== undefined && object.pollId !== null) {
+      message.pollId = object.pollId;
+    } else {
+      message.pollId = 0;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetPollResponse: object = {};
+
+export const QueryGetPollResponse = {
+  encode(
+    message: QueryGetPollResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.poll !== undefined) {
+      Poll.encode(message.poll, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetPollResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryGetPollResponse } as QueryGetPollResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.poll = Poll.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetPollResponse {
+    const message = { ...baseQueryGetPollResponse } as QueryGetPollResponse;
+    if (object.poll !== undefined && object.poll !== null) {
+      message.poll = Poll.fromJSON(object.poll);
+    } else {
+      message.poll = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetPollResponse): unknown {
+    const obj: any = {};
+    message.poll !== undefined &&
+      (obj.poll = message.poll ? Poll.toJSON(message.poll) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryGetPollResponse>): QueryGetPollResponse {
+    const message = { ...baseQueryGetPollResponse } as QueryGetPollResponse;
+    if (object.poll !== undefined && object.poll !== null) {
+      message.poll = Poll.fromPartial(object.poll);
+    } else {
+      message.poll = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllPollRequest: object = {};
+
+export const QueryAllPollRequest = {
+  encode(
+    message: QueryAllPollRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllPollRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllPollRequest } as QueryAllPollRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPollRequest {
+    const message = { ...baseQueryAllPollRequest } as QueryAllPollRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllPollRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllPollRequest>): QueryAllPollRequest {
+    const message = { ...baseQueryAllPollRequest } as QueryAllPollRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryAllPollResponse: object = {};
+
+export const QueryAllPollResponse = {
+  encode(
+    message: QueryAllPollResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.poll) {
+      Poll.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllPollResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseQueryAllPollResponse } as QueryAllPollResponse;
+    message.poll = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.poll.push(Poll.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllPollResponse {
+    const message = { ...baseQueryAllPollResponse } as QueryAllPollResponse;
+    message.poll = [];
+    if (object.poll !== undefined && object.poll !== null) {
+      for (const e of object.poll) {
+        message.poll.push(Poll.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryAllPollResponse): unknown {
+    const obj: any = {};
+    if (message.poll) {
+      obj.poll = message.poll.map((e) => (e ? Poll.toJSON(e) : undefined));
+    } else {
+      obj.poll = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<QueryAllPollResponse>): QueryAllPollResponse {
+    const message = { ...baseQueryAllPollResponse } as QueryAllPollResponse;
+    message.poll = [];
+    if (object.poll !== undefined && object.poll !== null) {
+      for (const e of object.poll) {
+        message.poll.push(Poll.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -407,6 +691,10 @@ export interface Query {
   Vote(request: QueryGetVoteRequest): Promise<QueryGetVoteResponse>;
   /** Queries a list of Vote items. */
   VoteAll(request: QueryAllVoteRequest): Promise<QueryAllVoteResponse>;
+  /** Queries a Poll by index. */
+  Poll(request: QueryGetPollRequest): Promise<QueryGetPollResponse>;
+  /** Queries a list of Poll items. */
+  PollAll(request: QueryAllPollRequest): Promise<QueryAllPollResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -433,6 +721,22 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("zeta.booth.Query", "VoteAll", data);
     return promise.then((data) =>
       QueryAllVoteResponse.decode(new Reader(data))
+    );
+  }
+
+  Poll(request: QueryGetPollRequest): Promise<QueryGetPollResponse> {
+    const data = QueryGetPollRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.booth.Query", "Poll", data);
+    return promise.then((data) =>
+      QueryGetPollResponse.decode(new Reader(data))
+    );
+  }
+
+  PollAll(request: QueryAllPollRequest): Promise<QueryAllPollResponse> {
+    const data = QueryAllPollRequest.encode(request).finish();
+    const promise = this.rpc.request("zeta.booth.Query", "PollAll", data);
+    return promise.then((data) =>
+      QueryAllPollResponse.decode(new Reader(data))
     );
   }
 }
