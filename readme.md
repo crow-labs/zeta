@@ -64,9 +64,8 @@ For handling the escrow process for a buy order on the market placed by a buyer 
 Crows are created when a seller accepts a buy order and are linked to the buy order via the buyOrderId. During creation, the seller deposits the collateral listed in the buy order to the created escrow account. A buyer confirms the buy order by joining thhe escrow and depositing both the collateral and payment for the item. At this point, the buyer and seller must communicate their confidential information such as the buyer's shipping address using the contact information provided on the buyer/seller pages. As of now this communication is assumed to be handled off-chain but in future development P2P encrypted messaging may be implemented on-chain. If the seller receives the item and does not have any disputes to raise, they can complete the escrow process with a complete escrow no dispute transaction. Doing so will send both the seller's collateral and buyer's payment to the seller from the escrow account and the buyer will also be sent back the buyer's collateral.  
 
 ### Dispute
-- Not yet implemented
-### Evidence 
-- Not yet implemented
+- A dispute is raised and in debate, with either party posting evidence of their side. Once the defendant  (or a timout which is not yet implemented) closes debate, a poll starts and is funded with the amount of one party's collateral.
+
 
 # Booth Module
 For handling voting on a crow's dispute from a voter on the whitelist 
@@ -77,7 +76,7 @@ For handling voting on a crow's dispute from a voter on the whitelist
 ### Ballot
 - Ballots have information on the guilt, refund/payment, and jailtime for both the buyer and seller as well as if either party should be blacklisted 
 ### Poll
-- Not yet implemented
+- A poll is linked to a dispute with the disputeId and can be voted on by voters, so long as they are not the buyer or the seller. Votes in a poll have a voting power equal to the square root of their amount staked. When a voter votes on a poll, they are sent a receipt in the form poll shares that can be redeemed for their proportional ownership of the collateral once a verdict has been reached (this is not yet implemented, only the minting is). 
 ### Punishment
 - Not yet implemented
 
