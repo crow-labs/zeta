@@ -17,6 +17,4 @@ message GenesisState {
   // this line is used by starport scaffolding # genesis/proto/state
   uint64 nextCrowId = 3;
   uint64 nextDisputeId = 4;
-  uint64 nextVoteId = 5;
-  uint64 nextVerdictId = 6;
 }

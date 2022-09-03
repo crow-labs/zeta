@@ -17,6 +17,10 @@ const (
 	MemStoreKey = "mem_booth"
 )
 
+var (
+	KeyNextGlobalPollId = []byte{0x11}
+)
+
 func KeyPrefix(p string) []byte {
 	return []byte(p)
 }

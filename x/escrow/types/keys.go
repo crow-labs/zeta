@@ -20,8 +20,6 @@ const (
 var (
 	KeyNextGlobalCrowId    = []byte{0x07}
 	KeyNextGlobalDisputeId = []byte{0x08}
-	KeyNextGlobalVoteId    = []byte{0x09}
-	KeyNextGlobalVerdictId = []byte{0x10}
 )
 
 func KeyPrefix(p string) []byte {

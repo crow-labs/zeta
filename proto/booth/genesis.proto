@@ -15,4 +15,7 @@ message GenesisState {
   repeated Vote voteList = 2 [(gogoproto.nullable) = false];
   repeated Poll pollList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
+  uint64 nextPollId = 4;
+  uint64 nextVoteId = 5;
+
 }

@@ -13,7 +13,9 @@ func DefaultGenesis() *GenesisState {
 		VoteList: []Vote{},
 		PollList: []Poll{},
 		// this line is used by starport scaffolding # genesis/types/default
-		Params: DefaultParams(),
+		Params:     DefaultParams(),
+		NextPollId: 1,
+		NextVoteId: 1,
 	}
 }
 
