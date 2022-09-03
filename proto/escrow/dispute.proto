@@ -13,8 +13,8 @@ message Dispute {
   uint64 votingEndBlock = 7; 
   uint64 crowId = 8; 
   uint64 pollId = 9; 
-  uint64 plaintiffId = 10; 
-  uint64 defendantId = 11; 
-  
+  uint64 buyerId = 10; 
+  uint64 sellerId = 11; 
+  string creator =12;
 }
 

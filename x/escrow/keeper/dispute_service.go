@@ -24,7 +24,7 @@ func (k Keeper) validateRaiseBuyerDispute(ctx sdk.Context, msg types.MsgRaiseBuy
 	return k.marketKeeper.GetBuyerAndSellerIdFromBuyOrder(ctx, crow.BuyOrderId)
 }
 
-func NewDispute(crowId, plaintiffId, defendantId, disputeId uint64, title, description string, buyerEvidence, sellerEvidence []string) types.Dispute {
+func NewDispute(crowId, buyerId, sellerId, disputeId uint64, title, description, creator string, buyerEvidence, sellerEvidence []string) types.Dispute {
 	dispute := &types.Dispute{
 		DisputeId:      disputeId,
 		Title:          title,
@@ -32,8 +32,9 @@ func NewDispute(crowId, plaintiffId, defendantId, disputeId uint64, title, descr
 		BuyerEvidence:  buyerEvidence,
 		SellerEvidence: sellerEvidence,
 		CrowId:         crowId,
-		PlaintiffId:    plaintiffId,
-		DefendantId:    defendantId,
+		BuyerId:        buyerId,
+		SellerId:       sellerId,
+		Creator:        creator,
 	}
 
 	return *dispute
@@ -47,7 +48,7 @@ func (k Keeper) CreateBuyerDispute(ctx sdk.Context, msg types.MsgRaiseBuyerDispu
 
 	disputeId = k.getNextDisputeIdAndIncrement(ctx)
 
-	dispute := NewDispute(msg.CrowId, buyerId, sellerId, disputeId, msg.Title, msg.Description, msg.Evidence, []string{})
+	dispute := NewDispute(msg.CrowId, buyerId, sellerId, disputeId, msg.Title, msg.Description, msg.Creator, msg.Evidence, []string{})
 
 	crow, _ := k.GetCrow(ctx, msg.CrowId)
 	crow.Status = "buyerDispute"
@@ -56,4 +57,39 @@ func (k Keeper) CreateBuyerDispute(ctx sdk.Context, msg types.MsgRaiseBuyerDispu
 	k.SetCrow(ctx, crow)
 
 	return disputeId, nil
+}
+
+func (k Keeper) GetDisputeFromDisputeId(ctx sdk.Context, disputeId uint64) (types.Dispute, error) {
+	dispute, found := k.GetDispute(ctx, disputeId)
+	if !found {
+		return types.Dispute{}, types.ErrDisputeNotFound
+	}
+
+	return dispute, nil
+}
+
+func (k Keeper) FundPoll(ctx sdk.Context, crowId uint64, pollAccAddr sdk.AccAddress) (sdk.Coin, error) {
+	crow, found := k.GetCrow(ctx, crowId)
+	if !found {
+		return sdk.Coin{}, types.ErrCrowNotFound
+	}
+
+	fromAddr, err := sdk.AccAddressFromBech32(crow.GetEscrowAddr())
+	if err != nil {
+		return sdk.Coin{}, err
+	}
+
+	collateral := crow.GetBuyerCollateral()
+
+	err = k.bankKeeper.SendCoins(ctx, fromAddr, pollAccAddr, sdk.NewCoins(collateral))
+	if err != nil {
+		return sdk.Coin{}, err
+	}
+
+	crow.BuyerCollateral = sdk.NewCoin(crow.BuyerCollateral.Denom, sdk.ZeroInt())
+	crow.Status = "pollFunded"
+
+	k.SetCrow(ctx, crow)
+
+	return collateral, nil
 }

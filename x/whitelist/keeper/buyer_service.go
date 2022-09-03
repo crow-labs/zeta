@@ -57,3 +57,12 @@ func (k Keeper) CreateBuyer(ctx sdk.Context, msg types.MsgBuyerApplication) (uin
 	k.SetBuyer(ctx, buyer)
 	return buyerId, nil
 }
+
+func (k Keeper) GetAccAddrFromBuyerId(ctx sdk.Context, buyerId uint64) (string, error) {
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return "", types.ErrBuyerNotFound
+	}
+
+	return buyer.GetAddress(), nil
+}

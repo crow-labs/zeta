@@ -40,6 +40,7 @@ func NewPoll(pollId, disputeId uint64) Poll {
 		DisputeId:   disputeId,
 		VoteIds:     make([]uint64, 0),
 		Verdict:     &VoteParams{},
+		Funding:     sdk.Coin{},
 	}
 
 	return *poll

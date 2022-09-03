@@ -62,3 +62,12 @@ func (k Keeper) CreateSeller(ctx sdk.Context, msg types.MsgSellerApplication) (u
 	k.SetSeller(ctx, seller)
 	return sellerId, nil
 }
+
+func (k Keeper) GetAccAddrFromSellerId(ctx sdk.Context, sellerId uint64) (string, error) {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return "", types.ErrSellerNotFound
+	}
+
+	return seller.GetAddress(), nil
+}

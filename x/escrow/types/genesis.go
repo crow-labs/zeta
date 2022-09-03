@@ -16,8 +16,6 @@ func DefaultGenesis() *GenesisState {
 		Params:        DefaultParams(),
 		NextCrowId:    1,
 		NextDisputeId: 1,
-		NextVoteId:    1,
-		NextVerdictId: 1,
 	}
 }
 

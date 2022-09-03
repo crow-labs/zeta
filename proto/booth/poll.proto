@@ -16,6 +16,8 @@ message Poll {
   uint64 disputeId = 4; 
   repeated uint64 voteIds = 5; 
   VoteParams verdict = 6; 
-  
+  string funding = 7 [(gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Coin",
+    (gogoproto.nullable) = false
+  ];
 }
 

@@ -98,36 +98,3 @@ func (k Keeper) getNextPollIdAndIncrement(ctx sdk.Context) uint64 {
 	k.SetNextPollId(ctx, nextPollId)
 	return nextPollId
 }
-
-func (k Keeper) SetNextVoteId(ctx sdk.Context, voteId uint64) {
-	store := ctx.KVStore(k.storeKey)
-	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: voteId})
-	store.Set(types.KeyNextGlobalVoteId, bz)
-}
-
-func (k Keeper) GetNextVoteId(ctx sdk.Context) uint64 {
-	var nextVoteId uint64
-	store := ctx.KVStore(k.storeKey)
-
-	bz := store.Get(types.KeyNextGlobalVoteId)
-	if bz == nil {
-		panic(fmt.Errorf("vote has not been initialized -- should have been done in init genesis"))
-	} else {
-		val := gogotypes.UInt64Value{}
-
-		err := k.cdc.Unmarshal(bz, &val)
-		if err != nil {
-			panic(err)
-		}
-
-		nextVoteId = val.GetValue()
-	}
-
-	return nextVoteId
-}
-
-func (k Keeper) getNextVoteIdAndIncrement(ctx sdk.Context) uint64 {
-	nextVoteId := k.GetNextVoteId(ctx)
-	k.SetNextVoteId(ctx, nextVoteId+1)
-	return nextVoteId
-}
