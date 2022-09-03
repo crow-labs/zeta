@@ -2,6 +2,7 @@
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
 import { VoteParams } from "../booth/vote_params";
+import { Coin } from "../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "zeta.booth";
 
@@ -23,6 +24,17 @@ export interface MsgCastVoteForPoll {
 
 export interface MsgCastVoteForPollResponse {
   voteId: number;
+}
+
+export interface MsgRedeemPollShares {
+  creator: string;
+  pollId: number;
+  voterId: number;
+  pollShares: Coin | undefined;
+}
+
+export interface MsgRedeemPollSharesResponse {
+  valueOut: Coin | undefined;
 }
 
 const baseMsgBeginPoll: object = { creator: "", disputeId: 0 };
@@ -336,13 +348,200 @@ export const MsgCastVoteForPollResponse = {
   },
 };
 
+const baseMsgRedeemPollShares: object = { creator: "", pollId: 0, voterId: 0 };
+
+export const MsgRedeemPollShares = {
+  encode(
+    message: MsgRedeemPollShares,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.pollId !== 0) {
+      writer.uint32(16).uint64(message.pollId);
+    }
+    if (message.voterId !== 0) {
+      writer.uint32(24).uint64(message.voterId);
+    }
+    if (message.pollShares !== undefined) {
+      Coin.encode(message.pollShares, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRedeemPollShares {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRedeemPollShares } as MsgRedeemPollShares;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.pollId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.voterId = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.pollShares = Coin.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRedeemPollShares {
+    const message = { ...baseMsgRedeemPollShares } as MsgRedeemPollShares;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.pollId !== undefined && object.pollId !== null) {
+      message.pollId = Number(object.pollId);
+    } else {
+      message.pollId = 0;
+    }
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = Number(object.voterId);
+    } else {
+      message.voterId = 0;
+    }
+    if (object.pollShares !== undefined && object.pollShares !== null) {
+      message.pollShares = Coin.fromJSON(object.pollShares);
+    } else {
+      message.pollShares = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRedeemPollShares): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.pollId !== undefined && (obj.pollId = message.pollId);
+    message.voterId !== undefined && (obj.voterId = message.voterId);
+    message.pollShares !== undefined &&
+      (obj.pollShares = message.pollShares
+        ? Coin.toJSON(message.pollShares)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRedeemPollShares>): MsgRedeemPollShares {
+    const message = { ...baseMsgRedeemPollShares } as MsgRedeemPollShares;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.pollId !== undefined && object.pollId !== null) {
+      message.pollId = object.pollId;
+    } else {
+      message.pollId = 0;
+    }
+    if (object.voterId !== undefined && object.voterId !== null) {
+      message.voterId = object.voterId;
+    } else {
+      message.voterId = 0;
+    }
+    if (object.pollShares !== undefined && object.pollShares !== null) {
+      message.pollShares = Coin.fromPartial(object.pollShares);
+    } else {
+      message.pollShares = undefined;
+    }
+    return message;
+  },
+};
+
+const baseMsgRedeemPollSharesResponse: object = {};
+
+export const MsgRedeemPollSharesResponse = {
+  encode(
+    message: MsgRedeemPollSharesResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.valueOut !== undefined) {
+      Coin.encode(message.valueOut, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgRedeemPollSharesResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgRedeemPollSharesResponse,
+    } as MsgRedeemPollSharesResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.valueOut = Coin.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRedeemPollSharesResponse {
+    const message = {
+      ...baseMsgRedeemPollSharesResponse,
+    } as MsgRedeemPollSharesResponse;
+    if (object.valueOut !== undefined && object.valueOut !== null) {
+      message.valueOut = Coin.fromJSON(object.valueOut);
+    } else {
+      message.valueOut = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRedeemPollSharesResponse): unknown {
+    const obj: any = {};
+    message.valueOut !== undefined &&
+      (obj.valueOut = message.valueOut
+        ? Coin.toJSON(message.valueOut)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgRedeemPollSharesResponse>
+  ): MsgRedeemPollSharesResponse {
+    const message = {
+      ...baseMsgRedeemPollSharesResponse,
+    } as MsgRedeemPollSharesResponse;
+    if (object.valueOut !== undefined && object.valueOut !== null) {
+      message.valueOut = Coin.fromPartial(object.valueOut);
+    } else {
+      message.valueOut = undefined;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   BeginPoll(request: MsgBeginPoll): Promise<MsgBeginPollResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CastVoteForPoll(
     request: MsgCastVoteForPoll
   ): Promise<MsgCastVoteForPollResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RedeemPollShares(
+    request: MsgRedeemPollShares
+  ): Promise<MsgRedeemPollSharesResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -365,6 +564,20 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("zeta.booth.Msg", "CastVoteForPoll", data);
     return promise.then((data) =>
       MsgCastVoteForPollResponse.decode(new Reader(data))
+    );
+  }
+
+  RedeemPollShares(
+    request: MsgRedeemPollShares
+  ): Promise<MsgRedeemPollSharesResponse> {
+    const data = MsgRedeemPollShares.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.booth.Msg",
+      "RedeemPollShares",
+      data
+    );
+    return promise.then((data) =>
+      MsgRedeemPollSharesResponse.decode(new Reader(data))
     );
   }
 }

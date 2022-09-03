@@ -280,6 +280,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgRedeemPollShares({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgRedeemPollShares(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRedeemPollShares:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgRedeemPollShares:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgCastVoteForPoll({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -306,6 +321,19 @@ export default {
 					throw new Error('TxClient:MsgBeginPoll:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgBeginPoll:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgRedeemPollShares({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgRedeemPollShares(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgRedeemPollShares:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgRedeemPollShares:Create Could not create message: ' + e.message)
 				}
 			}
 		},

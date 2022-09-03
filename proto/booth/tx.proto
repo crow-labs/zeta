@@ -2,6 +2,8 @@ syntax = "proto3";
 package zeta.booth;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
 import "booth/vote_params.proto";
 
 option go_package = "zeta/x/booth/types";
@@ -10,6 +12,7 @@ option go_package = "zeta/x/booth/types";
 service Msg {
       rpc BeginPoll(MsgBeginPoll) returns (MsgBeginPollResponse);
   rpc CastVoteForPoll(MsgCastVoteForPoll) returns (MsgCastVoteForPollResponse);
+  rpc RedeemPollShares(MsgRedeemPollShares) returns (MsgRedeemPollSharesResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -31,6 +34,17 @@ message MsgCastVoteForPoll {
 
 message MsgCastVoteForPollResponse {
   uint64 voteId = 1;
+}
+
+message MsgRedeemPollShares {
+  string creator = 1;
+  uint64 pollId = 2;
+  uint64 voterId = 3;
+  cosmos.base.v1beta1.Coin pollShares = 4 [(gogoproto.nullable) = false];
+}
+
+message MsgRedeemPollSharesResponse {
+  cosmos.base.v1beta1.Coin valueOut = 1 [(gogoproto.nullable) = false];
 }
 
 // this line is used by starport scaffolding # proto/tx/message

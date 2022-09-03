@@ -5,11 +5,13 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgBeginPoll } from "./types/booth/tx";
+import { MsgRedeemPollShares } from "./types/booth/tx";
 import { MsgCastVoteForPoll } from "./types/booth/tx";
 
 
 const types = [
   ["/zeta.booth.MsgBeginPoll", MsgBeginPoll],
+  ["/zeta.booth.MsgRedeemPollShares", MsgRedeemPollShares],
   ["/zeta.booth.MsgCastVoteForPoll", MsgCastVoteForPoll],
   
 ];
@@ -44,6 +46,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgBeginPoll: (data: MsgBeginPoll): EncodeObject => ({ typeUrl: "/zeta.booth.MsgBeginPoll", value: MsgBeginPoll.fromPartial( data ) }),
+    msgRedeemPollShares: (data: MsgRedeemPollShares): EncodeObject => ({ typeUrl: "/zeta.booth.MsgRedeemPollShares", value: MsgRedeemPollShares.fromPartial( data ) }),
     msgCastVoteForPoll: (data: MsgCastVoteForPoll): EncodeObject => ({ typeUrl: "/zeta.booth.MsgCastVoteForPoll", value: MsgCastVoteForPoll.fromPartial( data ) }),
     
   };

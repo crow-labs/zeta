@@ -6,6 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
+	types "github.com/cosmos/cosmos-sdk/types"
+	_ "github.com/gogo/protobuf/gogoproto"
 	grpc1 "github.com/gogo/protobuf/grpc"
 	proto "github.com/gogo/protobuf/proto"
 	grpc "google.golang.org/grpc"
@@ -235,38 +237,160 @@ func (m *MsgCastVoteForPollResponse) GetVoteId() uint64 {
 	return 0
 }
 
+type MsgRedeemPollShares struct {
+	Creator    string     `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	PollId     uint64     `protobuf:"varint,2,opt,name=pollId,proto3" json:"pollId,omitempty"`
+	VoterId    uint64     `protobuf:"varint,3,opt,name=voterId,proto3" json:"voterId,omitempty"`
+	PollShares types.Coin `protobuf:"bytes,4,opt,name=pollShares,proto3" json:"pollShares"`
+}
+
+func (m *MsgRedeemPollShares) Reset()         { *m = MsgRedeemPollShares{} }
+func (m *MsgRedeemPollShares) String() string { return proto.CompactTextString(m) }
+func (*MsgRedeemPollShares) ProtoMessage()    {}
+func (*MsgRedeemPollShares) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fa00d12532d559de, []int{4}
+}
+func (m *MsgRedeemPollShares) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRedeemPollShares) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRedeemPollShares.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRedeemPollShares) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRedeemPollShares.Merge(m, src)
+}
+func (m *MsgRedeemPollShares) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRedeemPollShares) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRedeemPollShares.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRedeemPollShares proto.InternalMessageInfo
+
+func (m *MsgRedeemPollShares) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRedeemPollShares) GetPollId() uint64 {
+	if m != nil {
+		return m.PollId
+	}
+	return 0
+}
+
+func (m *MsgRedeemPollShares) GetVoterId() uint64 {
+	if m != nil {
+		return m.VoterId
+	}
+	return 0
+}
+
+func (m *MsgRedeemPollShares) GetPollShares() types.Coin {
+	if m != nil {
+		return m.PollShares
+	}
+	return types.Coin{}
+}
+
+type MsgRedeemPollSharesResponse struct {
+	ValueOut types.Coin `protobuf:"bytes,1,opt,name=valueOut,proto3" json:"valueOut"`
+}
+
+func (m *MsgRedeemPollSharesResponse) Reset()         { *m = MsgRedeemPollSharesResponse{} }
+func (m *MsgRedeemPollSharesResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRedeemPollSharesResponse) ProtoMessage()    {}
+func (*MsgRedeemPollSharesResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_fa00d12532d559de, []int{5}
+}
+func (m *MsgRedeemPollSharesResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRedeemPollSharesResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRedeemPollSharesResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRedeemPollSharesResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRedeemPollSharesResponse.Merge(m, src)
+}
+func (m *MsgRedeemPollSharesResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRedeemPollSharesResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRedeemPollSharesResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRedeemPollSharesResponse proto.InternalMessageInfo
+
+func (m *MsgRedeemPollSharesResponse) GetValueOut() types.Coin {
+	if m != nil {
+		return m.ValueOut
+	}
+	return types.Coin{}
+}
+
 func init() {
 	proto.RegisterType((*MsgBeginPoll)(nil), "zeta.booth.MsgBeginPoll")
 	proto.RegisterType((*MsgBeginPollResponse)(nil), "zeta.booth.MsgBeginPollResponse")
 	proto.RegisterType((*MsgCastVoteForPoll)(nil), "zeta.booth.MsgCastVoteForPoll")
 	proto.RegisterType((*MsgCastVoteForPollResponse)(nil), "zeta.booth.MsgCastVoteForPollResponse")
+	proto.RegisterType((*MsgRedeemPollShares)(nil), "zeta.booth.MsgRedeemPollShares")
+	proto.RegisterType((*MsgRedeemPollSharesResponse)(nil), "zeta.booth.MsgRedeemPollSharesResponse")
 }
 
 func init() { proto.RegisterFile("booth/tx.proto", fileDescriptor_fa00d12532d559de) }
 
 var fileDescriptor_fa00d12532d559de = []byte{
-	// 327 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0xc1, 0x4a, 0x33, 0x31,
-	0x14, 0x85, 0x9b, 0xb6, 0xf4, 0xa7, 0xf7, 0x17, 0x85, 0x20, 0x75, 0x18, 0x24, 0x0c, 0xb3, 0x90,
-	0x2e, 0x24, 0x85, 0xea, 0x13, 0x54, 0xa8, 0x74, 0x51, 0x28, 0xb3, 0x10, 0x74, 0x23, 0xa9, 0x13,
-	0xc6, 0x42, 0xec, 0x0d, 0x49, 0x94, 0xea, 0x53, 0xf4, 0x35, 0x7c, 0x13, 0x97, 0x5d, 0xba, 0x94,
-	0xf6, 0x45, 0x64, 0xa6, 0xad, 0x13, 0x2a, 0xea, 0xf2, 0xe4, 0x24, 0xdf, 0xc9, 0x3d, 0x5c, 0xd8,
-	0x1f, 0x23, 0xba, 0xfb, 0x8e, 0x9b, 0x71, 0x6d, 0xd0, 0x21, 0x85, 0x17, 0xe9, 0x04, 0x2f, 0x0e,
-	0xc3, 0xa3, 0xb5, 0xf7, 0x84, 0x4e, 0xde, 0x6a, 0x61, 0xc4, 0x83, 0x5d, 0x5f, 0x8a, 0xfb, 0xb0,
-	0x37, 0xb4, 0x59, 0x4f, 0x66, 0x93, 0xe9, 0x08, 0x95, 0xa2, 0x01, 0xfc, 0xbb, 0x33, 0x52, 0x38,
-	0x34, 0x01, 0x89, 0x48, 0xbb, 0x99, 0x6c, 0x25, 0x3d, 0x86, 0x66, 0x3a, 0xb1, 0xfa, 0xd1, 0xc9,
-	0x41, 0x1a, 0x54, 0x23, 0xd2, 0xae, 0x27, 0xe5, 0x41, 0xcc, 0xe1, 0xd0, 0xe7, 0x24, 0xd2, 0x6a,
-	0x9c, 0x5a, 0x49, 0x5b, 0xd0, 0xd0, 0xa8, 0xd4, 0x20, 0x2d, 0x70, 0xf5, 0x64, 0xa3, 0xe2, 0x39,
-	0x01, 0x3a, 0xb4, 0xd9, 0x85, 0xb0, 0xee, 0x0a, 0x9d, 0xec, 0xa3, 0xf9, 0x23, 0xbe, 0x04, 0x55,
-	0x7d, 0x50, 0xfe, 0x22, 0x9f, 0xca, 0x0c, 0xd2, 0xa0, 0x56, 0x18, 0x5b, 0x49, 0x39, 0x34, 0xc6,
-	0x42, 0x29, 0x74, 0x41, 0x3d, 0x22, 0xed, 0xff, 0xdd, 0x16, 0x2f, 0x0b, 0xe1, 0x79, 0xe8, 0xa8,
-	0x28, 0x22, 0xd9, 0xdc, 0x8a, 0xcf, 0x21, 0xfc, 0xfe, 0x23, 0x7f, 0x90, 0x1c, 0x5c, 0x0e, 0xb2,
-	0x56, 0xdd, 0x57, 0x02, 0xb5, 0xa1, 0xcd, 0xe8, 0x25, 0x34, 0xbd, 0x16, 0xfd, 0x28, 0xbf, 0x97,
-	0x30, 0xfa, 0xc9, 0xf9, 0x0a, 0xba, 0x86, 0x83, 0xdd, 0x56, 0xd8, 0xce, 0xa3, 0x1d, 0x3f, 0x3c,
-	0xf9, 0xdd, 0xdf, 0xa2, 0x7b, 0xa7, 0x6f, 0x4b, 0x46, 0x16, 0x4b, 0x46, 0x3e, 0x96, 0x8c, 0xcc,
-	0x57, 0xac, 0xb2, 0x58, 0xb1, 0xca, 0xfb, 0x8a, 0x55, 0x6e, 0x68, 0x0e, 0xe8, 0xcc, 0x3a, 0x9b,
-	0x15, 0x7a, 0xd6, 0xd2, 0x8e, 0x1b, 0xc5, 0x86, 0x9c, 0x7d, 0x06, 0x00, 0x00, 0xff, 0xff, 0x08,
-	0xf8, 0x97, 0x0f, 0x58, 0x02, 0x00, 0x00,
+	// 459 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0x4f, 0x8b, 0xd3, 0x40,
+	0x14, 0xef, 0x74, 0x4b, 0xb5, 0x4f, 0x51, 0x89, 0xcb, 0x1a, 0xa3, 0xcc, 0x96, 0x1c, 0xb4, 0x07,
+	0x99, 0xb0, 0xab, 0x37, 0x0f, 0x42, 0x17, 0x56, 0x7a, 0x28, 0x2e, 0x11, 0x04, 0x17, 0x41, 0x26,
+	0xcd, 0x23, 0x5b, 0x48, 0xfb, 0x42, 0x66, 0x5a, 0x56, 0xbf, 0x80, 0xd7, 0xfd, 0x0c, 0x7e, 0x9a,
+	0x3d, 0xee, 0xd1, 0x93, 0x48, 0xfb, 0x45, 0x64, 0x92, 0x34, 0x09, 0x59, 0xb5, 0x1e, 0xf6, 0x36,
+	0xef, 0xcf, 0xef, 0x37, 0xef, 0xf7, 0xe6, 0x37, 0x70, 0x2f, 0x20, 0xd2, 0x67, 0x9e, 0x3e, 0x17,
+	0x49, 0x4a, 0x9a, 0x2c, 0xf8, 0x8a, 0x5a, 0x8a, 0x2c, 0xe9, 0xf0, 0x09, 0xa9, 0x19, 0x29, 0x2f,
+	0x90, 0x0a, 0xbd, 0xe5, 0x41, 0x80, 0x5a, 0x1e, 0x78, 0x13, 0x9a, 0xce, 0xf3, 0x5e, 0x67, 0x37,
+	0xa2, 0x88, 0xb2, 0xa3, 0x67, 0x4e, 0x45, 0xf6, 0x51, 0xce, 0xb8, 0x24, 0x8d, 0x9f, 0x13, 0x99,
+	0xca, 0x99, 0xca, 0x0b, 0xee, 0x31, 0xdc, 0x1d, 0xab, 0x68, 0x88, 0xd1, 0x74, 0x7e, 0x42, 0x71,
+	0x6c, 0xd9, 0x70, 0x6b, 0x92, 0xa2, 0xd4, 0x94, 0xda, 0xac, 0xcf, 0x06, 0x3d, 0x7f, 0x13, 0x5a,
+	0x4f, 0xa1, 0x17, 0x4e, 0x55, 0xb2, 0xd0, 0x38, 0x0a, 0xed, 0x76, 0x9f, 0x0d, 0x3a, 0x7e, 0x95,
+	0x70, 0x05, 0xec, 0xd6, 0x79, 0x7c, 0x54, 0x09, 0xcd, 0x15, 0x5a, 0x7b, 0xd0, 0x4d, 0x28, 0x8e,
+	0x47, 0x61, 0x46, 0xd7, 0xf1, 0x8b, 0xc8, 0xbd, 0x60, 0x60, 0x8d, 0x55, 0x74, 0x24, 0x95, 0xfe,
+	0x40, 0x1a, 0x8f, 0x29, 0xdd, 0x72, 0x7d, 0x45, 0xd4, 0xae, 0x13, 0x19, 0x84, 0x51, 0x95, 0x8e,
+	0x42, 0x7b, 0x27, 0x2b, 0x6c, 0x42, 0x4b, 0x40, 0x37, 0x90, 0x71, 0x4c, 0xda, 0xee, 0xf4, 0xd9,
+	0xe0, 0xce, 0xe1, 0x9e, 0xa8, 0xd6, 0x28, 0xcc, 0xa5, 0x27, 0xd9, 0x22, 0xfc, 0xa2, 0xcb, 0x7d,
+	0x05, 0xce, 0xf5, 0x89, 0xea, 0x42, 0x0c, 0x71, 0x25, 0x24, 0x8f, 0xdc, 0xef, 0x0c, 0x1e, 0x8e,
+	0x55, 0xe4, 0x63, 0x88, 0x38, 0x33, 0x88, 0xf7, 0x67, 0x32, 0x45, 0x75, 0xa3, 0x4a, 0xde, 0x00,
+	0x24, 0x25, 0x73, 0xa1, 0xe6, 0xb1, 0xc8, 0x8d, 0x20, 0x8c, 0x11, 0x44, 0x61, 0x04, 0x71, 0x44,
+	0xd3, 0xf9, 0xb0, 0x73, 0xf9, 0x73, 0xbf, 0xe5, 0xd7, 0x20, 0xee, 0x29, 0x3c, 0xf9, 0xc3, 0x8c,
+	0xa5, 0xb6, 0xd7, 0x70, 0x7b, 0x29, 0xe3, 0x05, 0xbe, 0x5b, 0xe8, 0x6c, 0xd8, 0xff, 0x60, 0x2f,
+	0x01, 0x87, 0xdf, 0xda, 0xb0, 0x33, 0x56, 0x91, 0xf5, 0x16, 0x7a, 0x35, 0x1b, 0xd5, 0x77, 0x5d,
+	0x37, 0x86, 0xd3, 0xff, 0x5b, 0xa5, 0x9c, 0xe6, 0x23, 0xdc, 0x6f, 0xda, 0x82, 0x37, 0x40, 0x8d,
+	0xba, 0xf3, 0xec, 0xdf, 0xf5, 0x92, 0xfa, 0x13, 0x3c, 0xb8, 0xf6, 0x50, 0xfb, 0x0d, 0x6c, 0xb3,
+	0xc1, 0x79, 0xbe, 0xa5, 0x61, 0xc3, 0x3e, 0x7c, 0x71, 0xb9, 0xe2, 0xec, 0x6a, 0xc5, 0xd9, 0xaf,
+	0x15, 0x67, 0x17, 0x6b, 0xde, 0xba, 0x5a, 0xf3, 0xd6, 0x8f, 0x35, 0x6f, 0x9d, 0x5a, 0x86, 0xc1,
+	0x3b, 0xf7, 0x8a, 0x7f, 0xfd, 0x25, 0x41, 0x15, 0x74, 0xb3, 0x0f, 0xf8, 0xf2, 0x77, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0xea, 0xb2, 0x64, 0xd4, 0xed, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -283,6 +407,7 @@ const _ = grpc.SupportPackageIsVersion4
 type MsgClient interface {
 	BeginPoll(ctx context.Context, in *MsgBeginPoll, opts ...grpc.CallOption) (*MsgBeginPollResponse, error)
 	CastVoteForPoll(ctx context.Context, in *MsgCastVoteForPoll, opts ...grpc.CallOption) (*MsgCastVoteForPollResponse, error)
+	RedeemPollShares(ctx context.Context, in *MsgRedeemPollShares, opts ...grpc.CallOption) (*MsgRedeemPollSharesResponse, error)
 }
 
 type msgClient struct {
@@ -311,10 +436,20 @@ func (c *msgClient) CastVoteForPoll(ctx context.Context, in *MsgCastVoteForPoll,
 	return out, nil
 }
 
+func (c *msgClient) RedeemPollShares(ctx context.Context, in *MsgRedeemPollShares, opts ...grpc.CallOption) (*MsgRedeemPollSharesResponse, error) {
+	out := new(MsgRedeemPollSharesResponse)
+	err := c.cc.Invoke(ctx, "/zeta.booth.Msg/RedeemPollShares", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	BeginPoll(context.Context, *MsgBeginPoll) (*MsgBeginPollResponse, error)
 	CastVoteForPoll(context.Context, *MsgCastVoteForPoll) (*MsgCastVoteForPollResponse, error)
+	RedeemPollShares(context.Context, *MsgRedeemPollShares) (*MsgRedeemPollSharesResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -326,6 +461,9 @@ func (*UnimplementedMsgServer) BeginPoll(ctx context.Context, req *MsgBeginPoll)
 }
 func (*UnimplementedMsgServer) CastVoteForPoll(ctx context.Context, req *MsgCastVoteForPoll) (*MsgCastVoteForPollResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CastVoteForPoll not implemented")
+}
+func (*UnimplementedMsgServer) RedeemPollShares(ctx context.Context, req *MsgRedeemPollShares) (*MsgRedeemPollSharesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RedeemPollShares not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -368,6 +506,24 @@ func _Msg_CastVoteForPoll_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RedeemPollShares_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRedeemPollShares)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RedeemPollShares(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zeta.booth.Msg/RedeemPollShares",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RedeemPollShares(ctx, req.(*MsgRedeemPollShares))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "zeta.booth.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -379,6 +535,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CastVoteForPoll",
 			Handler:    _Msg_CastVoteForPoll_Handler,
+		},
+		{
+			MethodName: "RedeemPollShares",
+			Handler:    _Msg_RedeemPollShares_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -528,6 +688,89 @@ func (m *MsgCastVoteForPollResponse) MarshalToSizedBuffer(dAtA []byte) (int, err
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRedeemPollShares) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRedeemPollShares) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRedeemPollShares) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.PollShares.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0x22
+	if m.VoterId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.VoterId))
+		i--
+		dAtA[i] = 0x18
+	}
+	if m.PollId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.PollId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRedeemPollSharesResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRedeemPollSharesResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRedeemPollSharesResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.ValueOut.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintTx(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -599,6 +842,38 @@ func (m *MsgCastVoteForPollResponse) Size() (n int) {
 	if m.VoteId != 0 {
 		n += 1 + sovTx(uint64(m.VoteId))
 	}
+	return n
+}
+
+func (m *MsgRedeemPollShares) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.PollId != 0 {
+		n += 1 + sovTx(uint64(m.PollId))
+	}
+	if m.VoterId != 0 {
+		n += 1 + sovTx(uint64(m.VoterId))
+	}
+	l = m.PollShares.Size()
+	n += 1 + l + sovTx(uint64(l))
+	return n
+}
+
+func (m *MsgRedeemPollSharesResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.ValueOut.Size()
+	n += 1 + l + sovTx(uint64(l))
 	return n
 }
 
@@ -982,6 +1257,242 @@ func (m *MsgCastVoteForPollResponse) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRedeemPollShares) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRedeemPollShares: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRedeemPollShares: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PollId", wireType)
+			}
+			m.PollId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.PollId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field VoterId", wireType)
+			}
+			m.VoterId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.VoterId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PollShares", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.PollShares.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRedeemPollSharesResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRedeemPollSharesResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRedeemPollSharesResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ValueOut", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.ValueOut.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

@@ -19,6 +19,16 @@ export interface BoothMsgCastVoteForPollResponse {
   voteId?: string;
 }
 
+export interface BoothMsgRedeemPollSharesResponse {
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  valueOut?: V1Beta1Coin;
+}
+
 /**
  * Params defines the parameters for the module.
  */
