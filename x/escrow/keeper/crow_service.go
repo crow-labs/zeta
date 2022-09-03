@@ -20,7 +20,7 @@ func (k Keeper) validateCrowSeller(ctx sdk.Context, msg types.MsgBeginEscrow) er
 		return err
 	}
 
-	return k.marketKeeper.ValidateSellerBeginEscrow(ctx, msg.BuyOrderId, msg.Creator)
+	return k.marketKeeper.ValidateSellerInEscrow(ctx, msg.BuyOrderId, msg.Creator)
 }
 
 func NewCrow(crowId, buyOrderId uint64) types.Crow {

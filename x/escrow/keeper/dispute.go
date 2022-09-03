@@ -1,9 +1,13 @@
 package keeper
 
 import (
+	"fmt"
+	"zeta/x/escrow/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"zeta/x/escrow/types"
+
+	gogotypes "github.com/gogo/protobuf/types"
 )
 
 // SetDispute set a specific dispute in the store from its index
@@ -60,4 +64,35 @@ func (k Keeper) GetAllDispute(ctx sdk.Context) (list []types.Dispute) {
 	}
 
 	return
+}
+
+func (k Keeper) SetNextDisputeId(ctx sdk.Context, disputeId uint64) {
+	store := ctx.KVStore(k.storeKey)
+	bz := k.cdc.MustMarshal(&gogotypes.UInt64Value{Value: disputeId})
+	store.Set(types.KeyNextGlobalDisputeId, bz)
+}
+
+func (k Keeper) GetNextDisputeId(ctx sdk.Context) uint64 {
+	var nextDisputeId uint64
+	store := ctx.KVStore(k.storeKey)
+
+	bz := store.Get(types.KeyNextGlobalDisputeId)
+	if bz == nil {
+		panic(fmt.Errorf("dispute has not been initialized - should have been done in init genesis"))
+	} else {
+		val := gogotypes.UInt64Value{}
+
+		err := k.cdc.Unmarshal(bz, &val)
+		if err != nil {
+			panic(err)
+		}
+
+		return nextDisputeId
+	}
+}
+
+func (k Keeper) getNextDisputeIdAndIncrement(ctx sdk.Context) uint64 {
+	nextDisputeId := k.GetNextDisputeId(ctx)
+	k.SetNextDisputeId(ctx, nextDisputeId+1)
+	return nextDisputeId
 }

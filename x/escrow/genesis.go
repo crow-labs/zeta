@@ -21,6 +21,7 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 	k.SetNextCrowId(ctx, genState.NextCrowId)
+	k.SetNextDisputeId(ctx, genState.NextDisputeId)
 }
 
 // ExportGenesis returns the capability module's exported genesis.
@@ -32,5 +33,6 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.DisputeList = k.GetAllDispute(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 	genesis.NextCrowId = k.GetNextCrowId(ctx)
+	genesis.NextDisputeId = k.GetNextDisputeId(ctx)
 	return genesis
 }
