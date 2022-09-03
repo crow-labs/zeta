@@ -70,10 +70,11 @@ export interface EscrowDispute {
   pollId?: string;
 
   /** @format uint64 */
-  plaintiffId?: string;
+  buyerId?: string;
 
   /** @format uint64 */
-  defendantId?: string;
+  sellerId?: string;
+  creator?: string;
 }
 
 export interface EscrowMsgBeginEscrowResponse {

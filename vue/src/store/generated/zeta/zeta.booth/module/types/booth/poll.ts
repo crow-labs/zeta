@@ -12,6 +12,7 @@ export interface Poll {
   disputeId: number;
   voteIds: number[];
   verdict: VoteParams | undefined;
+  funding: string;
 }
 
 const basePoll: object = {
@@ -20,6 +21,7 @@ const basePoll: object = {
   votingPower: "",
   disputeId: 0,
   voteIds: 0,
+  funding: "",
 };
 
 export const Poll = {
@@ -43,6 +45,9 @@ export const Poll = {
     writer.ldelim();
     if (message.verdict !== undefined) {
       VoteParams.encode(message.verdict, writer.uint32(50).fork()).ldelim();
+    }
+    if (message.funding !== "") {
+      writer.uint32(58).string(message.funding);
     }
     return writer;
   },
@@ -79,6 +84,9 @@ export const Poll = {
           break;
         case 6:
           message.verdict = VoteParams.decode(reader, reader.uint32());
+          break;
+        case 7:
+          message.funding = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -121,6 +129,11 @@ export const Poll = {
     } else {
       message.verdict = undefined;
     }
+    if (object.funding !== undefined && object.funding !== null) {
+      message.funding = String(object.funding);
+    } else {
+      message.funding = "";
+    }
     return message;
   },
 
@@ -141,6 +154,7 @@ export const Poll = {
       (obj.verdict = message.verdict
         ? VoteParams.toJSON(message.verdict)
         : undefined);
+    message.funding !== undefined && (obj.funding = message.funding);
     return obj;
   },
 
@@ -176,6 +190,11 @@ export const Poll = {
       message.verdict = VoteParams.fromPartial(object.verdict);
     } else {
       message.verdict = undefined;
+    }
+    if (object.funding !== undefined && object.funding !== null) {
+      message.funding = object.funding;
+    } else {
+      message.funding = "";
     }
     return message;
   },

@@ -2,12 +2,14 @@ syntax = "proto3";
 package zeta.booth;
 
 // this line is used by starport scaffolding # proto/tx/import
+import "booth/vote_params.proto";
 
 option go_package = "zeta/x/booth/types";
 
 // Msg defines the Msg service.
 service Msg {
       rpc BeginPoll(MsgBeginPoll) returns (MsgBeginPollResponse);
+  rpc CastVoteForPoll(MsgCastVoteForPoll) returns (MsgCastVoteForPollResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -18,6 +20,17 @@ message MsgBeginPoll {
 
 message MsgBeginPollResponse {
   uint64 pollId = 1;
+}
+
+message MsgCastVoteForPoll {
+  string creator = 1;
+  uint64 pollId = 2;
+  uint64 voterId = 3;
+  VoteParams ballot = 4;
+}
+
+message MsgCastVoteForPollResponse {
+  uint64 voteId = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message

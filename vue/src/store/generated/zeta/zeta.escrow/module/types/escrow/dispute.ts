@@ -14,8 +14,9 @@ export interface Dispute {
   votingEndBlock: number;
   crowId: number;
   pollId: number;
-  plaintiffId: number;
-  defendantId: number;
+  buyerId: number;
+  sellerId: number;
+  creator: string;
 }
 
 const baseDispute: object = {
@@ -28,8 +29,9 @@ const baseDispute: object = {
   votingEndBlock: 0,
   crowId: 0,
   pollId: 0,
-  plaintiffId: 0,
-  defendantId: 0,
+  buyerId: 0,
+  sellerId: 0,
+  creator: "",
 };
 
 export const Dispute = {
@@ -61,11 +63,14 @@ export const Dispute = {
     if (message.pollId !== 0) {
       writer.uint32(72).uint64(message.pollId);
     }
-    if (message.plaintiffId !== 0) {
-      writer.uint32(80).uint64(message.plaintiffId);
+    if (message.buyerId !== 0) {
+      writer.uint32(80).uint64(message.buyerId);
     }
-    if (message.defendantId !== 0) {
-      writer.uint32(88).uint64(message.defendantId);
+    if (message.sellerId !== 0) {
+      writer.uint32(88).uint64(message.sellerId);
+    }
+    if (message.creator !== "") {
+      writer.uint32(98).string(message.creator);
     }
     return writer;
   },
@@ -107,10 +112,13 @@ export const Dispute = {
           message.pollId = longToNumber(reader.uint64() as Long);
           break;
         case 10:
-          message.plaintiffId = longToNumber(reader.uint64() as Long);
+          message.buyerId = longToNumber(reader.uint64() as Long);
           break;
         case 11:
-          message.defendantId = longToNumber(reader.uint64() as Long);
+          message.sellerId = longToNumber(reader.uint64() as Long);
+          break;
+        case 12:
+          message.creator = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -172,15 +180,20 @@ export const Dispute = {
     } else {
       message.pollId = 0;
     }
-    if (object.plaintiffId !== undefined && object.plaintiffId !== null) {
-      message.plaintiffId = Number(object.plaintiffId);
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = Number(object.buyerId);
     } else {
-      message.plaintiffId = 0;
+      message.buyerId = 0;
     }
-    if (object.defendantId !== undefined && object.defendantId !== null) {
-      message.defendantId = Number(object.defendantId);
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = Number(object.sellerId);
     } else {
-      message.defendantId = 0;
+      message.sellerId = 0;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
     }
     return message;
   },
@@ -207,10 +220,9 @@ export const Dispute = {
       (obj.votingEndBlock = message.votingEndBlock);
     message.crowId !== undefined && (obj.crowId = message.crowId);
     message.pollId !== undefined && (obj.pollId = message.pollId);
-    message.plaintiffId !== undefined &&
-      (obj.plaintiffId = message.plaintiffId);
-    message.defendantId !== undefined &&
-      (obj.defendantId = message.defendantId);
+    message.buyerId !== undefined && (obj.buyerId = message.buyerId);
+    message.sellerId !== undefined && (obj.sellerId = message.sellerId);
+    message.creator !== undefined && (obj.creator = message.creator);
     return obj;
   },
 
@@ -266,15 +278,20 @@ export const Dispute = {
     } else {
       message.pollId = 0;
     }
-    if (object.plaintiffId !== undefined && object.plaintiffId !== null) {
-      message.plaintiffId = object.plaintiffId;
+    if (object.buyerId !== undefined && object.buyerId !== null) {
+      message.buyerId = object.buyerId;
     } else {
-      message.plaintiffId = 0;
+      message.buyerId = 0;
     }
-    if (object.defendantId !== undefined && object.defendantId !== null) {
-      message.defendantId = object.defendantId;
+    if (object.sellerId !== undefined && object.sellerId !== null) {
+      message.sellerId = object.sellerId;
     } else {
-      message.defendantId = 0;
+      message.sellerId = 0;
+    }
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
     }
     return message;
   },

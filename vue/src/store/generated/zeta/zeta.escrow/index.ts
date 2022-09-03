@@ -263,21 +263,6 @@ export default {
 		},
 		
 		
-		async sendMsgJoinEscrow({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgJoinEscrow(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgJoinEscrow:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgJoinEscrow:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgRaiseBuyerDispute({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -290,6 +275,21 @@ export default {
 					throw new Error('TxClient:MsgRaiseBuyerDispute:Init Could not initialize signing client. Wallet is required.')
 				}else{
 					throw new Error('TxClient:MsgRaiseBuyerDispute:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
+		async sendMsgBeginEscrow({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgBeginEscrow(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginEscrow:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgBeginEscrow:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -308,18 +308,18 @@ export default {
 				}
 			}
 		},
-		async sendMsgBeginEscrow({ rootGetters }, { value, fee = [], memo = '' }) {
+		async sendMsgJoinEscrow({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgBeginEscrow(value)
+				const msg = await txClient.msgJoinEscrow(value)
 				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
 	gas: "200000" }, memo})
 				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginEscrow:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgJoinEscrow:Init Could not initialize signing client. Wallet is required.')
 				}else{
-					throw new Error('TxClient:MsgBeginEscrow:Send Could not broadcast Tx: '+ e.message)
+					throw new Error('TxClient:MsgJoinEscrow:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
@@ -339,19 +339,6 @@ export default {
 			}
 		},
 		
-		async MsgJoinEscrow({ rootGetters }, { value }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgJoinEscrow(value)
-				return msg
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgJoinEscrow:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgJoinEscrow:Create Could not create message: ' + e.message)
-				}
-			}
-		},
 		async MsgRaiseBuyerDispute({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -362,6 +349,19 @@ export default {
 					throw new Error('TxClient:MsgRaiseBuyerDispute:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgRaiseBuyerDispute:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgBeginEscrow({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgBeginEscrow(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgBeginEscrow:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgBeginEscrow:Create Could not create message: ' + e.message)
 				}
 			}
 		},
@@ -378,16 +378,16 @@ export default {
 				}
 			}
 		},
-		async MsgBeginEscrow({ rootGetters }, { value }) {
+		async MsgJoinEscrow({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgBeginEscrow(value)
+				const msg = await txClient.msgJoinEscrow(value)
 				return msg
 			} catch (e) {
 				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgBeginEscrow:Init Could not initialize signing client. Wallet is required.')
+					throw new Error('TxClient:MsgJoinEscrow:Init Could not initialize signing client. Wallet is required.')
 				} else{
-					throw new Error('TxClient:MsgBeginEscrow:Create Could not create message: ' + e.message)
+					throw new Error('TxClient:MsgJoinEscrow:Create Could not create message: ' + e.message)
 				}
 			}
 		},

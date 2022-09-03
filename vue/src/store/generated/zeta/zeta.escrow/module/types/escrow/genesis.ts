@@ -15,16 +15,9 @@ export interface GenesisState {
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextCrowId: number;
   nextDisputeId: number;
-  nextVoteId: number;
-  nextVerdictId: number;
 }
 
-const baseGenesisState: object = {
-  nextCrowId: 0,
-  nextDisputeId: 0,
-  nextVoteId: 0,
-  nextVerdictId: 0,
-};
+const baseGenesisState: object = { nextCrowId: 0, nextDisputeId: 0 };
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
@@ -42,12 +35,6 @@ export const GenesisState = {
     }
     if (message.nextDisputeId !== 0) {
       writer.uint32(32).uint64(message.nextDisputeId);
-    }
-    if (message.nextVoteId !== 0) {
-      writer.uint32(40).uint64(message.nextVoteId);
-    }
-    if (message.nextVerdictId !== 0) {
-      writer.uint32(48).uint64(message.nextVerdictId);
     }
     return writer;
   },
@@ -75,12 +62,6 @@ export const GenesisState = {
           break;
         case 4:
           message.nextDisputeId = longToNumber(reader.uint64() as Long);
-          break;
-        case 5:
-          message.nextVoteId = longToNumber(reader.uint64() as Long);
-          break;
-        case 6:
-          message.nextVerdictId = longToNumber(reader.uint64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -119,16 +100,6 @@ export const GenesisState = {
     } else {
       message.nextDisputeId = 0;
     }
-    if (object.nextVoteId !== undefined && object.nextVoteId !== null) {
-      message.nextVoteId = Number(object.nextVoteId);
-    } else {
-      message.nextVoteId = 0;
-    }
-    if (object.nextVerdictId !== undefined && object.nextVerdictId !== null) {
-      message.nextVerdictId = Number(object.nextVerdictId);
-    } else {
-      message.nextVerdictId = 0;
-    }
     return message;
   },
 
@@ -153,9 +124,6 @@ export const GenesisState = {
     message.nextCrowId !== undefined && (obj.nextCrowId = message.nextCrowId);
     message.nextDisputeId !== undefined &&
       (obj.nextDisputeId = message.nextDisputeId);
-    message.nextVoteId !== undefined && (obj.nextVoteId = message.nextVoteId);
-    message.nextVerdictId !== undefined &&
-      (obj.nextVerdictId = message.nextVerdictId);
     return obj;
   },
 
@@ -187,16 +155,6 @@ export const GenesisState = {
       message.nextDisputeId = object.nextDisputeId;
     } else {
       message.nextDisputeId = 0;
-    }
-    if (object.nextVoteId !== undefined && object.nextVoteId !== null) {
-      message.nextVoteId = object.nextVoteId;
-    } else {
-      message.nextVoteId = 0;
-    }
-    if (object.nextVerdictId !== undefined && object.nextVerdictId !== null) {
-      message.nextVerdictId = object.nextVerdictId;
-    } else {
-      message.nextVerdictId = 0;
     }
     return message;
   },

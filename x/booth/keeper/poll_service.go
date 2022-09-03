@@ -19,6 +19,7 @@ func (k Keeper) validateBeginPoll(ctx sdk.Context, msg types.MsgBeginPoll) (uint
 		return 0, err
 	}
 
+	// the defendant ends the debate period of the dispute
 	if msg.Creator == dispute.GetCreator() {
 		return 0, types.ErrDefendantClosesDebate
 	}
