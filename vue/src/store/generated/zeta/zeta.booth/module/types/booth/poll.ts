@@ -8,7 +8,7 @@ export const protobufPackage = "zeta.booth";
 export interface Poll {
   pollId: number;
   pollAccAddr: string;
-  votingPower: number;
+  votingPower: string;
   disputeId: number;
   voteIds: number[];
   verdict: VoteParams | undefined;
@@ -17,7 +17,7 @@ export interface Poll {
 const basePoll: object = {
   pollId: 0,
   pollAccAddr: "",
-  votingPower: 0,
+  votingPower: "",
   disputeId: 0,
   voteIds: 0,
 };
@@ -30,8 +30,8 @@ export const Poll = {
     if (message.pollAccAddr !== "") {
       writer.uint32(18).string(message.pollAccAddr);
     }
-    if (message.votingPower !== 0) {
-      writer.uint32(24).uint64(message.votingPower);
+    if (message.votingPower !== "") {
+      writer.uint32(26).string(message.votingPower);
     }
     if (message.disputeId !== 0) {
       writer.uint32(32).uint64(message.disputeId);
@@ -62,7 +62,7 @@ export const Poll = {
           message.pollAccAddr = reader.string();
           break;
         case 3:
-          message.votingPower = longToNumber(reader.uint64() as Long);
+          message.votingPower = reader.string();
           break;
         case 4:
           message.disputeId = longToNumber(reader.uint64() as Long);
@@ -102,9 +102,9 @@ export const Poll = {
       message.pollAccAddr = "";
     }
     if (object.votingPower !== undefined && object.votingPower !== null) {
-      message.votingPower = Number(object.votingPower);
+      message.votingPower = String(object.votingPower);
     } else {
-      message.votingPower = 0;
+      message.votingPower = "";
     }
     if (object.disputeId !== undefined && object.disputeId !== null) {
       message.disputeId = Number(object.disputeId);
@@ -160,7 +160,7 @@ export const Poll = {
     if (object.votingPower !== undefined && object.votingPower !== null) {
       message.votingPower = object.votingPower;
     } else {
-      message.votingPower = 0;
+      message.votingPower = "";
     }
     if (object.disputeId !== undefined && object.disputeId !== null) {
       message.disputeId = object.disputeId;

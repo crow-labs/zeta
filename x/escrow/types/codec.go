@@ -13,7 +13,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCompleteEscrowNoDispute{}, "escrow/CompleteEscrowNoDispute", nil)
 	cdc.RegisterConcrete(&MsgRaiseBuyerDispute{}, "escrow/RaiseBuyerDispute", nil)
 	cdc.RegisterConcrete(&MsgPostSellerEvidence{}, "escrow/PostSellerEvidence", nil)
-// this line is used by starport scaffolding # 2
+	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
@@ -30,9 +30,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgRaiseBuyerDispute{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-	&MsgPostSellerEvidence{},
-)
-// this line is used by starport scaffolding # 3
+		&MsgPostSellerEvidence{},
+	)
+	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)
 }

@@ -30430,7 +30430,6 @@ paths:
                       type: string
                     votingPower:
                       type: string
-                      format: uint64
                     disputeId:
                       type: string
                       format: uint64
@@ -30564,16 +30563,6 @@ paths:
           in: query
           required: false
           type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
-          in: query
-          required: false
-          type: boolean
       tags:
         - Query
   '/zeta/booth/poll/{pollId}':
@@ -30596,7 +30585,6 @@ paths:
                     type: string
                   votingPower:
                     type: string
-                    format: uint64
                   disputeId:
                     type: string
                     format: uint64
@@ -30810,16 +30798,6 @@ paths:
             when key
 
             is set.
-          in: query
-          required: false
-          type: boolean
-        - name: pagination.reverse
-          description: >-
-            reverse is set to true if results are to be returned in the
-            descending order.
-
-
-            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -54361,6 +54339,12 @@ definitions:
     title: >-
       SignatureCounts contains information about signature reporting for a
       number of blocks
+  zeta.booth.MsgBeginPollResponse:
+    type: object
+    properties:
+      pollId:
+        type: string
+        format: uint64
   zeta.booth.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -54374,7 +54358,6 @@ definitions:
         type: string
       votingPower:
         type: string
-        format: uint64
       disputeId:
         type: string
         format: uint64
@@ -54430,7 +54413,6 @@ definitions:
               type: string
             votingPower:
               type: string
-              format: uint64
             disputeId:
               type: string
               format: uint64
@@ -54583,7 +54565,6 @@ definitions:
             type: string
           votingPower:
             type: string
-            format: uint64
           disputeId:
             type: string
             format: uint64
@@ -54851,6 +54832,8 @@ definitions:
   zeta.escrow.MsgCompleteEscrowNoDisputeResponse:
     type: object
   zeta.escrow.MsgJoinEscrowResponse:
+    type: object
+  zeta.escrow.MsgPostSellerEvidenceResponse:
     type: object
   zeta.escrow.MsgRaiseBuyerDisputeResponse:
     type: object

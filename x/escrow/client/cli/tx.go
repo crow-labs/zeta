@@ -35,7 +35,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdCompleteEscrowNoDispute())
 	cmd.AddCommand(CmdRaiseBuyerDispute())
 	cmd.AddCommand(CmdPostSellerEvidence())
-// this line is used by starport scaffolding # 1
+	// this line is used by starport scaffolding # 1
 
 	return cmd
 }

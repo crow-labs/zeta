@@ -9,6 +9,11 @@
  * ---------------------------------------------------------------
  */
 
+export interface BoothMsgBeginPollResponse {
+  /** @format uint64 */
+  pollId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
@@ -18,8 +23,6 @@ export interface BoothPoll {
   /** @format uint64 */
   pollId?: string;
   pollAccAddr?: string;
-
-  /** @format uint64 */
   votingPower?: string;
 
   /** @format uint64 */

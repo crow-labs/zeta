@@ -6,11 +6,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"zeta/x/escrow/keeper"
-	"zeta/x/escrow/types"
+	"zeta/x/booth/keeper"
+	"zeta/x/booth/types"
 )
 
-func SimulateMsgPostSellerEvidence(
+func SimulateMsgBeginPoll(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,12 +18,12 @@ func SimulateMsgPostSellerEvidence(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgPostSellerEvidence{
+		msg := &types.MsgBeginPoll{
 			Creator: simAccount.Address.String(),
 		}
 
-		// TODO: Handling the PostSellerEvidence simulation
+		// TODO: Handling the BeginPoll simulation
 
-		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "PostSellerEvidence simulation not implemented"), nil, nil
+		return simtypes.NoOpMsg(types.ModuleName, msg.Type(), "BeginPoll simulation not implemented"), nil, nil
 	}
 }
