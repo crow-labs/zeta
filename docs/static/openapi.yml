@@ -30396,6 +30396,7 @@ paths:
                     disputeId:
                       type: string
                       format: uint64
+                      title: 'TODO: make disputeId a list'
                     verdictId:
                       type: string
                       format: uint64
@@ -30540,6 +30541,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/zeta/escrow/crow/{crowId}':
@@ -30564,6 +30575,7 @@ paths:
                   disputeId:
                     type: string
                     format: uint64
+                    title: 'TODO: make disputeId a list'
                   verdictId:
                     type: string
                     format: uint64
@@ -30779,6 +30791,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -53839,6 +53861,7 @@ definitions:
       disputeId:
         type: string
         format: uint64
+        title: 'TODO: make disputeId a list'
       verdictId:
         type: string
         format: uint64
@@ -53918,6 +53941,8 @@ definitions:
       defendantId:
         type: string
         format: uint64
+  zeta.escrow.MsgAddSellerEvidenceResponse:
+    type: object
   zeta.escrow.MsgBeginEscrowResponse:
     type: object
     properties:
@@ -53954,6 +53979,7 @@ definitions:
             disputeId:
               type: string
               format: uint64
+              title: 'TODO: make disputeId a list'
             verdictId:
               type: string
               format: uint64
@@ -54112,6 +54138,7 @@ definitions:
           disputeId:
             type: string
             format: uint64
+            title: 'TODO: make disputeId a list'
           verdictId:
             type: string
             format: uint64

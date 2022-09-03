@@ -12,6 +12,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgJoinEscrow{}, "escrow/JoinEscrow", nil)
 	cdc.RegisterConcrete(&MsgCompleteEscrowNoDispute{}, "escrow/CompleteEscrowNoDispute", nil)
 	cdc.RegisterConcrete(&MsgRaiseBuyerDispute{}, "escrow/RaiseBuyerDispute", nil)
+	cdc.RegisterConcrete(&MsgAddSellerEvidence{}, "escrow/AddSellerEvidence", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -27,6 +28,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgRaiseBuyerDispute{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgAddSellerEvidence{},
 	)
 	// this line is used by starport scaffolding # 3
 

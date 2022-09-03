@@ -40,6 +40,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRaiseBuyerDispute int = 100
 
+	opWeightMsgAddSellerEvidence = "op_weight_msg_add_seller_evidence"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAddSellerEvidence int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -116,6 +120,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRaiseBuyerDispute,
 		escrowsimulation.SimulateMsgRaiseBuyerDispute(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAddSellerEvidence int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgAddSellerEvidence, &weightMsgAddSellerEvidence, nil,
+		func(_ *rand.Rand) {
+			weightMsgAddSellerEvidence = defaultWeightMsgAddSellerEvidence
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAddSellerEvidence,
+		escrowsimulation.SimulateMsgAddSellerEvidence(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

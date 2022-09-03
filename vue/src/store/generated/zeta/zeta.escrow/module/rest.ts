@@ -76,6 +76,8 @@ export interface EscrowDispute {
   defendantId?: string;
 }
 
+export type EscrowMsgAddSellerEvidenceResponse = object;
+
 export interface EscrowMsgBeginEscrowResponse {
   /** @format uint64 */
   crowId?: string;

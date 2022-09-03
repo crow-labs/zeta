@@ -11,6 +11,7 @@ service Msg {
   rpc JoinEscrow(MsgJoinEscrow) returns (MsgJoinEscrowResponse);
   rpc CompleteEscrowNoDispute(MsgCompleteEscrowNoDispute) returns (MsgCompleteEscrowNoDisputeResponse);
   rpc RaiseBuyerDispute(MsgRaiseBuyerDispute) returns (MsgRaiseBuyerDisputeResponse);
+  rpc AddSellerEvidence(MsgAddSellerEvidence) returns (MsgAddSellerEvidenceResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -49,6 +50,17 @@ message MsgRaiseBuyerDispute {
 
 message MsgRaiseBuyerDisputeResponse {
   uint64 disputeId = 1;
+}
+
+message MsgAddSellerEvidence {
+  string creator = 1;
+  uint64 crowId = 2;
+  uint64 disputeId = 3;
+  string description = 4;
+  string evidence = 5;
+}
+
+message MsgAddSellerEvidenceResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

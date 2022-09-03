@@ -51,9 +51,69 @@ func (k Keeper) CreateBuyerDispute(ctx sdk.Context, msg types.MsgRaiseBuyerDispu
 
 	crow, _ := k.GetCrow(ctx, msg.CrowId)
 	crow.Status = "buyerDispute"
+	crow.DisputeId = disputeId
 
 	k.SetDispute(ctx, dispute)
 	k.SetCrow(ctx, crow)
 
 	return disputeId, nil
+}
+
+func (k Keeper) validateAddSellerEvidence(ctx sdk.Context, msg types.MsgAddSellerEvidence) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
+	crow, found := k.GetCrow(ctx, msg.CrowId)
+	if !found {
+		return types.ErrCrowNotFound
+	}
+
+	// TODO: if dispute ID is made a list, this must change
+	if crow.DisputeId != msg.DisputeId {
+		return types.ErrDisputeNotForCrow
+	}
+
+	dispute, found := k.GetDispute(ctx, msg.DisputeId)
+	if !found {
+		return types.ErrDisputeNotFound
+	}
+
+	if dispute.CrowId != crow.DisputeId {
+		return types.ErrDisputeNotForCrow
+	}
+
+	return k.marketKeeper.ValidateSellerInEscrow(ctx, crow.BuyOrderId, msg.Creator)
+}
+
+func (k Keeper) AddSellerEvidence(ctx sdk.Context, msg types.MsgAddSellerEvidence) error {
+	err := k.validateAddSellerEvidence(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	dispute, _ := k.GetDispute(ctx, msg.DisputeId)
+
+	dispute.SellerEvidence = append(dispute.SellerEvidence, msg.Description+", "+msg.Evidence)
+
+	k.SetDispute(ctx, dispute)
+
+	return nil
+}
+
+func (k Keeper) validateAddBuyerEvidence(ctx sdk.Context, msg types.MsgAddBuyerEvidence) error {
+	if err := msg.ValidateBasic(); err != nil {
+		return err
+	}
+
+	crow, found := k.GetCrow(ctx, msg.CrowId)
+	if !found {
+		return types.ErrCrowNotFound
+	}
+
+	return k.marketKeeper.ValidateBuyerInEscrow(ctx, crow.BuyOrderId, msg.Creator)
+}
+
+func (k Keeper) AddBuyerEvidence(ctx sdk.Context, msg types.MsgAddBuyerEvidence) error {
+	return nil
 }

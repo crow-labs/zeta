@@ -39,6 +39,16 @@ export interface MsgRaiseBuyerDisputeResponse {
   disputeId: number;
 }
 
+export interface MsgAddSellerEvidence {
+  creator: string;
+  crowId: number;
+  disputeId: number;
+  description: string;
+  evidence: string;
+}
+
+export interface MsgAddSellerEvidenceResponse {}
+
 const baseMsgBeginEscrow: object = { creator: "", buyOrderId: 0 };
 
 export const MsgBeginEscrow = {
@@ -628,6 +638,191 @@ export const MsgRaiseBuyerDisputeResponse = {
   },
 };
 
+const baseMsgAddSellerEvidence: object = {
+  creator: "",
+  crowId: 0,
+  disputeId: 0,
+  description: "",
+  evidence: "",
+};
+
+export const MsgAddSellerEvidence = {
+  encode(
+    message: MsgAddSellerEvidence,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.crowId !== 0) {
+      writer.uint32(16).uint64(message.crowId);
+    }
+    if (message.disputeId !== 0) {
+      writer.uint32(24).uint64(message.disputeId);
+    }
+    if (message.description !== "") {
+      writer.uint32(34).string(message.description);
+    }
+    if (message.evidence !== "") {
+      writer.uint32(42).string(message.evidence);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgAddSellerEvidence {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgAddSellerEvidence } as MsgAddSellerEvidence;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.crowId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.disputeId = longToNumber(reader.uint64() as Long);
+          break;
+        case 4:
+          message.description = reader.string();
+          break;
+        case 5:
+          message.evidence = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAddSellerEvidence {
+    const message = { ...baseMsgAddSellerEvidence } as MsgAddSellerEvidence;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = Number(object.crowId);
+    } else {
+      message.crowId = 0;
+    }
+    if (object.disputeId !== undefined && object.disputeId !== null) {
+      message.disputeId = Number(object.disputeId);
+    } else {
+      message.disputeId = 0;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    } else {
+      message.description = "";
+    }
+    if (object.evidence !== undefined && object.evidence !== null) {
+      message.evidence = String(object.evidence);
+    } else {
+      message.evidence = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgAddSellerEvidence): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.crowId !== undefined && (obj.crowId = message.crowId);
+    message.disputeId !== undefined && (obj.disputeId = message.disputeId);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    message.evidence !== undefined && (obj.evidence = message.evidence);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgAddSellerEvidence>): MsgAddSellerEvidence {
+    const message = { ...baseMsgAddSellerEvidence } as MsgAddSellerEvidence;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = object.crowId;
+    } else {
+      message.crowId = 0;
+    }
+    if (object.disputeId !== undefined && object.disputeId !== null) {
+      message.disputeId = object.disputeId;
+    } else {
+      message.disputeId = 0;
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.evidence !== undefined && object.evidence !== null) {
+      message.evidence = object.evidence;
+    } else {
+      message.evidence = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgAddSellerEvidenceResponse: object = {};
+
+export const MsgAddSellerEvidenceResponse = {
+  encode(
+    _: MsgAddSellerEvidenceResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgAddSellerEvidenceResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgAddSellerEvidenceResponse,
+    } as MsgAddSellerEvidenceResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgAddSellerEvidenceResponse {
+    const message = {
+      ...baseMsgAddSellerEvidenceResponse,
+    } as MsgAddSellerEvidenceResponse;
+    return message;
+  },
+
+  toJSON(_: MsgAddSellerEvidenceResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgAddSellerEvidenceResponse>
+  ): MsgAddSellerEvidenceResponse {
+    const message = {
+      ...baseMsgAddSellerEvidenceResponse,
+    } as MsgAddSellerEvidenceResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   BeginEscrow(request: MsgBeginEscrow): Promise<MsgBeginEscrowResponse>;
@@ -635,10 +830,13 @@ export interface Msg {
   CompleteEscrowNoDispute(
     request: MsgCompleteEscrowNoDispute
   ): Promise<MsgCompleteEscrowNoDisputeResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RaiseBuyerDispute(
     request: MsgRaiseBuyerDispute
   ): Promise<MsgRaiseBuyerDisputeResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AddSellerEvidence(
+    request: MsgAddSellerEvidence
+  ): Promise<MsgAddSellerEvidenceResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -687,6 +885,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgRaiseBuyerDisputeResponse.decode(new Reader(data))
+    );
+  }
+
+  AddSellerEvidence(
+    request: MsgAddSellerEvidence
+  ): Promise<MsgAddSellerEvidenceResponse> {
+    const data = MsgAddSellerEvidence.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.escrow.Msg",
+      "AddSellerEvidence",
+      data
+    );
+    return promise.then((data) =>
+      MsgAddSellerEvidenceResponse.decode(new Reader(data))
     );
   }
 }

@@ -8,6 +8,7 @@ export const protobufPackage = "zeta.escrow";
 export interface Crow {
   crowId: number;
   buyOrderId: number;
+  /** TODO: make disputeId a list */
   disputeId: number;
   verdictId: number;
   sellerCollateral: Coin | undefined;

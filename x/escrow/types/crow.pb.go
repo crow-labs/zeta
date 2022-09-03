@@ -25,8 +25,9 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Crow struct {
-	CrowId           uint64     `protobuf:"varint,1,opt,name=crowId,proto3" json:"crowId,omitempty"`
-	BuyOrderId       uint64     `protobuf:"varint,2,opt,name=buyOrderId,proto3" json:"buyOrderId,omitempty"`
+	CrowId     uint64 `protobuf:"varint,1,opt,name=crowId,proto3" json:"crowId,omitempty"`
+	BuyOrderId uint64 `protobuf:"varint,2,opt,name=buyOrderId,proto3" json:"buyOrderId,omitempty"`
+	// TODO: make disputeId a list
 	DisputeId        uint64     `protobuf:"varint,3,opt,name=disputeId,proto3" json:"disputeId,omitempty"`
 	VerdictId        uint64     `protobuf:"varint,4,opt,name=verdictId,proto3" json:"verdictId,omitempty"`
 	SellerCollateral types.Coin `protobuf:"bytes,5,opt,name=sellerCollateral,proto3" json:"sellerCollateral"`

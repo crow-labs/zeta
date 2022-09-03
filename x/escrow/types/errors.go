@@ -13,4 +13,6 @@ var (
 	ErrSellerInsufficientFunds = sdkerrors.Register(ModuleName, 3002, "seller insufficient funds for escrow")
 	ErrBuyerInsufficientFunds  = sdkerrors.Register(ModuleName, 3003, "buyer insufficient funds for escrow")
 	ErrInvalidCrowStateForMsg  = sdkerrors.Register(ModuleName, 3004, "msg not applicable for current crow state")
+	ErrDisputeNotFound         = sdkerrors.Register(ModuleName, 3005, "dispute not found")
+	ErrDisputeNotForCrow       = sdkerrors.Register(ModuleName, 3006, "dispute not associated with crow id")
 )
