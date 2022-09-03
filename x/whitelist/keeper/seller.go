@@ -228,3 +228,16 @@ func (k Keeper) PunishSellerWithJailtime(ctx sdk.Context, sellerId, jailTime uin
 
 	return nil
 }
+
+func (k Keeper) FreeSellerFromJail(ctx sdk.Context, sellerId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	seller.FreeFromJail()
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}

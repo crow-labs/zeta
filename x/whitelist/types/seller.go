@@ -7,3 +7,7 @@ func (s *Seller) AcceptBlacklist() {
 func (s *Seller) AcceptJailtime(jailTime uint64) {
 	s.Status = "jailed"
 }
+
+func (s *Seller) FreeFromJail() {
+	s.Status = "whitelisted"
+}

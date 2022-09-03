@@ -159,3 +159,16 @@ func (k Keeper) PunishBuyerWithJailtime(ctx sdk.Context, buyerId, jailTime uint6
 
 	return nil
 }
+
+func (k Keeper) FreeBuyerFromJail(ctx sdk.Context, buyerId uint64) error {
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return types.ErrBuyerNotFound
+	}
+
+	buyer.FreeFromJail()
+
+	k.SetBuyer(ctx, buyer)
+
+	return nil
+}

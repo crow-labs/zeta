@@ -11,3 +11,7 @@ func (b *Buyer) AcceptBlacklist() {
 func (b *Buyer) AcceptJailtime(jailTime uint64) {
 	b.Status = "jailed"
 }
+
+func (b *Buyer) FreeFromJail() {
+	b.Status = "whitelisted"
+}
