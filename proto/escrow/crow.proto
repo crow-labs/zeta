@@ -7,7 +7,7 @@ import "cosmos/base/v1beta1/coin.proto";
 
 message Crow {
   uint64 crowId = 1; 
-  uint64 buyOrderId = 2; 
+  uint64 buyOrderId = 2;
   uint64 disputeId = 3; 
   uint64 verdictId = 4; 
   cosmos.base.v1beta1.Coin sellerCollateral = 5 [(gogoproto.nullable) = false]; 

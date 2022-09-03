@@ -49,6 +49,33 @@ export interface EscrowCrow {
   escrowAddr?: string;
 }
 
+export interface EscrowDispute {
+  /** @format uint64 */
+  disputeId?: string;
+  title?: string;
+  description?: string;
+  buyerEvidence?: string[];
+  sellerEvidence?: string[];
+
+  /** @format uint64 */
+  votingBeginBlock?: string;
+
+  /** @format uint64 */
+  votingEndBlock?: string;
+
+  /** @format uint64 */
+  crowId?: string;
+
+  /** @format uint64 */
+  pollId?: string;
+
+  /** @format uint64 */
+  plaintiffId?: string;
+
+  /** @format uint64 */
+  defendantId?: string;
+}
+
 export interface EscrowMsgBeginEscrowResponse {
   /** @format uint64 */
   crowId?: string;
@@ -57,6 +84,13 @@ export interface EscrowMsgBeginEscrowResponse {
 export type EscrowMsgCompleteEscrowNoDisputeResponse = object;
 
 export type EscrowMsgJoinEscrowResponse = object;
+
+export type EscrowMsgPostSellerEvidenceResponse = object;
+
+export interface EscrowMsgRaiseBuyerDisputeResponse {
+  /** @format uint64 */
+  disputeId?: string;
+}
 
 /**
  * Params defines the parameters for the module.
@@ -78,8 +112,27 @@ export interface EscrowQueryAllCrowResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface EscrowQueryAllDisputeResponse {
+  dispute?: EscrowDispute[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface EscrowQueryGetCrowResponse {
   crow?: EscrowCrow;
+}
+
+export interface EscrowQueryGetDisputeResponse {
+  dispute?: EscrowDispute;
 }
 
 /**
@@ -408,6 +461,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryCrow = (crowId: string, params: RequestParams = {}) =>
     this.request<EscrowQueryGetCrowResponse, RpcStatus>({
       path: `/zeta/escrow/crow/${crowId}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDisputeAll
+   * @summary Queries a list of Dispute items.
+   * @request GET:/zeta/escrow/dispute
+   */
+  queryDisputeAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<EscrowQueryAllDisputeResponse, RpcStatus>({
+      path: `/zeta/escrow/dispute`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryDispute
+   * @summary Queries a Dispute by index.
+   * @request GET:/zeta/escrow/dispute/{disputeId}
+   */
+  queryDispute = (disputeId: string, params: RequestParams = {}) =>
+    this.request<EscrowQueryGetDisputeResponse, RpcStatus>({
+      path: `/zeta/escrow/dispute/${disputeId}`,
       method: "GET",
       format: "json",
       ...params,

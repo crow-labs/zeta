@@ -4,6 +4,7 @@ package zeta.escrow;
 import "gogoproto/gogo.proto";
 import "escrow/params.proto";
 import "escrow/crow.proto";
+import "escrow/dispute.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "zeta/x/escrow/types";
@@ -12,6 +13,7 @@ option go_package = "zeta/x/escrow/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Crow crowList = 2 [(gogoproto.nullable) = false];
+  repeated Dispute disputeList = 7 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
   uint64 nextCrowId = 3;
   uint64 nextDisputeId = 4;

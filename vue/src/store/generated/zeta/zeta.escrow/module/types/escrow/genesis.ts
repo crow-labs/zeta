@@ -3,6 +3,7 @@ import * as Long from "long";
 import { util, configure, Writer, Reader } from "protobufjs/minimal";
 import { Params } from "../escrow/params";
 import { Crow } from "../escrow/crow";
+import { Dispute } from "../escrow/dispute";
 
 export const protobufPackage = "zeta.escrow";
 
@@ -10,6 +11,7 @@ export const protobufPackage = "zeta.escrow";
 export interface GenesisState {
   params: Params | undefined;
   crowList: Crow[];
+  disputeList: Dispute[];
   /** this line is used by starport scaffolding # genesis/proto/state */
   nextCrowId: number;
   nextDisputeId: number;
@@ -32,6 +34,9 @@ export const GenesisState = {
     for (const v of message.crowList) {
       Crow.encode(v!, writer.uint32(18).fork()).ldelim();
     }
+    for (const v of message.disputeList) {
+      Dispute.encode(v!, writer.uint32(58).fork()).ldelim();
+    }
     if (message.nextCrowId !== 0) {
       writer.uint32(24).uint64(message.nextCrowId);
     }
@@ -52,6 +57,7 @@ export const GenesisState = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
     message.crowList = [];
+    message.disputeList = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -60,6 +66,9 @@ export const GenesisState = {
           break;
         case 2:
           message.crowList.push(Crow.decode(reader, reader.uint32()));
+          break;
+        case 7:
+          message.disputeList.push(Dispute.decode(reader, reader.uint32()));
           break;
         case 3:
           message.nextCrowId = longToNumber(reader.uint64() as Long);
@@ -84,6 +93,7 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.crowList = [];
+    message.disputeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
@@ -92,6 +102,11 @@ export const GenesisState = {
     if (object.crowList !== undefined && object.crowList !== null) {
       for (const e of object.crowList) {
         message.crowList.push(Crow.fromJSON(e));
+      }
+    }
+    if (object.disputeList !== undefined && object.disputeList !== null) {
+      for (const e of object.disputeList) {
+        message.disputeList.push(Dispute.fromJSON(e));
       }
     }
     if (object.nextCrowId !== undefined && object.nextCrowId !== null) {
@@ -128,6 +143,13 @@ export const GenesisState = {
     } else {
       obj.crowList = [];
     }
+    if (message.disputeList) {
+      obj.disputeList = message.disputeList.map((e) =>
+        e ? Dispute.toJSON(e) : undefined
+      );
+    } else {
+      obj.disputeList = [];
+    }
     message.nextCrowId !== undefined && (obj.nextCrowId = message.nextCrowId);
     message.nextDisputeId !== undefined &&
       (obj.nextDisputeId = message.nextDisputeId);
@@ -140,6 +162,7 @@ export const GenesisState = {
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
     message.crowList = [];
+    message.disputeList = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
@@ -148,6 +171,11 @@ export const GenesisState = {
     if (object.crowList !== undefined && object.crowList !== null) {
       for (const e of object.crowList) {
         message.crowList.push(Crow.fromPartial(e));
+      }
+    }
+    if (object.disputeList !== undefined && object.disputeList !== null) {
+      for (const e of object.disputeList) {
+        message.disputeList.push(Dispute.fromPartial(e));
       }
     }
     if (object.nextCrowId !== undefined && object.nextCrowId !== null) {

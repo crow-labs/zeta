@@ -22,6 +22,14 @@ func TestGenesis(t *testing.T) {
 				CrowId: 1,
 			},
 		},
+		DisputeList: []types.Dispute{
+			{
+				DisputeId: 0,
+			},
+			{
+				DisputeId: 1,
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -34,5 +42,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.CrowList, got.CrowList)
+	require.ElementsMatch(t, genesisState.DisputeList, got.DisputeList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

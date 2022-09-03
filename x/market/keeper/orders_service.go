@@ -69,7 +69,7 @@ func (k Keeper) GetSellerAddrFromBuyOrderId(ctx sdk.Context, bOrderId uint64) (s
 	return k.whitelistKeeper.GetSellerAddrFromId(ctx, sOrder.SellerId)
 }
 
-func (k Keeper) ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error {
+func (k Keeper) ValidateSellerInEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error {
 	bOrder, found := k.GetBuyOrder(ctx, buyOrderId)
 	if !found {
 		return types.ErrBuyOrderNotFound
@@ -90,6 +90,20 @@ func (k Keeper) ValidateSellerBeginEscrow(ctx sdk.Context, buyOrderId uint64, cr
 	}
 
 	return nil
+}
+
+func (k Keeper) GetBuyerAndSellerIdFromBuyOrder(ctx sdk.Context, buyOrderId uint64) (buyerId, sellerId uint64, err error) {
+	bOrder, found := k.GetBuyOrder(ctx, buyOrderId)
+	if !found {
+		return 0, 0, types.ErrBuyOrderNotFound
+	}
+
+	sOrder, found := k.GetSellOrder(ctx, bOrder.SellOrderId)
+	if !found {
+		return 0, 0, types.ErrSellOrderNotFound
+	}
+
+	return bOrder.GetBuyerId(), sOrder.GetSellerId(), nil
 }
 
 func (k Keeper) ValidateBuyerInEscrow(ctx sdk.Context, buyOrderId uint64, creator string) error {

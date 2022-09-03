@@ -5,6 +5,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "escrow/params.proto";
 import "escrow/crow.proto";
+import "escrow/dispute.proto";
 // this line is used by starport scaffolding # 1
 import "cosmos/base/v1beta1/coin.proto";
 import "gogoproto/gogo.proto";
@@ -25,6 +26,16 @@ service Query {
 	// Queries a list of Crow items.
 	rpc CrowAll(QueryAllCrowRequest) returns (QueryAllCrowResponse) {
 		option (google.api.http).get = "/zeta/escrow/crow";
+	}
+
+// Queries a Dispute by index.
+	rpc Dispute(QueryGetDisputeRequest) returns (QueryGetDisputeResponse) {
+		option (google.api.http).get = "/zeta/escrow/dispute/{disputeId}";
+	}
+
+	// Queries a list of Dispute items.
+	rpc DisputeAll(QueryAllDisputeRequest) returns (QueryAllDisputeResponse) {
+		option (google.api.http).get = "/zeta/escrow/dispute";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -54,6 +65,24 @@ message QueryAllCrowRequest {
 
 message QueryAllCrowResponse {
 	repeated Crow crow = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDisputeRequest {
+	  uint64 disputeId = 1;
+
+}
+
+message QueryGetDisputeResponse {
+	Dispute dispute = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllDisputeRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllDisputeResponse {
+	repeated Dispute dispute = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
