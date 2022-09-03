@@ -36,6 +36,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCompleteEscrowNoDispute int = 100
 
+	opWeightMsgRaiseBuyerDispute = "op_weight_msg_raise_buyer_dispute"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRaiseBuyerDispute int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -101,6 +105,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCompleteEscrowNoDispute,
 		escrowsimulation.SimulateMsgCompleteEscrowNoDispute(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRaiseBuyerDispute int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRaiseBuyerDispute, &weightMsgRaiseBuyerDispute, nil,
+		func(_ *rand.Rand) {
+			weightMsgRaiseBuyerDispute = defaultWeightMsgRaiseBuyerDispute
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRaiseBuyerDispute,
+		escrowsimulation.SimulateMsgRaiseBuyerDispute(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

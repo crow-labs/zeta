@@ -299,6 +299,126 @@ func (m *MsgCompleteEscrowNoDisputeResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCompleteEscrowNoDisputeResponse proto.InternalMessageInfo
 
+type MsgRaiseBuyerDispute struct {
+	Creator     string   `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	CrowId      uint64   `protobuf:"varint,2,opt,name=crowId,proto3" json:"crowId,omitempty"`
+	Title       string   `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Description string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Evidence    []string `protobuf:"bytes,5,rep,name=evidence,proto3" json:"evidence,omitempty"`
+}
+
+func (m *MsgRaiseBuyerDispute) Reset()         { *m = MsgRaiseBuyerDispute{} }
+func (m *MsgRaiseBuyerDispute) String() string { return proto.CompactTextString(m) }
+func (*MsgRaiseBuyerDispute) ProtoMessage()    {}
+func (*MsgRaiseBuyerDispute) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e01f3e45c7c056c, []int{6}
+}
+func (m *MsgRaiseBuyerDispute) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRaiseBuyerDispute) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRaiseBuyerDispute.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRaiseBuyerDispute) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRaiseBuyerDispute.Merge(m, src)
+}
+func (m *MsgRaiseBuyerDispute) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRaiseBuyerDispute) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRaiseBuyerDispute.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRaiseBuyerDispute proto.InternalMessageInfo
+
+func (m *MsgRaiseBuyerDispute) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgRaiseBuyerDispute) GetCrowId() uint64 {
+	if m != nil {
+		return m.CrowId
+	}
+	return 0
+}
+
+func (m *MsgRaiseBuyerDispute) GetTitle() string {
+	if m != nil {
+		return m.Title
+	}
+	return ""
+}
+
+func (m *MsgRaiseBuyerDispute) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *MsgRaiseBuyerDispute) GetEvidence() []string {
+	if m != nil {
+		return m.Evidence
+	}
+	return nil
+}
+
+type MsgRaiseBuyerDisputeResponse struct {
+	DisputeId uint64 `protobuf:"varint,1,opt,name=disputeId,proto3" json:"disputeId,omitempty"`
+}
+
+func (m *MsgRaiseBuyerDisputeResponse) Reset()         { *m = MsgRaiseBuyerDisputeResponse{} }
+func (m *MsgRaiseBuyerDisputeResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRaiseBuyerDisputeResponse) ProtoMessage()    {}
+func (*MsgRaiseBuyerDisputeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8e01f3e45c7c056c, []int{7}
+}
+func (m *MsgRaiseBuyerDisputeResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRaiseBuyerDisputeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRaiseBuyerDisputeResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRaiseBuyerDisputeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRaiseBuyerDisputeResponse.Merge(m, src)
+}
+func (m *MsgRaiseBuyerDisputeResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRaiseBuyerDisputeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRaiseBuyerDisputeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRaiseBuyerDisputeResponse proto.InternalMessageInfo
+
+func (m *MsgRaiseBuyerDisputeResponse) GetDisputeId() uint64 {
+	if m != nil {
+		return m.DisputeId
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*MsgBeginEscrow)(nil), "zeta.escrow.MsgBeginEscrow")
 	proto.RegisterType((*MsgBeginEscrowResponse)(nil), "zeta.escrow.MsgBeginEscrowResponse")
@@ -306,32 +426,40 @@ func init() {
 	proto.RegisterType((*MsgJoinEscrowResponse)(nil), "zeta.escrow.MsgJoinEscrowResponse")
 	proto.RegisterType((*MsgCompleteEscrowNoDispute)(nil), "zeta.escrow.MsgCompleteEscrowNoDispute")
 	proto.RegisterType((*MsgCompleteEscrowNoDisputeResponse)(nil), "zeta.escrow.MsgCompleteEscrowNoDisputeResponse")
+	proto.RegisterType((*MsgRaiseBuyerDispute)(nil), "zeta.escrow.MsgRaiseBuyerDispute")
+	proto.RegisterType((*MsgRaiseBuyerDisputeResponse)(nil), "zeta.escrow.MsgRaiseBuyerDisputeResponse")
 }
 
 func init() { proto.RegisterFile("escrow/tx.proto", fileDescriptor_8e01f3e45c7c056c) }
 
 var fileDescriptor_8e01f3e45c7c056c = []byte{
-	// 306 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4f, 0x2d, 0x4e, 0x2e,
-	0xca, 0x2f, 0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0xae, 0x4a, 0x2d,
-	0x49, 0xd4, 0x83, 0x88, 0x2a, 0x79, 0x71, 0xf1, 0xf9, 0x16, 0xa7, 0x3b, 0xa5, 0xa6, 0x67, 0xe6,
-	0xb9, 0x82, 0x45, 0x84, 0x24, 0xb8, 0xd8, 0x93, 0x8b, 0x52, 0x13, 0x4b, 0xf2, 0x8b, 0x24, 0x18,
-	0x15, 0x18, 0x35, 0x38, 0x83, 0x60, 0x5c, 0x21, 0x39, 0x2e, 0xae, 0xa4, 0xd2, 0x4a, 0xff, 0xa2,
-	0x94, 0xd4, 0x22, 0xcf, 0x14, 0x09, 0x26, 0x05, 0x46, 0x0d, 0x96, 0x20, 0x24, 0x11, 0x25, 0x03,
-	0x2e, 0x31, 0x54, 0xb3, 0x82, 0x52, 0x8b, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0xc4, 0xb8, 0xd8,
-	0x40, 0x7c, 0xcf, 0x14, 0xb0, 0x91, 0x2c, 0x41, 0x50, 0x9e, 0x92, 0x23, 0x17, 0xaf, 0x6f, 0x71,
-	0xba, 0x57, 0x3e, 0x11, 0x96, 0x23, 0x8c, 0x60, 0x42, 0x31, 0x42, 0x9c, 0x4b, 0x14, 0xc5, 0x08,
-	0x98, 0x9d, 0x4a, 0x7e, 0x5c, 0x52, 0xbe, 0xc5, 0xe9, 0xce, 0xf9, 0xb9, 0x05, 0x39, 0xa9, 0x25,
-	0xa9, 0x10, 0x49, 0xbf, 0x7c, 0x97, 0xcc, 0xe2, 0x82, 0xd2, 0x92, 0x54, 0x32, 0x2c, 0x52, 0xe1,
-	0x52, 0xc2, 0x6d, 0x1e, 0xcc, 0x56, 0xa3, 0x99, 0x4c, 0x5c, 0xcc, 0xbe, 0xc5, 0xe9, 0x42, 0xfe,
-	0x5c, 0xdc, 0xc8, 0x81, 0x2a, 0xad, 0x87, 0x14, 0xe8, 0x7a, 0xa8, 0xa1, 0x24, 0xa5, 0x8c, 0x47,
-	0x12, 0x1e, 0x84, 0x3e, 0x5c, 0x5c, 0x48, 0xe1, 0x24, 0x85, 0xae, 0x05, 0x21, 0x27, 0xa5, 0x84,
-	0x5b, 0x0e, 0x6e, 0x5a, 0x31, 0x97, 0x38, 0xae, 0x90, 0x51, 0x47, 0xd7, 0x8e, 0x43, 0xa1, 0x94,
-	0x3e, 0x91, 0x0a, 0x61, 0x96, 0x3a, 0xe9, 0x9e, 0x78, 0x24, 0xc7, 0x78, 0xe1, 0x91, 0x1c, 0xe3,
-	0x83, 0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0x5c, 0x78, 0x2c, 0xc7, 0x70, 0xe3, 0xb1, 0x1c,
-	0x43, 0x94, 0x30, 0xc8, 0x24, 0xfd, 0x0a, 0x7d, 0x58, 0x52, 0xad, 0x2c, 0x48, 0x2d, 0x4e, 0x62,
-	0x03, 0x27, 0x57, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x92, 0x6e, 0xbc, 0x79, 0xc1, 0x02,
-	0x00, 0x00,
+	// 407 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0xbd, 0x6e, 0xda, 0x50,
+	0x18, 0xc5, 0xfc, 0xb5, 0x7c, 0xa8, 0xad, 0x7a, 0x4b, 0xc1, 0x72, 0x91, 0xe5, 0xba, 0x95, 0x4a,
+	0x87, 0xda, 0x55, 0xbb, 0x76, 0x29, 0x49, 0x06, 0x50, 0x0c, 0x92, 0xc7, 0x6c, 0x06, 0x7f, 0xb2,
+	0x2c, 0x11, 0x5f, 0xcb, 0xf7, 0x92, 0x40, 0x9e, 0x22, 0x0f, 0x90, 0x07, 0xca, 0xc8, 0x98, 0x31,
+	0x82, 0xd7, 0xc8, 0x10, 0x61, 0xc7, 0xc6, 0x86, 0x38, 0x41, 0x8c, 0xe7, 0xc7, 0xe7, 0x58, 0x3a,
+	0xdf, 0x85, 0x0f, 0xc8, 0xc6, 0x01, 0xbd, 0xd4, 0xf9, 0x4c, 0xf3, 0x03, 0xca, 0x29, 0xa9, 0x5f,
+	0x21, 0xb7, 0xb4, 0x88, 0x55, 0xfb, 0xf0, 0xde, 0x60, 0x4e, 0x17, 0x1d, 0xd7, 0x3b, 0x09, 0x19,
+	0x22, 0xc2, 0x9b, 0x71, 0x80, 0x16, 0xa7, 0x81, 0x28, 0x28, 0x42, 0xa7, 0x66, 0xc6, 0x90, 0xc8,
+	0x00, 0xa3, 0xe9, 0x7c, 0x18, 0xd8, 0x18, 0xf4, 0x6c, 0xb1, 0xa8, 0x08, 0x9d, 0xb2, 0x99, 0x62,
+	0xd4, 0xdf, 0xd0, 0xcc, 0x66, 0x99, 0xc8, 0x7c, 0xea, 0x31, 0x24, 0x4d, 0xa8, 0xae, 0x71, 0xcf,
+	0x0e, 0x23, 0xcb, 0xe6, 0x13, 0x52, 0xff, 0xc3, 0x3b, 0x83, 0x39, 0x7d, 0xba, 0x47, 0xf9, 0x26,
+	0xa2, 0x98, 0x89, 0x68, 0xc1, 0xe7, 0x4c, 0x44, 0xdc, 0xa9, 0x0e, 0x40, 0x32, 0x98, 0x73, 0x44,
+	0xcf, 0xfd, 0x09, 0x72, 0x8c, 0xc4, 0x01, 0x3d, 0x76, 0x99, 0x3f, 0xe5, 0x78, 0x40, 0xd1, 0x77,
+	0x50, 0xf3, 0xf3, 0x92, 0xd6, 0x1b, 0x01, 0x1a, 0x06, 0x73, 0x4c, 0xcb, 0x65, 0xd8, 0x9d, 0xce,
+	0x31, 0x38, 0xb8, 0x90, 0x34, 0xa0, 0xc2, 0x5d, 0x3e, 0x41, 0xb1, 0x14, 0xfa, 0x23, 0x40, 0x14,
+	0xa8, 0xdb, 0xeb, 0xed, 0x5c, 0x9f, 0xbb, 0xd4, 0x13, 0xcb, 0xa1, 0x96, 0xa6, 0x88, 0x04, 0x6f,
+	0xf1, 0xc2, 0xb5, 0xd1, 0x1b, 0xa3, 0x58, 0x51, 0x4a, 0x9d, 0x9a, 0x99, 0x60, 0xf5, 0x1f, 0xb4,
+	0x9f, 0xfb, 0xbb, 0x64, 0xa8, 0x36, 0xd4, 0xec, 0x88, 0x4a, 0xb6, 0xda, 0x10, 0x7f, 0x1e, 0x8a,
+	0x50, 0x32, 0x98, 0x43, 0x86, 0x50, 0x4f, 0x5f, 0xcc, 0x17, 0x2d, 0x75, 0x51, 0x5a, 0xf6, 0x04,
+	0xa4, 0x6f, 0x2f, 0x88, 0x49, 0xed, 0x29, 0x40, 0xea, 0x08, 0xa4, 0xed, 0x4f, 0x36, 0x9a, 0xa4,
+	0xe6, 0x6b, 0x49, 0x1a, 0x83, 0x56, 0xde, 0xec, 0x3f, 0xb6, 0x3f, 0xcf, 0x31, 0x4a, 0xfa, 0x9e,
+	0xc6, 0xa4, 0xd4, 0x82, 0x8f, 0xbb, 0xa3, 0x7f, 0xdd, 0x4e, 0xd9, 0xb1, 0x48, 0x3f, 0x5f, 0xb5,
+	0xc4, 0x15, 0xdd, 0x5f, 0xb7, 0x4b, 0x59, 0x58, 0x2c, 0x65, 0xe1, 0x7e, 0x29, 0x0b, 0xd7, 0x2b,
+	0xb9, 0xb0, 0x58, 0xc9, 0x85, 0xbb, 0x95, 0x5c, 0x38, 0xfb, 0xb4, 0xce, 0xd0, 0x67, 0x7a, 0xfc,
+	0xd4, 0xe7, 0x3e, 0xb2, 0x51, 0x35, 0x7c, 0xee, 0x7f, 0x1f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x3b,
+	0x0c, 0xc8, 0x05, 0x01, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -349,6 +477,7 @@ type MsgClient interface {
 	BeginEscrow(ctx context.Context, in *MsgBeginEscrow, opts ...grpc.CallOption) (*MsgBeginEscrowResponse, error)
 	JoinEscrow(ctx context.Context, in *MsgJoinEscrow, opts ...grpc.CallOption) (*MsgJoinEscrowResponse, error)
 	CompleteEscrowNoDispute(ctx context.Context, in *MsgCompleteEscrowNoDispute, opts ...grpc.CallOption) (*MsgCompleteEscrowNoDisputeResponse, error)
+	RaiseBuyerDispute(ctx context.Context, in *MsgRaiseBuyerDispute, opts ...grpc.CallOption) (*MsgRaiseBuyerDisputeResponse, error)
 }
 
 type msgClient struct {
@@ -386,11 +515,21 @@ func (c *msgClient) CompleteEscrowNoDispute(ctx context.Context, in *MsgComplete
 	return out, nil
 }
 
+func (c *msgClient) RaiseBuyerDispute(ctx context.Context, in *MsgRaiseBuyerDispute, opts ...grpc.CallOption) (*MsgRaiseBuyerDisputeResponse, error) {
+	out := new(MsgRaiseBuyerDisputeResponse)
+	err := c.cc.Invoke(ctx, "/zeta.escrow.Msg/RaiseBuyerDispute", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	BeginEscrow(context.Context, *MsgBeginEscrow) (*MsgBeginEscrowResponse, error)
 	JoinEscrow(context.Context, *MsgJoinEscrow) (*MsgJoinEscrowResponse, error)
 	CompleteEscrowNoDispute(context.Context, *MsgCompleteEscrowNoDispute) (*MsgCompleteEscrowNoDisputeResponse, error)
+	RaiseBuyerDispute(context.Context, *MsgRaiseBuyerDispute) (*MsgRaiseBuyerDisputeResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -405,6 +544,9 @@ func (*UnimplementedMsgServer) JoinEscrow(ctx context.Context, req *MsgJoinEscro
 }
 func (*UnimplementedMsgServer) CompleteEscrowNoDispute(ctx context.Context, req *MsgCompleteEscrowNoDispute) (*MsgCompleteEscrowNoDisputeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CompleteEscrowNoDispute not implemented")
+}
+func (*UnimplementedMsgServer) RaiseBuyerDispute(ctx context.Context, req *MsgRaiseBuyerDispute) (*MsgRaiseBuyerDisputeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RaiseBuyerDispute not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -465,6 +607,24 @@ func _Msg_CompleteEscrowNoDispute_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RaiseBuyerDispute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRaiseBuyerDispute)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RaiseBuyerDispute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zeta.escrow.Msg/RaiseBuyerDispute",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RaiseBuyerDispute(ctx, req.(*MsgRaiseBuyerDispute))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "zeta.escrow.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -480,6 +640,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CompleteEscrowNoDispute",
 			Handler:    _Msg_CompleteEscrowNoDispute_Handler,
+		},
+		{
+			MethodName: "RaiseBuyerDispute",
+			Handler:    _Msg_RaiseBuyerDispute_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -665,6 +829,92 @@ func (m *MsgCompleteEscrowNoDisputeResponse) MarshalToSizedBuffer(dAtA []byte) (
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRaiseBuyerDispute) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRaiseBuyerDispute) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRaiseBuyerDispute) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Evidence) > 0 {
+		for iNdEx := len(m.Evidence) - 1; iNdEx >= 0; iNdEx-- {
+			i -= len(m.Evidence[iNdEx])
+			copy(dAtA[i:], m.Evidence[iNdEx])
+			i = encodeVarintTx(dAtA, i, uint64(len(m.Evidence[iNdEx])))
+			i--
+			dAtA[i] = 0x2a
+		}
+	}
+	if len(m.Description) > 0 {
+		i -= len(m.Description)
+		copy(dAtA[i:], m.Description)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Description)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Title) > 0 {
+		i -= len(m.Title)
+		copy(dAtA[i:], m.Title)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Title)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if m.CrowId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.CrowId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRaiseBuyerDisputeResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRaiseBuyerDisputeResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRaiseBuyerDisputeResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.DisputeId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.DisputeId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -751,6 +1001,48 @@ func (m *MsgCompleteEscrowNoDisputeResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
+	return n
+}
+
+func (m *MsgRaiseBuyerDispute) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if m.CrowId != 0 {
+		n += 1 + sovTx(uint64(m.CrowId))
+	}
+	l = len(m.Title)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Description)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	if len(m.Evidence) > 0 {
+		for _, s := range m.Evidence {
+			l = len(s)
+			n += 1 + l + sovTx(uint64(l))
+		}
+	}
+	return n
+}
+
+func (m *MsgRaiseBuyerDisputeResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.DisputeId != 0 {
+		n += 1 + sovTx(uint64(m.DisputeId))
+	}
 	return n
 }
 
@@ -1211,6 +1503,272 @@ func (m *MsgCompleteEscrowNoDisputeResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: MsgCompleteEscrowNoDisputeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRaiseBuyerDispute) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRaiseBuyerDispute: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRaiseBuyerDispute: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CrowId", wireType)
+			}
+			m.CrowId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.CrowId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Title", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Title = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Description", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Evidence", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Evidence = append(m.Evidence, string(dAtA[iNdEx:postIndex]))
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRaiseBuyerDisputeResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRaiseBuyerDisputeResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRaiseBuyerDisputeResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field DisputeId", wireType)
+			}
+			m.DisputeId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.DisputeId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

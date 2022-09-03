@@ -33,6 +33,7 @@ func GetTxCmd() *cobra.Command {
 	cmd.AddCommand(CmdBeginEscrow())
 	cmd.AddCommand(CmdJoinEscrow())
 	cmd.AddCommand(CmdCompleteEscrowNoDispute())
+	cmd.AddCommand(CmdRaiseBuyerDispute())
 	// this line is used by starport scaffolding # 1
 
 	return cmd

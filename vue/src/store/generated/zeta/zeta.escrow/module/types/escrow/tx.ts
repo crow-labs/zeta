@@ -27,6 +27,18 @@ export interface MsgCompleteEscrowNoDispute {
 
 export interface MsgCompleteEscrowNoDisputeResponse {}
 
+export interface MsgRaiseBuyerDispute {
+  creator: string;
+  crowId: number;
+  title: string;
+  description: string;
+  evidence: string[];
+}
+
+export interface MsgRaiseBuyerDisputeResponse {
+  disputeId: number;
+}
+
 const baseMsgBeginEscrow: object = { creator: "", buyOrderId: 0 };
 
 export const MsgBeginEscrow = {
@@ -407,14 +419,226 @@ export const MsgCompleteEscrowNoDisputeResponse = {
   },
 };
 
+const baseMsgRaiseBuyerDispute: object = {
+  creator: "",
+  crowId: 0,
+  title: "",
+  description: "",
+  evidence: "",
+};
+
+export const MsgRaiseBuyerDispute = {
+  encode(
+    message: MsgRaiseBuyerDispute,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.crowId !== 0) {
+      writer.uint32(16).uint64(message.crowId);
+    }
+    if (message.title !== "") {
+      writer.uint32(26).string(message.title);
+    }
+    if (message.description !== "") {
+      writer.uint32(34).string(message.description);
+    }
+    for (const v of message.evidence) {
+      writer.uint32(42).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRaiseBuyerDispute {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRaiseBuyerDispute } as MsgRaiseBuyerDispute;
+    message.evidence = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.crowId = longToNumber(reader.uint64() as Long);
+          break;
+        case 3:
+          message.title = reader.string();
+          break;
+        case 4:
+          message.description = reader.string();
+          break;
+        case 5:
+          message.evidence.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRaiseBuyerDispute {
+    const message = { ...baseMsgRaiseBuyerDispute } as MsgRaiseBuyerDispute;
+    message.evidence = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = Number(object.crowId);
+    } else {
+      message.crowId = 0;
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = String(object.title);
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = String(object.description);
+    } else {
+      message.description = "";
+    }
+    if (object.evidence !== undefined && object.evidence !== null) {
+      for (const e of object.evidence) {
+        message.evidence.push(String(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRaiseBuyerDispute): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.crowId !== undefined && (obj.crowId = message.crowId);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined &&
+      (obj.description = message.description);
+    if (message.evidence) {
+      obj.evidence = message.evidence.map((e) => e);
+    } else {
+      obj.evidence = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRaiseBuyerDispute>): MsgRaiseBuyerDispute {
+    const message = { ...baseMsgRaiseBuyerDispute } as MsgRaiseBuyerDispute;
+    message.evidence = [];
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.crowId !== undefined && object.crowId !== null) {
+      message.crowId = object.crowId;
+    } else {
+      message.crowId = 0;
+    }
+    if (object.title !== undefined && object.title !== null) {
+      message.title = object.title;
+    } else {
+      message.title = "";
+    }
+    if (object.description !== undefined && object.description !== null) {
+      message.description = object.description;
+    } else {
+      message.description = "";
+    }
+    if (object.evidence !== undefined && object.evidence !== null) {
+      for (const e of object.evidence) {
+        message.evidence.push(e);
+      }
+    }
+    return message;
+  },
+};
+
+const baseMsgRaiseBuyerDisputeResponse: object = { disputeId: 0 };
+
+export const MsgRaiseBuyerDisputeResponse = {
+  encode(
+    message: MsgRaiseBuyerDisputeResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.disputeId !== 0) {
+      writer.uint32(8).uint64(message.disputeId);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgRaiseBuyerDisputeResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgRaiseBuyerDisputeResponse,
+    } as MsgRaiseBuyerDisputeResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.disputeId = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRaiseBuyerDisputeResponse {
+    const message = {
+      ...baseMsgRaiseBuyerDisputeResponse,
+    } as MsgRaiseBuyerDisputeResponse;
+    if (object.disputeId !== undefined && object.disputeId !== null) {
+      message.disputeId = Number(object.disputeId);
+    } else {
+      message.disputeId = 0;
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRaiseBuyerDisputeResponse): unknown {
+    const obj: any = {};
+    message.disputeId !== undefined && (obj.disputeId = message.disputeId);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgRaiseBuyerDisputeResponse>
+  ): MsgRaiseBuyerDisputeResponse {
+    const message = {
+      ...baseMsgRaiseBuyerDisputeResponse,
+    } as MsgRaiseBuyerDisputeResponse;
+    if (object.disputeId !== undefined && object.disputeId !== null) {
+      message.disputeId = object.disputeId;
+    } else {
+      message.disputeId = 0;
+    }
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   BeginEscrow(request: MsgBeginEscrow): Promise<MsgBeginEscrowResponse>;
   JoinEscrow(request: MsgJoinEscrow): Promise<MsgJoinEscrowResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CompleteEscrowNoDispute(
     request: MsgCompleteEscrowNoDispute
   ): Promise<MsgCompleteEscrowNoDisputeResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RaiseBuyerDispute(
+    request: MsgRaiseBuyerDispute
+  ): Promise<MsgRaiseBuyerDisputeResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -449,6 +673,20 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCompleteEscrowNoDisputeResponse.decode(new Reader(data))
+    );
+  }
+
+  RaiseBuyerDispute(
+    request: MsgRaiseBuyerDispute
+  ): Promise<MsgRaiseBuyerDisputeResponse> {
+    const data = MsgRaiseBuyerDispute.encode(request).finish();
+    const promise = this.rpc.request(
+      "zeta.escrow.Msg",
+      "RaiseBuyerDispute",
+      data
+    );
+    return promise.then((data) =>
+      MsgRaiseBuyerDisputeResponse.decode(new Reader(data))
     );
   }
 }
