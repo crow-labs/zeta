@@ -19,6 +19,7 @@ const (
 
 var (
 	KeyNextGlobalPollId = []byte{0x11}
+	KeyNextGlobalVoteId = []byte{0x12}
 )
 
 func KeyPrefix(p string) []byte {
