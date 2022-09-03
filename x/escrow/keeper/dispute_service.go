@@ -86,7 +86,7 @@ func (k Keeper) validateAddSellerEvidence(ctx sdk.Context, msg types.MsgAddSelle
 	return k.marketKeeper.ValidateSellerInEscrow(ctx, crow.BuyOrderId, msg.Creator)
 }
 
-func (k Keeper) AddSellerEvidence(ctx sdk.Context, msg types.MsgAddSellerEvidence) error {
+func (k Keeper) AddSellerEvidenceToDispute(ctx sdk.Context, msg types.MsgAddSellerEvidence) error {
 	err := k.validateAddSellerEvidence(ctx, msg)
 	if err != nil {
 		return err
@@ -114,6 +114,17 @@ func (k Keeper) validateAddBuyerEvidence(ctx sdk.Context, msg types.MsgAddBuyerE
 	return k.marketKeeper.ValidateBuyerInEscrow(ctx, crow.BuyOrderId, msg.Creator)
 }
 
-func (k Keeper) AddBuyerEvidence(ctx sdk.Context, msg types.MsgAddBuyerEvidence) error {
+func (k Keeper) AddBuyerEvidenceToDispute(ctx sdk.Context, msg types.MsgAddBuyerEvidence) error {
+	err := k.validateAddBuyerEvidence(ctx, msg)
+	if err != nil {
+		return err
+	}
+
+	dispute, _ := k.GetDispute(ctx, msg.DisputeId)
+
+	dispute.BuyerEvidence = append(dispute.BuyerEvidence, msg.Description+", "+msg.Evidence)
+
+	k.SetDispute(ctx, dispute)
+
 	return nil
 }

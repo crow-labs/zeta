@@ -11,7 +11,7 @@ import (
 func (k msgServer) AddSellerEvidence(goCtx context.Context, msg *types.MsgAddSellerEvidence) (*types.MsgAddSellerEvidenceResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	err := k.AddSellerEvidence(ctx, msg)
+	err := k.AddSellerEvidenceToDispute(ctx, *msg)
 	if err != nil {
 		return &types.MsgAddSellerEvidenceResponse{}, err
 	}
