@@ -10,7 +10,7 @@ message Poll {
   uint64 pollId = 1; 
   string pollAccAddr = 2; 
   string votingPower = 3 [
-    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Dec",
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
     (gogoproto.nullable) = false
   ]; 
   uint64 disputeId = 4; 

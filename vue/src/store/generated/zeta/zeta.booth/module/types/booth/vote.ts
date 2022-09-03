@@ -10,9 +10,10 @@ export interface Vote {
   pollId: number;
   voterId: number;
   ballot: VoteParams | undefined;
+  shares: string;
 }
 
-const baseVote: object = { voteId: 0, pollId: 0, voterId: 0 };
+const baseVote: object = { voteId: 0, pollId: 0, voterId: 0, shares: "" };
 
 export const Vote = {
   encode(message: Vote, writer: Writer = Writer.create()): Writer {
@@ -27,6 +28,9 @@ export const Vote = {
     }
     if (message.ballot !== undefined) {
       VoteParams.encode(message.ballot, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.shares !== "") {
+      writer.uint32(42).string(message.shares);
     }
     return writer;
   },
@@ -49,6 +53,9 @@ export const Vote = {
           break;
         case 4:
           message.ballot = VoteParams.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.shares = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -80,6 +87,11 @@ export const Vote = {
     } else {
       message.ballot = undefined;
     }
+    if (object.shares !== undefined && object.shares !== null) {
+      message.shares = String(object.shares);
+    } else {
+      message.shares = "";
+    }
     return message;
   },
 
@@ -92,6 +104,7 @@ export const Vote = {
       (obj.ballot = message.ballot
         ? VoteParams.toJSON(message.ballot)
         : undefined);
+    message.shares !== undefined && (obj.shares = message.shares);
     return obj;
   },
 
@@ -116,6 +129,11 @@ export const Vote = {
       message.ballot = VoteParams.fromPartial(object.ballot);
     } else {
       message.ballot = undefined;
+    }
+    if (object.shares !== undefined && object.shares !== null) {
+      message.shares = object.shares;
+    } else {
+      message.shares = "";
     }
     return message;
   },

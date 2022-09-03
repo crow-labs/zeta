@@ -5,10 +5,11 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
+	"zeta/x/booth/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"zeta/x/booth/types"
 )
 
 type (
@@ -21,6 +22,7 @@ type (
 		escrowKeeper    types.EscrowKeeper
 		whitelistKeeper types.WhitelistKeeper
 		accountKeeper   types.AccountKeeper
+		bankKeeper      types.BankKeeper
 	}
 )
 
@@ -30,7 +32,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 
-	escrowKeeper types.EscrowKeeper, whitelistKeeper types.WhitelistKeeper, accountKeeper types.AccountKeeper,
+	escrowKeeper types.EscrowKeeper, whitelistKeeper types.WhitelistKeeper, accountKeeper types.AccountKeeper, bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -43,7 +45,7 @@ func NewKeeper(
 		storeKey:     storeKey,
 		memKey:       memKey,
 		paramstore:   ps,
-		escrowKeeper: escrowKeeper, whitelistKeeper: whitelistKeeper, accountKeeper: accountKeeper,
+		escrowKeeper: escrowKeeper, whitelistKeeper: whitelistKeeper, accountKeeper: accountKeeper, bankKeeper: bankKeeper,
 	}
 }
 

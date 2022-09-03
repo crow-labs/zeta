@@ -16,6 +16,7 @@ type EscrowKeeper interface {
 
 type WhitelistKeeper interface {
 	// Methods imported from whitelist should be defined here
+	ValidateVoterNotBuyerOrSeller(ctx sdk.Context, voterId, buyerId, sellerId uint64) error
 	GetAccAddrFromVoterId(ctx sdk.Context, voterId uint64) (string, error)
 	GetAccAddrFromSellerId(ctx sdk.Context, sellerId uint64) (string, error)
 	GetAccAddrFromBuyerId(ctx sdk.Context, buyerId uint64) (string, error)
@@ -33,5 +34,10 @@ type AccountKeeper interface {
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
 	SpendableCoins(ctx sdk.Context, addr sdk.AccAddress) sdk.Coins
+	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
+
+	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
+	MintCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
+	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
 	// Methods imported from bank should be defined here
 }

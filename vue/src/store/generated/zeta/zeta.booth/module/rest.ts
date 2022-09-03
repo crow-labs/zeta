@@ -93,6 +93,7 @@ export interface BoothVote {
   /** @format uint64 */
   voterId?: string;
   ballot?: BoothVoteParams;
+  shares?: string;
 }
 
 export interface BoothVoteParams {

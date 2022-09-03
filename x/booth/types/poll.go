@@ -18,7 +18,7 @@ type PollI interface {
 	GetPollId() uint64
 	GetDisputeId() uint64
 	GetVoteIds() []uint64
-	GetTotalPollVotingPower() sdk.Dec
+	GetTotalPollVotingPower() sdk.Int
 	CalcVotingPowerFromVoterStake(voterStake sdk.Int) (votingPower sdk.Dec, err error)
 	AddVoteToPoll(ctx sdk.Context, votingPower sdk.Int) (voteShares sdk.Dec, err error)
 	PokePoll(blockTime time.Time)
@@ -36,7 +36,7 @@ func NewPoll(pollId, disputeId uint64) Poll {
 	poll := &Poll{
 		PollId:      pollId,
 		PollAccAddr: string(pollAddr),
-		VotingPower: sdk.ZeroDec(),
+		VotingPower: sdk.ZeroInt(),
 		DisputeId:   disputeId,
 		VoteIds:     make([]uint64, 0),
 		Verdict:     &VoteParams{},
@@ -54,22 +54,31 @@ func (p Poll) GetAddress() sdk.AccAddress {
 	return addr
 }
 
-func (p Poll) GetTotalPollVotingPower() sdk.Dec {
+func (p Poll) GetTotalPollVotingPower() sdk.Int {
 	return p.VotingPower
 }
 
-func (p Poll) CalcVotingPowerFromVoterStake(voterStake sdk.Int) (votingPower sdk.Dec, err error) {
+func (p Poll) CalcVotingPowerFromVoterStake(voterStake sdk.Int) (votingPower sdk.Int, err error) {
 	// square root of crow amount staked is voting power
-	return voterStake.ToDec().ApproxSqrt()
+	reduced, err := voterStake.ToDec().ApproxSqrt()
+	if err != nil {
+		return sdk.ZeroInt(), err
+	}
+
+	clean := sdk.NewIntFromBigInt(reduced.BigInt())
+
+	return clean, nil
 }
 
-func (p *Poll) AddVoteToPoll(ctx sdk.Context, voterStake sdk.Int) (voteShares sdk.Dec, err error) {
+func (p *Poll) AddVoteToPoll(ctx sdk.Context, voteId uint64, voterStake sdk.Int) (voteShares sdk.Int, err error) {
 	voteShares, err = p.CalcVotingPowerFromVoterStake(voterStake)
 	if err != nil {
-		return sdk.ZeroDec(), err
+		return sdk.ZeroInt(), err
 	}
 
 	p.VotingPower = p.VotingPower.Add(voteShares)
 
-	return sdk.ZeroDec(), nil
+	p.VoteIds = append(p.VoteIds, voteId)
+
+	return voteShares, nil
 }

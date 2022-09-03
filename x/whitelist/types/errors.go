@@ -17,4 +17,6 @@ var (
 	ErrBuyerNotFound  = sdkerrors.Register(ModuleName, 1007, "No buyer found for buyerId: %s")
 	ErrItemNotFound   = sdkerrors.Register(ModuleName, 1008, "No item found for itemId: %s")
 	ErrVoterNotFound  = sdkerrors.Register(ModuleName, 1009, "No voter found for voterid")
+	ErrVoterIsBuyer   = sdkerrors.Register(ModuleName, 1010, "Voter can't be crow buyer")
+	ErrVoterIsSeller  = sdkerrors.Register(ModuleName, 1011, "Voter can't be the seller")
 )

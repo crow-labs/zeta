@@ -42,3 +42,30 @@ func (k Keeper) CreateMember(ctx sdk.Context, msg types.MsgMembershipApplication
 	k.SetMember(ctx, member)
 	return nil
 }
+
+func (k Keeper) ValidateVoterNotBuyerOrSeller(ctx sdk.Context, voterId, buyerId, sellerId uint64) error {
+	voter, found := k.GetVoter(ctx, voterId)
+	if !found {
+		return types.ErrVoterNotFound
+	}
+
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return types.ErrBuyerNotFound
+	}
+
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	if voter.GetAddress() == buyer.GetAddress() {
+		return types.ErrVoterIsBuyer
+	}
+
+	if voter.GetAddress() == seller.GetAddress() {
+		return types.ErrVoterIsSeller
+	}
+
+	return nil
+}

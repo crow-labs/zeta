@@ -265,21 +265,6 @@ export default {
 		},
 		
 		
-		async sendMsgCastVoteForPoll({ rootGetters }, { value, fee = [], memo = '' }) {
-			try {
-				const txClient=await initTxClient(rootGetters)
-				const msg = await txClient.msgCastVoteForPoll(value)
-				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
-	gas: "200000" }, memo})
-				return result
-			} catch (e) {
-				if (e == MissingWalletError) {
-					throw new Error('TxClient:MsgCastVoteForPoll:Init Could not initialize signing client. Wallet is required.')
-				}else{
-					throw new Error('TxClient:MsgCastVoteForPoll:Send Could not broadcast Tx: '+ e.message)
-				}
-			}
-		},
 		async sendMsgBeginPoll({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -295,20 +280,22 @@ export default {
 				}
 			}
 		},
-		
-		async MsgCastVoteForPoll({ rootGetters }, { value }) {
+		async sendMsgCastVoteForPoll({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
 				const msg = await txClient.msgCastVoteForPoll(value)
-				return msg
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
 			} catch (e) {
 				if (e == MissingWalletError) {
 					throw new Error('TxClient:MsgCastVoteForPoll:Init Could not initialize signing client. Wallet is required.')
-				} else{
-					throw new Error('TxClient:MsgCastVoteForPoll:Create Could not create message: ' + e.message)
+				}else{
+					throw new Error('TxClient:MsgCastVoteForPoll:Send Could not broadcast Tx: '+ e.message)
 				}
 			}
 		},
+		
 		async MsgBeginPoll({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -319,6 +306,19 @@ export default {
 					throw new Error('TxClient:MsgBeginPoll:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgBeginPoll:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCastVoteForPoll({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCastVoteForPoll(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCastVoteForPoll:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCastVoteForPoll:Create Could not create message: ' + e.message)
 				}
 			}
 		},
