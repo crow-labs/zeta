@@ -5,6 +5,7 @@
 https://vimeo.com/745164573/25a00b86c2
 
 # Whitelist Module
+For handling a whitelist of buyers, sellers and voters which is used by every other module
 ## Objects
 ### Member
 Each Account Address can be linked to only one member by submitting a member-application transaction. Once enrolled as a member, users can choose to apply to act as a buyer, seller and/or voter in the market.   
@@ -30,6 +31,7 @@ Transaction for a member to be assigned a voter id and join the voters whitelist
 
 
 # Market Module
+For handling items, sell orders and buy orders that are placed by buyers and sellers on the whitelist and whose transfers are handled by in a crow
 ## Objects
 ### Item
 Items describe what the seller may want to sell in a sell order including a title, description and an external-link (to an image for example).
@@ -55,21 +57,26 @@ Transaction for a seller to create a sell order and thereby list an item the sel
 Transaction for a buyer to place a buy order for the sell order associated with the provided sell order id
  
 # Crow Module
+For handling the escrow process for a buy order on the market placed by a buyer and seller on the whitelist
+
 ## Objects
 ### Crow 
 Crows are created when a seller accepts a buy order and are linked to the buy order via the buyOrderId. During creation, the seller deposits the collateral listed in the buy order to the created escrow account. A buyer confirms the buy order by joining thhe escrow and depositing both the collateral and payment for the item. At this point, the buyer and seller must communicate their confidential information such as the buyer's shipping address using the contact information provided on the buyer/seller pages. As of now this communication is assumed to be handled off-chain but in future development P2P encrypted messaging may be implemented on-chain. If the seller receives the item and does not have any disputes to raise, they can complete the escrow process with a complete escrow no dispute transaction. Doing so will send both the seller's collateral and buyer's payment to the seller from the escrow account and the buyer will also be sent back the buyer's collateral.  
 
 ### Dispute
 - Not yet implemented
-### Rebuttal
-- Not yet implemented
 ### Evidence 
 - Not yet implemented
+
+# Booth Module
+For handling voting on a crow's dispute from a voter on the whitelist 
+
+## Objects
 ### Vote
-- Not yet implemented
-### Sentence
-- Not yet implemented
-### Verdict
+- Votes have a reference to a poll and voter and contain a bollot with their voting information 
+### Ballot
+- Ballots have information on the guilt, refund/payment, and jailtime for both the buyer and seller as well as if either party should be blacklisted 
+### Poll
 - Not yet implemented
 ### Punishment
 - Not yet implemented
