@@ -129,3 +129,16 @@ func (k Keeper) AddBuyOrderToBuyer(ctx sdk.Context, buyerId, orderId uint64) err
 
 	return nil
 }
+
+func (k Keeper) PunishBuyerWithBlacklist(ctx sdk.Context, buyerId uint64) error {
+	buyer, found := k.GetBuyer(ctx, buyerId)
+	if !found {
+		return types.ErrBuyerNotFound
+	}
+
+	buyer.AcceptBlacklist()
+
+	k.SetBuyer(ctx, buyer)
+
+	return nil
+}

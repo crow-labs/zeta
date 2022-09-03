@@ -197,3 +197,16 @@ func (k Keeper) AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint
 
 	return nil
 }
+
+func (k Keeper) PunishSellerWithBlacklist(ctx sdk.Context, sellerId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	seller.AcceptBlacklist()
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}
