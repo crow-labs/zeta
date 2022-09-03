@@ -458,6 +458,7 @@ func New(
 		app.EscrowKeeper,
 		app.WhitelistKeeper,
 		app.AccountKeeper,
+		app.BankKeeper,
 	)
 	boothModule := boothmodule.NewAppModule(appCodec, app.BoothKeeper, app.AccountKeeper, app.BankKeeper)
 
