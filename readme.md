@@ -66,6 +66,16 @@ Crows are created when a seller accepts a buy order and are linked to the buy or
 ### Dispute
 - A dispute is raised and in debate, with either party posting evidence of their side. Once the defendant  (or a timout which is not yet implemented) closes debate, a poll starts and is funded with the amount of one party's collateral.
 
+## Transactions
+### Begin Escrow
+`zetad tx escrow begin-escrow [buy-order-id] [flags]`  
+Transaction for a seller to accept a buy order with the provided buy order id and create a crow (if the seller created the sell order that the buy order is referencing). Causes the seller to escrow the collateral in the buyer order. 
+### Join Escrow
+`zetad tx escrow join-escrow [crow-id] [flags]`  
+Transaction for a buyer to confirm their buy order and escrow the collateral and payment in the buy order.
+### Confirm Escrow No Dispute
+`zetad tx escrow complete-escrow-no-dispute [crow-id] [flags]`  
+Transaction for a buyer to confirm the arrival of the item without issues to raise a dispute over and thereby complete the escrow process. This involves returing the collateral to the buyer and seller and sending the payment from the escroww account to the seller.
 
 # Booth Module
 For handling voting on a crow's dispute from a voter on the whitelist 
@@ -77,16 +87,14 @@ For handling voting on a crow's dispute from a voter on the whitelist
 - Ballots have information on the guilt, refund/payment, and jailtime for both the buyer and seller as well as if either party should be blacklisted 
 ### Poll
 - A poll is linked to a dispute with the disputeId and can be voted on by voters, so long as they are not the buyer or the seller. Votes in a poll have a voting power equal to the square root of their amount staked. When a voter votes on a poll, they are sent a receipt in the form poll shares that can be redeemed for their proportional ownership of the collateral once a verdict has been reached (this is not yet implemented, only the minting is). 
-### Punishment
-- Not yet implemented
 
 ## Transactions
-### Begin Escrow
-`zetad tx escrow begin-escrow [buy-order-id] [flags]`  
-Transaction for a seller to accept a buy order with the provided buy order id and create a crow (if the seller created the sell order that the buy order is referencing). Causes the seller to escrow the collateral in the buyer order. 
-### Join Escrow
-`zetad tx escrow join-escrow [crow-id] [flags]`  
-Transaction for a buyer to confirm their buy order and escrow the collateral and payment in the buy order.
-### Confirm Escrow No Dispute
-`zetad tx escrow complete-escrow-no-dispute [crow-id] [flags]`  
-Transaction for a buyer to confirm the arrival of the item without issues to raise a dispute over and thereby complete the escrow process. This involves returing the collateral to the buyer and seller and sending the payment from the escroww account to the seller.
+
+### Begin Poll
+`zetad tx booth begin-poll [dispute-id] [flags]`  
+Transaction for a defendant to initiate the voting process. (TODO: automatically trigger after dispute has been raised)
+
+### Cast Vote for Poll
+`zetad tx booth cast-vote-for-poll [poll-id] [voter-id] [ballot] [flags]`  
+Transaction for a voter to cast a vote on a poll. The voteId is added to the poll and the voter is sent poll shares proportional to the approxiamte square root of their amount staked. Voters without anything staked cannot vote. 
+
