@@ -197,3 +197,47 @@ func (k Keeper) AddSellOrderToSeller(ctx sdk.Context, sellerId, sellOrderId uint
 
 	return nil
 }
+
+func (k Keeper) PunishSellerWithBlacklist(ctx sdk.Context, sellerId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	seller.AcceptBlacklist()
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}
+
+func (k Keeper) PunishSellerWithJailtime(ctx sdk.Context, sellerId, jailTime uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	// TODO: add this functionality
+	// AcceptJailTime just changes the status to jailed
+	// We still need to a jailing period from the start blocktime
+	// until the start+jail time end blocktime
+
+	seller.AcceptJailtime(jailTime)
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}
+
+func (k Keeper) FreeSellerFromJail(ctx sdk.Context, sellerId uint64) error {
+	seller, found := k.GetSeller(ctx, sellerId)
+	if !found {
+		return types.ErrSellerNotFound
+	}
+
+	seller.FreeFromJail()
+
+	k.SetSeller(ctx, seller)
+
+	return nil
+}
