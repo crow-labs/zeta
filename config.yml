@@ -23,4 +23,4 @@ host:
 init:
   client:
     keyring-backend: "os"
-  home: "~/.vela"
+  home: "~/.crow"
