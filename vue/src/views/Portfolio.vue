@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <h1 class="text-3xl font-bold underline">
+      Hello world!
+    </h1>
     <div class="row row-sm-revers">
       <div class="col-md-6">
         <SpAssets />
