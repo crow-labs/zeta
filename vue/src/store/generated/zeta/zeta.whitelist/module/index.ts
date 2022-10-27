@@ -5,15 +5,15 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgSellerApplication } from "./types/whitelist/tx";
-import { MsgBuyerApplication } from "./types/whitelist/tx";
 import { MsgMembershipApplication } from "./types/whitelist/tx";
+import { MsgBuyerApplication } from "./types/whitelist/tx";
 import { MsgVoterApplication } from "./types/whitelist/tx";
 
 
 const types = [
   ["/zeta.whitelist.MsgSellerApplication", MsgSellerApplication],
-  ["/zeta.whitelist.MsgBuyerApplication", MsgBuyerApplication],
   ["/zeta.whitelist.MsgMembershipApplication", MsgMembershipApplication],
+  ["/zeta.whitelist.MsgBuyerApplication", MsgBuyerApplication],
   ["/zeta.whitelist.MsgVoterApplication", MsgVoterApplication],
   
 ];
@@ -48,8 +48,8 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgSellerApplication: (data: MsgSellerApplication): EncodeObject => ({ typeUrl: "/zeta.whitelist.MsgSellerApplication", value: MsgSellerApplication.fromPartial( data ) }),
-    msgBuyerApplication: (data: MsgBuyerApplication): EncodeObject => ({ typeUrl: "/zeta.whitelist.MsgBuyerApplication", value: MsgBuyerApplication.fromPartial( data ) }),
     msgMembershipApplication: (data: MsgMembershipApplication): EncodeObject => ({ typeUrl: "/zeta.whitelist.MsgMembershipApplication", value: MsgMembershipApplication.fromPartial( data ) }),
+    msgBuyerApplication: (data: MsgBuyerApplication): EncodeObject => ({ typeUrl: "/zeta.whitelist.MsgBuyerApplication", value: MsgBuyerApplication.fromPartial( data ) }),
     msgVoterApplication: (data: MsgVoterApplication): EncodeObject => ({ typeUrl: "/zeta.whitelist.MsgVoterApplication", value: MsgVoterApplication.fromPartial( data ) }),
     
   };

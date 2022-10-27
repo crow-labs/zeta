@@ -85,6 +85,8 @@ export type EscrowMsgCompleteEscrowNoDisputeResponse = object;
 
 export type EscrowMsgJoinEscrowResponse = object;
 
+export type EscrowMsgPostSellerEvidenceResponse = object;
+
 export interface EscrowMsgRaiseBuyerDisputeResponse {
   /** @format uint64 */
   disputeId?: string;
@@ -137,7 +139,7 @@ export interface EscrowQueryGetDisputeResponse {
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface EscrowQueryParamsResponse {
-  /** params holds all the parameters of this module. */
+  /** Params defines the parameters for the module. */
   params?: EscrowParams;
 }
 
